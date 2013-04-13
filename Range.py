@@ -25,14 +25,14 @@ class Range(object):
 		return self._start == self._end
 	
 	def is_row(self):
-		return self._start[0] == self._end[0]
-			and self._start[1] == 1
+		return self._start[0] == self._end[0] \
+			and self._start[1] == 1 \
 			and self._end[1] == self._parent.num_columns
 		
 	def is_column(self):
-		return self._start[1] == self._end[1]
-			and self._start[0] == 1
-			and self._end[1] == self._parent.num_rows
+		return self._start[1] == self._end[1] \
+			and self._start[0] == 1 \
+			and self._end[1] == self._parent.num_rows \
 	
 	def __getitem__(self, key):
 		if self.is_row():
@@ -57,15 +57,15 @@ class Range(object):
 			raise Exception("Couldn't set that")
 	
 	@staticmethod
-	def __string_to_coordinate(str):
+	def __string_to_coordinate(s):
 		# Convert a base-26 name to integer
 		x = 0
-		for i in range(len(str)):
+		for i in range(len(s)):
 			x *= 26
-			if ord(str[i]) < A or ord(str[i]) > Z:
+			if ord(s[i]) < Range.A or ord(s[i]) > Range.Z:
 				break # done, hopefully
-			x += ord(str[i]) - A + 1
-		return (x, int(str))
+			x += ord(s[i]) - Range.A + 1
+		return (x, int(s))
 
 	@staticmethod
 	def to_coordinate(value):
