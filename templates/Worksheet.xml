@@ -10,7 +10,7 @@
     {% for row in rows %}
         <row r="{{ row.0 }}">
             {% for cell in row.1 %}
-            <c r="{{ cell.0 }}">
+            <c r="{{ cell.0 }}"{% if cell.2 %} t="s"{% endif %}>
                 <v>{{ cell.1 }}</v>
             </c>
             {% endfor %}
