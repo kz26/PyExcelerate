@@ -65,10 +65,10 @@ class Range(object):
 		# Convert a base-26 name to integer
 		y = 0
 		for i in range(len(s)):
-			y *= 26
 			if ord(s[i]) < Range.A or ord(s[i]) > Range.Z:
 				s = s[i:]
 				break
+			y *= 26
 			y += ord(s[i]) - Range.A + 1
 		return (int(s), y)
 
