@@ -27,6 +27,18 @@ class Range(object):
 			return self._parent[self._start[0]][self._start[1]]
 		else:
 			raise Exception("Not a cell")
+			
+	@property
+	def key(self):
+		if self.is_cell():
+			return self.workbook.worksheet.shared_strings.get_key(self.value)
+		else:
+			raise Exception("Not a cell")
+	
+	@property
+	def workbook(self):
+		return self._parent
+	
 	def is_cell(self):
 		return self._start == self._end
 	
@@ -90,14 +102,11 @@ class Range(object):
 			value = Range.__string_to_coordinate(value)
 		return value
 	
-	def get_xml(self):
+	def get_xml_data(self):
 		if self.is_row():
-			xml = "<row r=\"" + self._start[0] + "\">"
+			data = []
 			for i in range(1, len(self._parent[self._start[0]])):
-				xml += "<c r=\"" + Range.__coordinate_to_string((self._start[0], i)) + "\" t=\"s\">"
-				xml += "<v>" + self[i].value + "</v>"
-				xml += "</c>"
-			xml += "</row>"
-			return xml
+				data.append((Range.__coordinate_to_string((self._start[0], i)), self[i].value))
+			return data
 		else:
 			raise Exception("not a valid row")
