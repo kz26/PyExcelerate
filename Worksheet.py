@@ -13,6 +13,10 @@ class Worksheet(object):
 		return Range.Range(key, key, self) # return a row range
 
 	@property
+	def name(self):
+		return self._name
+		
+	@property
 	def num_rows(self):
 		if len(self._cells) > 0:
 			return max(self._cells.keys())
