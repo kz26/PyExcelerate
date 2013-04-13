@@ -2,7 +2,7 @@ import Worksheet
 
 class Workbook(object):
 	def __init__(self, encoding='utf-8'):
-		self._worksheets = {}
+		self._worksheets = []
 		self._encoding = encoding
 		
 	def create_sheet(self, sheet_name):
@@ -10,5 +10,8 @@ class Workbook(object):
 		self._worksheets.append(worksheet)
 		return worksheet
 
-	def get_sheet(self, sheet):
-		return self._worksheets[sheet]
+	def get_xml_data(self):
+		data = []
+		for i in range(len(self._worksheets)):
+			data.append((i + 1, self._worksheets[i].name))
+		return data
