@@ -79,7 +79,7 @@ class Range(object):
 		s = ""
 		while y > 0:
 			s += chr((y % 26) + Range.A - 1)
-			y -= 26
+			y -= (y % 26)
 			y /= 26
 		
 		return s + str(coord[0])
