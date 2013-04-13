@@ -68,6 +68,7 @@ class Range(object):
 			y *= 26
 			if ord(s[i]) < Range.A or ord(s[i]) > Range.Z:
 				s = s[i+1:]
+				break
 			y += ord(s[i]) - Range.A + 1
 		return (int(s), y)
 
