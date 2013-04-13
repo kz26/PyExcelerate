@@ -63,7 +63,7 @@ class Range(object):
 		for i in range(len(s)):
 			y *= 26
 			if ord(s[i]) < Range.A or ord(s[i]) > Range.Z:
-				break # done, hopefully
+				s = s[i+1:]
 			y += ord(s[i]) - Range.A + 1
 		return (int(s), y)
 
@@ -72,8 +72,14 @@ class Range(object):
 		# convert an integer to base-26 name
 		y = coord[1] - 1
 		s = ""
+		if y == 0:
+			s = "A"
 		while y > 0:
-			s += chr((y % 26) + Range.A - 1
+			s += chr((y % 26) + Range.A)
+			y /= 26
+		
+		return s + str(coord[0])
+		
 	@staticmethod
 	def to_coordinate(value):
 		if isinstance(value, basestring):
