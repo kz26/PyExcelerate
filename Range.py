@@ -45,36 +45,30 @@ class Range(object):
 			newStart = (key, self._start[1])
 			newEnd = (key, self._end[1])
 			return Range(newStart, newEnd, self._parent)			
+		elif self.is_cell():
+			return self._parent[self._start[0]][self._start[1]]
 		else:
 			raise Exception("Selection not valid")
 	
 	def __setitem__(self, key, value):
-		
-	
-	@property
-	def value(self):
-		return self._parent[x][y]
-		
-	@value.setter
-	def value(self, value):
-		for i in range(self._start[0], self._end[0] + 1):
-			for j in range(self._start[1], self._end[1] + 1):
-				self.
-		return self
+		if self.is_row():
+			self._parent[self._start[0]][self._start[key]] = value
+		else:
+			raise Exception("Couldn't set that")
 	
 	@staticmethod
-	def __name_to_integer(str):
+	def __string_to_coordinate(str):
 		# Convert a base-26 name to integer
-		int = 0
+		x = 0
 		for i in range(len(str)):
-			int *= 26
+			x *= 26
 			if ord(str[i]) < A or ord(str[i]) > Z:
 				break # done, hopefully
-			int += ord(str[i]) - A + 1
-		return int
+			x += ord(str[i]) - A + 1
+		return (x, int(str))
 
 	@staticmethod
 	def to_coordinate(value):
 		if isinstance(value, basestring):
-			value = Range.__name_to_integer(value)
+			value = Range.__string_to_coordinate(value)
 		return value

@@ -5,11 +5,11 @@ class Worksheet(object):
 		self._name = name
 		self._cells = []
 
-	def cell(self, x, y=None): # 1-indexed
-		if y == None:
-			return Range.Range(x, x, self) # parse a cell
-		else:
-			return Range.range(x, y, self)
+	def __getitem__(self, key):
+		if key not in self._cells:
+			raise Exception("Not implemented")
+		return Range.Range(key, key, self) # return a row range
+
 	@property
 	def num_rows(self):
 		if len(self._cells) > 0:
@@ -20,9 +20,6 @@ class Worksheet(object):
 	@property
 	def num_columns(self):
 		raise Exception("Not implemented")
-	
-	def data(self, x, y): # 1-indexed
-		return self._cells[x][y]
 		
 	def write(self, xml_stream):
 		pass
