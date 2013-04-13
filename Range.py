@@ -68,7 +68,24 @@ class Range(object):
 		return (int(str), y)
 
 	@staticmethod
+	def __coordinate_to_string(coord):
+		# convert an integer to base-26 name
+		y = coord[1] - 1
+		s = ""
+		while y > 0:
+			s += chr((y % 26) + Range.A - 1
+	@staticmethod
 	def to_coordinate(value):
 		if isinstance(value, basestring):
 			value = Range.__string_to_coordinate(value)
 		return value
+	
+	def get_xml(self):
+		if self.is_row():
+			xml = "<row r=\"" + self._start[0] + "\">"
+			for i in range(1, len(self._parent[self._start[0]])):
+				xml += 
+			xml += "</row>"
+			return xml
+		else:
+			raise Exception("not a valid row")
