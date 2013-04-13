@@ -59,13 +59,13 @@ class Range(object):
 	@staticmethod
 	def __string_to_coordinate(str):
 		# Convert a base-26 name to integer
-		x = 0
+		y = 0
 		for i in range(len(str)):
-			x *= 26
+			y *= 26
 			if ord(str[i]) < A or ord(str[i]) > Z:
 				break # done, hopefully
-			x += ord(str[i]) - A + 1
-		return (x, int(str))
+			y += ord(str[i]) - A + 1
+		return (int(str), y)
 
 	@staticmethod
 	def to_coordinate(value):
