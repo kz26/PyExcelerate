@@ -21,6 +21,12 @@ class Range(object):
 		else:
 			raise Exception("Non-singleton range selected")
 	
+	@property
+	def value(self):
+		if self.is_cell():
+			return self._parent[self._start[0]][self._start[1]]
+		else:
+			raise Exception("Not a cell")
 	def is_cell(self):
 		return self._start == self._end
 	
@@ -45,8 +51,6 @@ class Range(object):
 			newStart = (key, self._start[1])
 			newEnd = (key, self._end[1])
 			return Range(newStart, newEnd, self._parent)			
-		elif self.is_cell():
-			return self._parent[self._start[0]][self._start[1]]
 		else:
 			raise Exception("Selection not valid")
 	
@@ -90,7 +94,9 @@ class Range(object):
 		if self.is_row():
 			xml = "<row r=\"" + self._start[0] + "\">"
 			for i in range(1, len(self._parent[self._start[0]])):
-				xml += 
+				xml += "<c r=\"" + Range.__coordinate_to_string((self._start[0], i)) + "\" t=\"s\">"
+				xml += "<v>" + self[i].value + "</v>"
+				xml += "</c>"
 			xml += "</row>"
 			return xml
 		else:

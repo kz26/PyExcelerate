@@ -38,17 +38,9 @@ class Worksheet(object):
 			<sheetData>"""
 		for row in self._cells.keys():
 			range = Range.Range(row, row, self)
-				
-				<row r="1" spans="1:3" x14ac:dyDescent="0.25">
-					<c r="A1" t="s">
-						<v>0</v>
-					</c>
-					<c r="B1" t="s">
-						<v>2</v>
-					</c>
-					<c r="C1" t="s">
-						<v>3</v>
-					</c>
-				</row>
-				<row r="2" spans="1:3" x14ac:dyDescent="0.25"><c r="A2" t="s"><v>1</v></c><c r="B2" t="s"><v>4</v></c><c r="C2" t="s"><v>5</v></c></row><row r="3" spans="1:3" x14ac:dyDescent="0.25"><c r="A3" t="s"><v>8</v></c><c r="B3" t="s"><v>7</v></c><c r="C3" t="s"><v>6</v></c></row></sheetData><pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3"/>
+		
+			xml += range.get_xml()
+		
+		xml += """</sheetData><pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3"/>
 </worksheet>"""
+		return xml
