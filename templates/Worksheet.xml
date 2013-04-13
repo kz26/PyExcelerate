@@ -1,0 +1,21 @@
+ <?xml version="1.0" encoding="utf-16"?>
+<worksheet mc:Ignorable="x14ac" xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac">
+    <sheetViews>
+        <sheetView tabSelected="1" workbookViewId="0">
+            <selection activeCell="A1" sqref="A1" />
+        </sheetView>
+    </sheetViews>
+    <sheetFormatPr defaultRowHeight="15" x14ac:dyDescent="0.25" />
+    <sheetData>
+    {% for row in rows %}
+        <row r="{{ row.0 }}">
+            {% for cell in row.1 %}
+            <c r="{{ cell.0 }}"{% if cell.2 %} t="s"{% endif %}>
+                <v>{{ cell.1 }}</v>
+            </c>
+            {% endfor %}
+        </row>
+    {% endfor %}
+    </sheetData>
+    <pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3" />
+</worksheet> 
