@@ -20,7 +20,7 @@ class Range(object):
 	
 	@property
 	def y(self):
-		if self.is_col()):
+		if self.is_column():
 			return self._start[1]
 		else:
 			return self.coordinate[1]
