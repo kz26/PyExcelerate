@@ -1,6 +1,7 @@
 from Workbook import Workbook
 from nose.tools import eq_
 import cStringIO as StringIO
+import time
 
 def test_get_xml_data():
     wb = Workbook()
@@ -17,7 +18,7 @@ def test_get_xml_data():
 def test_save():
     wb = Workbook()
     testData = [[1] * 50] * 1000
-    for i in range(1):
-        ws = wb.new_sheet("Test %s" % (i + 1), data=testData)
+    stime = time.clock()
+    ws = wb.new_sheet("Test 1", data=testData)
     wb.save("test.xlsx")
-
+    print "1000, 50, %s" % (time.clock() - stime)

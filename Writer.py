@@ -5,7 +5,7 @@ from jinja2 import Environment, FileSystemLoader
 
 class Writer(object):
     TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')
-    env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
+    env = Environment(loader=FileSystemLoader(TEMPLATE_PATH), auto_reload=False)
 
     _docProps_app_template = env.get_template("docProps/app.xml")
     _docProps_core_template = env.get_template("docProps/core.xml")
