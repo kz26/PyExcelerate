@@ -19,5 +19,8 @@ class Workbook(object):
         for index, ws in enumerate(self._worksheets, 1):
             yield (index, ws)
 
-    def save(self, output_filename):
-        self._writer.save(output_filename)
+    def _save(self, file_handle):
+        self._writer.save(file_handle)
+
+    def save(self, filename):
+        self._save(open(filename, 'w'))

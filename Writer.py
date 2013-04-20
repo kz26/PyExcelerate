@@ -19,12 +19,12 @@ class Writer(object):
     def _render_template_wb(self, template):
         return template.render({'worksheet': self.workbook})
 
-    def save(self, output_filename):
-        zf = ZipFile(output_filename, 'w', ZIP_DEFLATED)
+    def save(self, f):
+        zf = ZipFile(f, 'w', ZIP_DEFLATED)
         zf.writestr("[Content_Types].xml", self._render_template_wb(self._content_types_template))
         zf.writestr("_rels/.rels", self._rels_template.render())
         zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
         zf.writestr("xl/_rels/workbook.xml.rels", self._render_template_wb(self._workbook_rels_template))
-        for index, sheet in enumerate(self.workbook.get_xml_data(), 1):
+        for index, sheet in self.workbook.get_xml_data():
             zf.writestr("xl/worksheets/sheet%s.xml" % (index), self._worksheet_template.render({'sheet': sheet}))
         zf.close()
