@@ -12,6 +12,18 @@ class Range(object):
 			self.worksheet.report_column(self.y)
 	
 	@property
+	def width(self):
+		return self._end[0] - self._start[0] + 1
+	
+	@property
+	def height(self):
+		return self._end[1] - self._start[1] + 1
+	
+	@property
+	def size(self):
+		return self.width * self.height
+	
+	@property
 	def x(self):
 		if self.is_row():
 			return self._start[0]
