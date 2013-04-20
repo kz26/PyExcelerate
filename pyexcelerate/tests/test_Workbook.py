@@ -35,4 +35,6 @@ def test_merge():
 	ws = wb.new_sheet("test")
 	ws[1][1].value = "asdf"
 	ws.range("A1", "B1").merge()
+	eq_(ws[1][2].value, ws[1][1].value)
 	wb.save("merge-test.xlsx")
+	
