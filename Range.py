@@ -148,9 +148,10 @@ class Range(object):
 		# convert an integer to base-26 name
 		y = coord[1] - 1
 		s = ""
-		while y > 0:
-			s = chr((y % 26) + Range.A + 1) + s
+		while y >= 0:
+			s = chr((y % 26) + Range.A) + s
 			y /= 26
+			y -= 1
 		return s + str(coord[0])
 	
 	@staticmethod
