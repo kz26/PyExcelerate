@@ -1,5 +1,5 @@
 import Range
-import DataTypes
+from DataTypes import DataTypes
 
 class Worksheet(object):
 	def __init__(self, name, workbook):
