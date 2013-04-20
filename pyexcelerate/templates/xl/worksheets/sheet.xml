@@ -10,7 +10,12 @@
     {% for x, row in worksheet.get_xml_data() %}
         <row r="{{ x }}">
             {% for cell in row %}
-            {% if cell.2 == 3 %}
+            {% if cell.2 == 1 %}
+            {# Date #}
+            <c r="{{ cell.0 }}" t="d">
+				<v>{{ cell.1 }}</v>
+			</c>
+            {% elif cell.2 == 3 %}
             {# Inline String #}
             <c r="{{ cell.0 }}" t="inlineStr">
                 <is><t>{{ cell.1 }}</t></is>

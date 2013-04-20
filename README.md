@@ -26,6 +26,8 @@ Ubuntu 12.04 LTS, Core i3-2310M 2.1GHz, 8GB DDR3, Python 2.7.3
 
 ## Usage
 
+### Writing bulk data
+
 ```python
 from pyexcelerate import Workbook
 
@@ -35,6 +37,32 @@ wb = Workbook()
 wb.new_sheet("sheet name", data=data)
 wb.save("output.xlsx")
 
+```
+
+### Writing cell data
+
+```python
+from pyexcelerate import Workbook
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws[1][1] = 15
+ws[1][2] = 20
+ws[1][3] = "=SUM(A1,B1)"
+wb.save("output.xlsx")
+
+```
+
+### Merging cells
+
+```python
+from pyexcelerate import Workbook
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws[1][1] = 15
+ws.range("A1", "B1").merge()
+wb.save("output.xlsx")
 
 ```
 
