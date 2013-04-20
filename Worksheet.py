@@ -49,7 +49,7 @@ class Worksheet(object):
 	@property
 	def workbook(self):
 			return self._parent
-			
+	
 	def get_xml_data(self):
 		# initialize the shared string hashtable
 		# self.shared_strings = SharedStrings.SharedStrings(self)

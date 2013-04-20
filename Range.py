@@ -20,13 +20,6 @@ class Range(object):
 		return self._end[1] - self._start[1] + 1
 
 	@property
-	def __len__(self):
-		if self._start[0] == self._end[0]:
-			return self.width
-		else:
-			return self.height
-
-	@property
 	def x(self):
 		if self.is_row():
 			return self._start[0]
@@ -102,6 +95,21 @@ class Range(object):
 	
 	def merge(self):
 		self.worksheet.add_merge(self)
+
+	def __contains__(self, item):
+		return self.intersection(item) == item
+
+	def __len__(self):
+		if self._start[0] == self._end[0]:
+			return self.width
+		else:
+			return self.height
+
+	def __eq__(self, other):
+		return self._start == other._start and self._end == other._end
+	
+	def __ne__(self, other):
+		return !(self == other)
 	
 	def __getitem__(self, key):
 		if self.is_row():
@@ -138,11 +146,10 @@ class Range(object):
 	@staticmethod
 	def __coordinate_to_string(coord):
 		# convert an integer to base-26 name
-		y = coord[1]
+		y = coord[1] - 1
 		s = ""
 		while y > 0:
-			s = chr((y % 26) + Range.A - 1) + s
-			y -= (y % 26)
+			s = chr((y % 26) + Range.A + 1) + s
 			y /= 26
 		return s + str(coord[0])
 	
