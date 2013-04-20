@@ -1,6 +1,7 @@
 import os
 import tempfile
 from zipfile import ZipFile, ZIP_DEFLATED
+from datetime import datetime
 import time
 from jinja2 import Environment, FileSystemLoader
 
@@ -19,13 +20,21 @@ class Writer(object):
     def __init__(self, workbook):
         self.workbook = workbook
 
-    def _render_template_wb(self, template):
-        return template.render({'workbook': self.workbook})
+    def _render_template_wb(self, template, extra_context=None):
+        context = {'workbook': self.workbook}
+        if extra_context:
+            context.update(extra_context)
+        return template.render(context)
+
+    def _get_utc_now(self):
+        now = datetime.utcnow()
+        return now.strftime("%Y-%m-%dT%H:%M:00Z")
+
 
     def save(self, f):
         zf = ZipFile(f, 'w', ZIP_DEFLATED)
         zf.writestr("docProps/app.xml", self._render_template_wb(self._docProps_app_template))
-        zf.writestr("docProps/core.xml", self._render_template_wb(self._docProps_core_template))
+        zf.writestr("docProps/core.xml", self._render_template_wb(self._docProps_core_template, {'date': self._get_utc_now()}))
         zf.writestr("[Content_Types].xml", self._render_template_wb(self._content_types_template))
         zf.writestr("_rels/.rels", self._rels_template.render())
         zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
