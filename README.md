@@ -80,4 +80,5 @@ wb.save("output.xlsx")
 ```
 
 ## Support
-Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.
+Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  
+All changes to code must be accompanied by a test.
