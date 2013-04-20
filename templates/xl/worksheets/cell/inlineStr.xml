@@ -1,3 +1,0 @@
-<c r="{{ cell.0 }}" t="inlineStr">
-    <is><t>{{ cell.1 }}</t></is>
-</c>

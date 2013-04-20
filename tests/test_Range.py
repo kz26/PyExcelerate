@@ -1,5 +1,5 @@
-from Workbook import Workbook
-from Range import Range
+from ..Workbook import Workbook
+from ..Range import Range
 from nose.tools import eq_
 
 def test__string_to_coordinate():

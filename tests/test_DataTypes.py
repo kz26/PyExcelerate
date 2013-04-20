@@ -1,4 +1,4 @@
-from DataTypes import DataTypes
+from ..DataTypes import DataTypes
 from nose.tools import eq_
 
 def test__to_enumeration_value():

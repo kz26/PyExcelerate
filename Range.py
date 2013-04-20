@@ -1,4 +1,4 @@
-import DataTypes
+from . import DataTypes
 
 class Range(object):
 	A = ord('A')

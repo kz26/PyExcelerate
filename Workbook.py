@@ -1,5 +1,5 @@
-import Worksheet
-from Writer import Writer
+from . import Worksheet
+from .Writer import Writer
 
 class Workbook(object):
     def __init__(self, encoding='utf-8'):
