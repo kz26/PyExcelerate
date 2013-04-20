@@ -10,8 +10,8 @@ class Worksheet(object):
 		self._merges = [] # list of Range objects
 		self._attributes = {}
 		if data != None:
-			for x, row in enumerate(data):
-				for y, cell in enumerate(row):
+			for x, row in enumerate(data, 1):
+				for y, cell in enumerate(row, 1):
 					if x not in self._cells:
 						self._cells[x] = {}
 					self._cells[x][y] = cell
