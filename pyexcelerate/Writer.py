@@ -31,11 +31,12 @@ class Writer(object):
         zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
         zf.writestr("xl/_rels/workbook.xml.rels", self._render_template_wb(self._workbook_rels_template))
         for index, sheet in self.workbook.get_xml_data():
-            tf = tempfile.NamedTemporaryFile()
+            tfd, tfn = tempfile.mkstemp()
+            tf = os.fdopen(tfd, 'wb')
             sheetStream = self._worksheet_template.generate({'worksheet': sheet})
             for s in sheetStream:
                 tf.write(s)
-            tf.seek(0)
-            zf.write(tf.name, "xl/worksheets/sheet%s.xml" % (index))
+            zf.write(tfn, "xl/worksheets/sheet%s.xml" % (index))
             tf.close()
+            os.remove(tfn)
         zf.close()

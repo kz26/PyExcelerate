@@ -11,8 +11,7 @@ setup(
     description="Accelerated Excel XLSX Writing Library for Python",
     license="LICENSE",
     install_requires=[
-        "Jinja2",
-        "six"
+        "Jinja2"
     ],
     packages=[
         'pyexcelerate'
