@@ -13,3 +13,11 @@ def test_get_xml_data():
     eq_(r_gxd.next(), ('A1', 1, 4))
     eq_(r_gxd.next(), ('C1', 3, 4))
 
+def test_save():
+    wb = Workbook()
+    for i in range(5):
+        ws = wb.new_sheet("Test")
+        for j in range(1, 1001):
+            ws[j].value = [[i] * 1000]
+    wb.save("test.xlsx")
+

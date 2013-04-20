@@ -4,7 +4,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from jinja2 import Environment, FileSystemLoader
 
 class Writer(object):
-    TEMPLATE_PATH = os.join(os.path.dirname(os.path.realpath(__file__)), 'templates')
+    TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')
     env = Environment(loader=FileSystemLoader(TEMPLATE_PATH))
 
     _content_types_template = env.get_template("[Content_Types].xml")
@@ -22,7 +22,7 @@ class Writer(object):
     def save(self, output_filename):
         zf = ZipFile(output_filename, 'w', ZIP_DEFLATED)
         zf.writestr("[Content_Types].xml", self._render_template_wb(self._content_types_template))
-        zf.writestr("_rels/.rels", self._rels_template.render()
+        zf.writestr("_rels/.rels", self._rels_template.render())
         zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
         zf.writestr("xl/_rels/workbook.xml.rels", self._render_template_wb(self._workbook_rels_template))
         for index, sheet in enumerate(self.workbook.get_xml_data(), 1):
