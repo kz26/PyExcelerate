@@ -16,10 +16,8 @@ def test_get_xml_data():
 
 def test_save():
     wb = Workbook()
-    testrow = [[1] * 25 + ["test"] * 25]
-    for i in range(5):
-        ws = wb.new_sheet("Test %s" % (i + 1))
-        for j in range(1, 1001):
-            ws[j].value = testrow
+    testData = [[1] * 50] * 1000
+    for i in range(1):
+        ws = wb.new_sheet("Test %s" % (i + 1), data=testData)
     wb.save("test.xlsx")
 
