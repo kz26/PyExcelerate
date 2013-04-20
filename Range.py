@@ -122,7 +122,7 @@ class Range(object):
 	
 	def get_xml_data(self):
 		if self.is_row():
-			for index, cell in self.worksheet._cells[self.x]:
-				yield (Range.__coordinate_to_string((self.x, index)), cell.value, DataTypes.DataTypes.get_type(cell.value))
+			for index, cell in enumerate(self.worksheet._cells[self.x]):
+				yield (Range.__coordinate_to_string((self.x, index)), cell, DataTypes.DataTypes.get_type(cell))
 		else:
 			raise Exception("not a valid row")
