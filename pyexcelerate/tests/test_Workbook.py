@@ -29,3 +29,10 @@ def test_formulas():
 	ws[1][2].value = 2
 	ws[1][3].value = '=SUM(A1,B1)'
 	wb.save("formula-test.xlsx")
+	
+def test_merge():
+	wb = Workbook()
+	ws = wb.new_sheet("test")
+	ws[1][1].value = "asdf"
+	ws.range("A1", "B1").merge()
+	wb.save("merge-test.xlsx")

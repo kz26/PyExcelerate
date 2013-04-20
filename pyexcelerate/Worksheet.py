@@ -42,6 +42,10 @@ class Worksheet(object):
 	def num_columns(self):
 		return max(1, self._columns)
 	
+	def range(self, start, end):
+		# convenience method
+		return Range.Range(start, end, self)
+	
 	def report_column(self, column):
 		# listener for column additions
 		self._columns = max(self._columns, column)

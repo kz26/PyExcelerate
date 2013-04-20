@@ -33,7 +33,7 @@
     {% if worksheet.merges.__len__() > 0 %}
     <mergeCells>
     {% for merge in worksheet.merges %}
-		<mergeCell ref="{% merge.__str__() %}"/>
+		<mergeCell ref="{{ merge.__str__() }}"/>
     {% endfor %}
     </mergeCells>
     {% endif %}
