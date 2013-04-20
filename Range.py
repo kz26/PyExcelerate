@@ -18,11 +18,7 @@ class Range(object):
 	@property
 	def height(self):
 		return self._end[1] - self._start[1] + 1
-	
-	@property
-	def size(self):
-		return self.width * self.height
-	
+
 	@property
 	def x(self):
 		if self.is_row():
@@ -36,7 +32,7 @@ class Range(object):
 			return self._start[1]
 		else:
 			return self.coordinate[1]
-			
+	
 	@property
 	def coordinate(self):
 		if self.is_cell():
@@ -52,31 +48,37 @@ class Range(object):
 			raise Exception("Not a cell")
 
 	@value.setter
-	def value(self, value):
+	def value(self, data):
 		if self.is_cell():
-			self.worksheet.set_cell_value(self.x, self.y, value)
+			self.worksheet.set_cell_value(self.x, self.y, data)
 		else:
-			raise Exception("Not a cell")
+			if data.length <= self.height:
+				for row in data:
+					if row.length > self.width:
+						raise Exception("Row too large for range")
+				for x, row in enumerate(data):
+					for y, value in enumerate(row):
+						self.worksheet.set_cell_value(x + self._start[0], y + self._start[1], value)
+			else if data.length == self.width * self.height:
+				for index, value in data:
+					x, y = divmod(index, self.width)
+					self.worksheet.set_cell_value(x + self._start[0], y + self._start[1], value)
+			else:
+				raise Exception("Data inappropriately sized")
 			
-	@property
-	def key(self):
-		if self.is_cell():
-			return self.workbook.worksheet.shared_strings.get_key(self.value)
-		else:
-			raise Exception("Not a cell")
-	
+
 	@property
 	def worksheet(self):
 		return self._parent
 	
 	def is_cell(self):
 		return self._start == self._end
-	
+
 	def is_row(self):
 		return self._start[0] == self._end[0] \
 			and self._start[1] == 1 \
 			and self._end[1] == float('inf')
-		
+
 	def is_column(self):
 		return self._start[1] == self._end[1] \
 			and self._start[0] == 1 \
