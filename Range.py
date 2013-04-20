@@ -148,6 +148,8 @@ class Range(object):
 		# convert an integer to base-26 name
 		y = coord[1] - 1
 		s = ""
+		if y == 0:
+			s = "A"	# special case
 		while y > 0:
 			s = chr((y % 26) + Range.A + 1) + s
 			y /= 26
