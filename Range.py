@@ -59,13 +59,8 @@ class Range(object):
 				for x, row in enumerate(data):
 					for y, value in enumerate(row):
 						self.worksheet.set_cell_value(x + self._start[0], y + self._start[1], value)
-			else if data.length == self.width * self.height:
-				for index, value in data:
-					x, y = divmod(index, self.width)
-					self.worksheet.set_cell_value(x + self._start[0], y + self._start[1], value)
 			else:
-				raise Exception("Data inappropriately sized")
-			
+				raise Exception("Too many rows for range")
 
 	@property
 	def worksheet(self):
@@ -142,7 +137,6 @@ class Range(object):
 			s = chr((y % 26) + Range.A - 1) + s
 			y -= (y % 26)
 			y /= 26
-		
 		return s + str(coord[0])
 	
 	@staticmethod
