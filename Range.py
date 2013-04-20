@@ -158,9 +158,9 @@ class Range(object):
 	def to_coordinate(value):
 		if isinstance(value, basestring):
 			value = Range.__string_to_coordinate(value)
-		if value[0] < 1 or value[0] > 65536:
+		if (value[0] < 1 or value[0] > 65536) and value[1] != float('inf'):
 			raise Exception("Row index out of bounds")
-		if value[1] < 1 or value[1] > 256:
+		if (value[1] < 1 or value[1] > 256) and value[1] != float('inf'):
 			raise Exception("Column index out of bounds")
 		return value
 	
