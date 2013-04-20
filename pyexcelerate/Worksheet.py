@@ -1,7 +1,6 @@
 from . import Range
 from .DataTypes import DataTypes
 from . import six
-from .HeaderFooter import Header, Footer
 class Worksheet(object):
 	def __init__(self, name, workbook, data=None):
 		self._columns = 0 # cache this for speed
@@ -61,6 +60,8 @@ class Worksheet(object):
 		self._merges.append(range)
 	
 	def get_cell_value(self, x, y):
+		if x not in self._cells:
+			self._cells[x] = {}
 		type = DataTypes.get_type(self._cells[x][y])
 		if type == DataTypes.FORMULA:
 			# remove the equals sign
@@ -71,6 +72,8 @@ class Worksheet(object):
 			return self._cells[x][y]
 	
 	def set_cell_value(self, x, y, value):
+		if x not in self._cells:
+			self._cells[x] = {}
 		self._cells[x][y] = value
 	
 	@property
