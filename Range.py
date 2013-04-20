@@ -143,16 +143,19 @@ class Range(object):
 			y += ord(s[i]) - Range.A + 1
 		return (int(s), y)
 
+	_cts_cache = {}
 	@staticmethod
 	def coordinate_to_string(coord):
 		# convert an integer to base-26 name
 		y = coord[1] - 1
-		s = ""
-		while y >= 0:
-			s = chr((y % 26) + Range.A) + s
-			y /= 26
-			y -= 1
-		return s + str(coord[0])
+		if y not in Range._cts_cache:
+			s = ""	
+			while y >= 0:
+				s = chr((y % 26) + Range.A) + s
+				y /= 26
+				y -= 1
+			Range._cts_cache[y] = s
+		return Range._cts_cache[y] + str(coord[0])
 	
 	@staticmethod
 	def to_coordinate(value):

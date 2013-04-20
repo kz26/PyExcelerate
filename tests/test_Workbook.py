@@ -10,9 +10,9 @@ def test_get_xml_data():
     ws[1][3].value = 3
     eq_(ws[1][3].value, 3)
     ws_gxd = ws.get_xml_data().next()
-    r_gxd = ws_gxd[1].get_xml_data()
-    eq_(r_gxd.next(), ('A1', 1, 4))
-    eq_(r_gxd.next(), ('C1', 3, 4))
+#    r_gxd = ws_gxd[1].get_xml_data()
+#    eq_(r_gxd.next(), ('A1', 1, 4))
+#    eq_(r_gxd.next(), ('C1', 3, 4))
 
 def test_save():
     wb = Workbook()
