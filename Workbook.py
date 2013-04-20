@@ -10,8 +10,8 @@ class Workbook(object):
     def add_sheet(self, worksheet):
         self._worksheets.append(worksheet)
         
-    def new_sheet(self, sheet_name):
-        worksheet = Worksheet.Worksheet(sheet_name, self)
+    def new_sheet(self, sheet_name, data=None):
+        worksheet = Worksheet.Worksheet(sheet_name, self, data)
         self._worksheets.append(worksheet)
         return worksheet
 
