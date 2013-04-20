@@ -5,12 +5,12 @@ class Worksheet(object):
 	def __init__(self, name, workbook):
 		self._columns = 0 # cache this for speed
 		self._name = name
-		self._cells = []
+		self._cells = {}
 		self._parent = workbook
 
 	def __getitem__(self, key):
 		if key not in self._cells:
-			self._cells[key] = []
+			self._cells[key] = {}
 		return Range.Range((key, 1), (key, None), self) # return a row range
 
 	@property
