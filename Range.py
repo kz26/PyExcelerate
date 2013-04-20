@@ -13,11 +13,17 @@ class Range(object):
 	
 	@property
 	def x(self):
-		return self.coordinate[0]
+		if self.is_row():
+			return self._start[0]
+		else:
+			return self.coordinate[0]
 	
 	@property
 	def y(self):
-		return self.coordinate[1]
+		if self.is_col()):
+			return self._start[1]
+		else:
+			return self.coordinate[1]
 	
 	@property
 	def coordinate(self):
@@ -116,7 +122,7 @@ class Range(object):
 	
 	def get_xml_data(self):
 		if self.is_row():
-			for index, cell in self._parent[self._start[0]]:
-				yield (Range.__coordinate_to_string((self._start[0], index)), cell.value, DataTypes.DataTypes.get_type(cell.value))
+			for index, cell in self.worksheet._cells[self.x]:
+				yield (Range.__coordinate_to_string((self.x, index)), cell.value, DataTypes.DataTypes.get_type(cell.value))
 		else:
 			raise Exception("not a valid row")
