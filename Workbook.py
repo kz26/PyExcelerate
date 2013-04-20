@@ -4,8 +4,11 @@ class Workbook(object):
 	def __init__(self, encoding='utf-8'):
 		self._worksheets = []
 		self._encoding = encoding
+
+	def add_sheet(self, worksheet):
+		self._worksheets.append(worksheet)
 		
-	def create_sheet(self, sheet_name):
+	def new_sheet(self, sheet_name):
 		worksheet = Worksheet.Worksheet(sheet_name, self)
 		self._worksheets.append(worksheet)
 		return worksheet
