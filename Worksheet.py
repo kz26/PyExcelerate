@@ -2,13 +2,20 @@ import Range
 from DataTypes import DataTypes
 
 class Worksheet(object):
-	def __init__(self, name, workbook):
+	def __init__(self, name, workbook, data=None):
 		self._columns = 0 # cache this for speed
 		self._name = name
 		self._cells = {}
 		self._parent = workbook
 		self._merges = [] # list of Range objects
 		self._attributes = {}
+		if data != None:
+			for x, row in enumerate(data):
+				for y, cell in enumerate(row):
+					if x not in self._cells:
+						self._cells[x] = {}
+					self._cells[x][y] = cell
+					
 
 	def __getitem__(self, key):
 		if key not in self._cells:
