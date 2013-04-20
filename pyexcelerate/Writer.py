@@ -36,7 +36,7 @@ class Writer(object):
             sheetStream = self._worksheet_template.generate({'worksheet': sheet})
             for s in sheetStream:
                 tf.write(s)
-            zf.write(tfn, "xl/worksheets/sheet%s.xml" % (index))
             tf.close()
+            zf.write(tfn, "xl/worksheets/sheet%s.xml" % (index))
             os.remove(tfn)
         zf.close()
