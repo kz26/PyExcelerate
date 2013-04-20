@@ -1,7 +1,7 @@
 from . import Range
 from .DataTypes import DataTypes
 from . import six
-from datetime import datetime.strftime
+from datetime import datetime
 
 class Worksheet(object):
 	def __init__(self, name, workbook, data=None):
@@ -81,7 +81,7 @@ class Worksheet(object):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):
 				if DataTypes.get_type(cell) == DataTypes.DATE:
-					row_data.append((Range.Range.coordinate_to_string((x, y)), datetime.strftime('%Y-%m-%dT%H:%M:%S'), DataTypes.get_type(cell)))
+					row_data.append((Range.Range.coordinate_to_string((x, y)), datetime.strftime(cell, '%Y-%m-%dT%H:%M:%S'), DataTypes.get_type(cell)))
 				else:
 					row_data.append((Range.Range.coordinate_to_string((x, y)), cell, DataTypes.get_type(cell)))
 			yield x, row_data

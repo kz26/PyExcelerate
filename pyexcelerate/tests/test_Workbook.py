@@ -1,7 +1,7 @@
 from ..Workbook import Workbook
 import cStringIO as StringIO
 import time
-
+from datetime import datetime
 from nose.tools import eq_
 
 def test_get_xml_data():
@@ -28,6 +28,7 @@ def test_formulas():
 	ws[1][1].value = 1
 	ws[1][2].value = 2
 	ws[1][3].value = '=SUM(A1,B1)'
+	ws[1][4].value = datetime.now()
 	wb.save("formula-test.xlsx")
 	
 def test_merge():
