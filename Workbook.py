@@ -19,6 +19,9 @@ class Workbook(object):
         for index, ws in enumerate(self._worksheets, 1):
             yield (index, ws)
 
+    def __len__(self):
+        return len(self._worksheets)
+
     def _save(self, file_handle):
         self._writer.save(file_handle)
 
