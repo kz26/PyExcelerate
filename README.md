@@ -46,10 +46,10 @@ from pyexcelerate import Workbook
 
 wb = Workbook()
 ws = wb.new_sheet("sheet name")
-ws[1][1].value = 15
+ws[1][1].value = 15 # a number
 ws[1][2].value = 20
-ws[1][3].value = "=SUM(A1,B1)"
-ws[1][4].value = datetime.now()
+ws[1][3].value = "=SUM(A1,B1)" # a formula
+ws[1][4].value = datetime.now() # a date
 wb.save("output.xlsx")
 
 ```
