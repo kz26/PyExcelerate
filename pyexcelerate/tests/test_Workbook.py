@@ -41,3 +41,8 @@ def test_merge():
 	eq_(ws[1][2].value, ws[1][1].value)
 	wb.save("merge-test.xlsx")
 	
+def test_cell():
+	wb = Workbook()
+	ws = wb.new_sheet("test")
+	ws.cell("C3").value = "test"
+	eq_(ws[3][3].value, "test")
