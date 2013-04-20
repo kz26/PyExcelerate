@@ -132,7 +132,7 @@ class Range(object):
 			raise Exception("Couldn't set that")
 	
 	@staticmethod
-	def __string_to_coordinate(s):
+	def string_to_coordinate(s):
 		# Convert a base-26 name to integer
 		y = 0
 		for i in range(len(s)):
@@ -144,7 +144,7 @@ class Range(object):
 		return (int(s), y)
 
 	@staticmethod
-	def __coordinate_to_string(coord):
+	def coordinate_to_string(coord):
 		# convert an integer to base-26 name
 		y = coord[1] - 1
 		s = ""
@@ -157,16 +157,9 @@ class Range(object):
 	@staticmethod
 	def to_coordinate(value):
 		if isinstance(value, basestring):
-			value = Range.__string_to_coordinate(value)
+			value = Range.string_to_coordinate(value)
 		if (value[0] < 1 or value[0] > 65536) and value[1] != float('inf'):
 			raise Exception("Row index out of bounds")
 		if (value[1] < 1 or value[1] > 256) and value[1] != float('inf'):
 			raise Exception("Column index out of bounds")
 		return value
-	
-	def get_xml_data(self):
-		if self.is_row():
-			for index, cell in self.worksheet._cells[self.x].iteritems():
-				yield (Range.__coordinate_to_string((self.x, index)), cell, DataTypes.DataTypes.get_type(cell))
-		else:
-			raise Exception("not a valid row")

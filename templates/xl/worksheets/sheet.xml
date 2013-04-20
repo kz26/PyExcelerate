@@ -7,12 +7,12 @@
     </sheetViews>
     <sheetFormatPr defaultRowHeight="15" x14ac:dyDescent="0.25" />
     <sheetData>
-    {% for row, range in worksheet.get_xml_data() %}
-        <row r="{{ row }}">
-            {% for cell in range.get_xml_data() %}
-            {% if cell.2 == 3 %}{% include "xl/worksheets/cell/inlineStr.xml" %}
-            {% elif cell.2 == 4 %}{% include "xl/worksheets/cell/n.xml" %} 
-            {% endif %}
+    {% for x, row in worksheet.get_xml_data() %}
+        <row r="{{ x }}">
+            {% for cell in row %}
+				{% if cell.2 == 3 %}{% include "xl/worksheets/cell/inlineStr.xml" %}
+				{% elif cell.2 == 4 %}{% include "xl/worksheets/cell/n.xml" %} 
+				{% endif %}
             {% endfor %}
         </row>
     {% endfor %}

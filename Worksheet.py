@@ -67,5 +67,10 @@ class Worksheet(object):
 	def get_xml_data(self):
 		# initialize the shared string hashtable
 		# self.shared_strings = SharedStrings.SharedStrings(self)
-		for row in self._cells.keys():
-			yield (row, Range.Range((row, 1), (row, float('inf')), self))
+		for x, row in self._cells.iteritems():
+			row_data = []
+			for y, cell in self._cells[x].iteritems():
+				row_data.append((Range.Range.coordinate_to_string((x, y)), cell, DataTypes.get_type(cell)))
+			yield x, row_data
+
+	
