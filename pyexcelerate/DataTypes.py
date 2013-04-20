@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class DataTypes(object):
 	BOOLEAN = 0
 	DATE = 1
@@ -22,5 +24,7 @@ class DataTypes(object):
 				return DataTypes.INLINE_STRING
 		elif isinstance(value, (int, long, float, complex)):
 			return DataTypes.NUMBER
+		elif isinstance(value, (datetime)):
+			return DataTypes.DATE
 		else:
 			return DataTypes.ERROR
