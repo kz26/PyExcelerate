@@ -43,6 +43,9 @@ class Range(object):
 	@property
 	def value(self):
 		if self.is_cell():
+			for merge in self.worksheet.merges:
+				if self in merge:
+					return self.worksheet.get_cell_value(merge._start[0], merge._start[1])
 			return self.worksheet.get_cell_value(self.x, self.y)
 		else:
 			raise Exception("Not a cell")
