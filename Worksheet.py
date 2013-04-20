@@ -28,7 +28,7 @@ class Worksheet(object):
 	def num_columns(self):
 		return max(1, self._columns)
 	
-	def report_columns(self, column):
+	def report_column(self, column):
 		# listener for column additions
 		self._columns = max(self._columns, column)
 	
