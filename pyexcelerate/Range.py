@@ -53,6 +53,10 @@ class Range(object):
 	@value.setter
 	def value(self, data):
 		if self.is_cell():
+			for merge in self.worksheet.merges:
+				if self in merge:
+					self.worksheet.set_cell_value(merge._start[0], merge._start[1], data)
+					return
 			self.worksheet.set_cell_value(self.x, self.y, data)
 		else:
 			if len(data) <= self.height:
