@@ -16,9 +16,11 @@ def test_get_xml_data():
 #    eq_(r_gxd.next(), ('C1', 3, 4))
 
 def test_save():
+    ROWS = 65000
+    COLUMNS = 100
     wb = Workbook()
-    testData = [[1] * 50] * 1000
+    testData = [[1] * COLUMNS] * ROWS
     stime = time.clock()
     ws = wb.new_sheet("Test 1", data=testData)
     wb.save("test.xlsx")
-    print "1000, 50, %s" % (time.clock() - stime)
+    print "%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime)

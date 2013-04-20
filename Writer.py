@@ -1,4 +1,5 @@
 import os
+import tempfile
 from zipfile import ZipFile, ZIP_DEFLATED
 
 from jinja2 import Environment, FileSystemLoader
@@ -19,16 +20,22 @@ class Writer(object):
         self.workbook = workbook
 
     def _render_template_wb(self, template):
-        return template.render({'workbook': self.workbook}).encode('utf-8')
+        return template.render({'workbook': self.workbook})
 
     def save(self, f):
         zf = ZipFile(f, 'w', ZIP_DEFLATED)
         zf.writestr("docProps/app.xml", self._render_template_wb(self._docProps_app_template))
         zf.writestr("docProps/core.xml", self._render_template_wb(self._docProps_core_template))
         zf.writestr("[Content_Types].xml", self._render_template_wb(self._content_types_template))
-        zf.writestr("_rels/.rels", self._rels_template.render().encode('utf-8'))
+        zf.writestr("_rels/.rels", self._rels_template.render())
         zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
         zf.writestr("xl/_rels/workbook.xml.rels", self._render_template_wb(self._workbook_rels_template))
         for index, sheet in self.workbook.get_xml_data():
-            zf.writestr("xl/worksheets/sheet%s.xml" % (index), self._worksheet_template.render({'worksheet': sheet}).encode('utf-8'))
+            tf = tempfile.NamedTemporaryFile()
+            sheetStream = self._worksheet_template.generate({'worksheet': sheet})
+            for s in sheetStream:
+                tf.write(s)
+            tf.seek(0)
+            zf.write(tf.name, "xl/worksheets/sheet%s.xml" % (index))
+            tf.close()
         zf.close()
