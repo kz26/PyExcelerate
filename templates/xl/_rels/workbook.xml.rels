@@ -1,6 +1,6 @@
  <?xml version="1.0" encoding="utf-16"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
     {% for sheet in sheets %}
-    <Relationship Id="rId{{ sheet.0 }}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet{{ sheet.0 }}.xml" />
+    <Relationship Id="rId{{ loop.index }}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet{{ loop.index }}.xml" />
     {% endfor %}
 </Relationships> 

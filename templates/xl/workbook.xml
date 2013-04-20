@@ -7,7 +7,7 @@
     </bookViews>
     <sheets>
         {% for sheet in sheets %}
-        <sheet name="{{ sheet.1 }}" sheetId="{{ sheet.0 }}" r:id="rId{{ sheet.0 }}" />
+        <sheet name="{{ sheet.name }}" sheetId="{{ loop.index }}" r:id="rId{{ loop.index }}" />
         {% endfor %}
     </sheets>
     <calcPr calcId="145621" />
