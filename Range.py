@@ -20,6 +20,13 @@ class Range(object):
 		return self._end[1] - self._start[1] + 1
 
 	@property
+	def __len__(self):
+		if self._start[0] == self._end[0]:
+			return self.width
+		else:
+			return self.height
+
+	@property
 	def x(self):
 		if self.is_row():
 			return self._start[0]
