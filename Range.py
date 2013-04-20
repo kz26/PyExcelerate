@@ -24,7 +24,7 @@ class Range(object):
 			return self._start[1]
 		else:
 			return self.coordinate[1]
-	
+			
 	@property
 	def coordinate(self):
 		if self.is_cell():
@@ -63,30 +63,47 @@ class Range(object):
 	def is_row(self):
 		return self._start[0] == self._end[0] \
 			and self._start[1] == 1 \
-			and self._end[1] == None
+			and self._end[1] == float('inf')
 		
 	def is_column(self):
 		return self._start[1] == self._end[1] \
 			and self._start[0] == 1 \
-			and self._end[1] == None \
+			and self._end[1] == float('inf') \
+	
+	def intersection(self, range):
+		"""
+		Calculates the intersection with another range object
+		"""
+		if self.worksheet != range.worksheet:
+			# Different worksheet
+			return None
+		start = (max(self._start[0], range._start[0]), max(self._start[1], range._start[1]))
+		end = (min(self._end[0], range._end[0]), min(self._end[1], range._end[1]))
+		return Range(start, end, self.worksheet)
+		
+	def intersects(self, range):
+		return intersection(range) == None
+	
+	def merge(self):
+		self.worksheet.add_merge(self)
 	
 	def __getitem__(self, key):
 		if self.is_row():
 			# return the key'th column
-			newStart = (self._start[0], key)
-			newEnd = (self._end[0], key)
-			return Range(newStart, newEnd, self._parent)
+			newStart = (self.x, key)
+			newEnd = (self.x, key)
+			return Range(newStart, newEnd, self.worksheet)
 		elif self.is_column():
 			#return the key'th row
-			newStart = (key, self._start[1])
-			newEnd = (key, self._end[1])
-			return Range(newStart, newEnd, self._parent)			
+			newStart = (key, self.y)
+			newEnd = (key, self.y)
+			return Range(newStart, newEnd, self.worksheet)			
 		else:
 			raise Exception("Selection not valid")
 	
 	def __setitem__(self, key, value):
 		if self.is_row():
-			self._parent[self._start[0]][self._start[key]] = value
+			self.worksheet.set_cell_value(self.x, key, value)
 		else:
 			raise Exception("Couldn't set that")
 	
@@ -113,7 +130,7 @@ class Range(object):
 			y /= 26
 		
 		return s + str(coord[0])
-		
+	
 	@staticmethod
 	def to_coordinate(value):
 		if isinstance(value, basestring):
