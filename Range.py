@@ -150,7 +150,7 @@ class Range(object):
 		s = ""
 		if y == 0:
 			s = "A"	# special case
-		while y > 0:
+		while y >= 0:
 			s = chr((y % 26) + Range.A) + s
 			y /= 26
 			y -= 1
