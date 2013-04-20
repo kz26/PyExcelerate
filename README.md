@@ -12,7 +12,7 @@ PyExcelerate is a Python 2/3 library for writing Excel-compatible XLSX spreadshe
 on speed.
 
 ### Benchmarks
-65000 rows x 1000 columns of the number 1
+65000 rows x 1000 columns of the number 1  
 Ubuntu 12.04 LTS, Core i3-2310M 2.1GHz, 8GB DDR3, Python 2.7.3
 
 * PyExcelerate 74.29s

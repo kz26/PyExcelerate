@@ -15,5 +15,16 @@ setup(
     ],
     packages=[
         'pyexcelerate'
-    ]
+    ],
+    package_data={
+        'pyexcelerate': [
+            'templates/*.xml',
+            'templates/_rels/.rels',
+            'templates/docProps/*.xml',
+            'templates/xl/*.xml',
+            'templates/xl/_rels/*',
+            'templates/xl/worksheets/*.xml',
+        ]
+    }
+
 )
