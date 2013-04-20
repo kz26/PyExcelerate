@@ -1,9 +1,9 @@
- <?xml version="1.0" encoding="utf-16"?>
+<?xml version="1.0" encoding="utf-16"?>
 <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
     <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />
     <Default Extension="xml" ContentType="application/xml" />
     <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml" />
-    {% for sheet in sheets %}
-    <Override PartName="/xl/worksheets/sheet{{ loop.index }}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" />
+    {% for index, sheet in worksheet.get_xml_data() %}
+    <Override PartName="/xl/worksheets/sheet{{ index }}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" />
     {% endfor %}
 </Types> 

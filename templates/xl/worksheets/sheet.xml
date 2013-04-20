@@ -7,9 +7,9 @@
     </sheetViews>
     <sheetFormatPr defaultRowHeight="15" x14ac:dyDescent="0.25" />
     <sheetData>
-    {% for row in rows %}
-        <row r="{{ row.0 }}">
-            {% for cell in row.1 %}
+    {% for row, range in sheet.get_xml_data() %}
+        <row r="{{ row }}">
+            {% for cell in range.get_xml_data() %}
             <c r="{{ cell.0 }}"{% if cell.2 == 4 %}{% set vtag="is" %} t="inlineStr"{% else %}{% set vtag="v" %}{% endif %}>
                 <{{ vtag }}>{{ cell.1 }}</{{ vtag }}>
             </c>

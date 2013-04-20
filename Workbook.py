@@ -14,7 +14,5 @@ class Workbook(object):
 		return worksheet
 
 	def get_xml_data(self):
-		data = []
-		for i in range(len(self._worksheets)):
-			data.append((i + 1, self._worksheets[i].name))
-		return data
+		for index, ws in enumerate(self._worksheets, 1):
+			yield (i, ws)
