@@ -41,5 +41,5 @@ class Worksheet(object):
 		# self.shared_strings = SharedStrings.SharedStrings(self)
 		rows = []
 		for row in self._cells.keys():
-			rows.append((row, Range.Range(row, row, self)))
+			rows.append((row, Range.Range((row, 1), (row, None), self)))
 		return rows
