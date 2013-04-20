@@ -10,9 +10,9 @@
     {% for row, range in worksheet.get_xml_data() %}
         <row r="{{ row }}">
             {% for cell in range.get_xml_data() %}
-            <c r="{{ cell.0 }}"{% if cell.2 == 4 %}{% set vtag="is" %} t="inlineStr"{% else %}{% set vtag="v" %}{% endif %}>
-                <{{ vtag }}>{{ cell.1 }}</{{ vtag }}>
-            </c>
+            {% if cell.2 == 3 %}{% include "xl/worksheets/cell/inlineStr.xml" %}
+            {% elif cell.2 == 4 %}{% include "xl/worksheets/cell/n.xml" %} 
+            {% endif %}
             {% endfor %}
         </row>
     {% endfor %}
