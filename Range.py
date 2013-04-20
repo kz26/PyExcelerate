@@ -151,8 +151,9 @@ class Range(object):
 		if y == 0:
 			s = "A"	# special case
 		while y > 0:
-			s = chr((y % 26) + Range.A + 1) + s
+			s = chr((y % 26) + Range.A) + s
 			y /= 26
+			y -= 1
 		return s + str(coord[0])
 	
 	@staticmethod
