@@ -29,7 +29,7 @@ class Range(object):
 	@property
 	def value(self):
 		if self.is_cell():
-			return self._parent[self._start[0]][self._start[1]]
+			return self.worksheet[self._start[0]][self._start[1]]
 		else:
 			raise Exception("Not a cell")
 			
@@ -50,12 +50,12 @@ class Range(object):
 	def is_row(self):
 		return self._start[0] == self._end[0] \
 			and self._start[1] == 1 \
-			and self._end[1] == self._parent.num_columns
+			and self._end[1] == None
 		
 	def is_column(self):
 		return self._start[1] == self._end[1] \
 			and self._start[0] == 1 \
-			and self._end[1] == self._parent.num_rows \
+			and self._end[1] == None \
 	
 	def __getitem__(self, key):
 		if self.is_row():

@@ -11,7 +11,7 @@ class Worksheet(object):
 	def __getitem__(self, key):
 		if key not in self._cells:
 			raise Exception("Not implemented")
-		return Range.Range(key, key, self) # return a row range
+		return Range.Range((key, 1), (key, None), self) # return a row range
 
 	@property
 	def name(self):
