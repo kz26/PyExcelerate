@@ -15,7 +15,7 @@ class Worksheet(object):
 					if x not in self._cells:
 						self._cells[x] = {}
 					self._cells[x][y] = cell
-					
+					self._columns = max(self._columns, y)
 
 	def __getitem__(self, key):
 		if key not in self._cells:
