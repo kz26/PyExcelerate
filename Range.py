@@ -29,14 +29,14 @@ class Range(object):
 	@property
 	def value(self):
 		if self.is_cell():
-			return self.worksheet[self.x][self.y]
+			return self.worksheet.get_cell_value(self.x, self.y)
 		else:
 			raise Exception("Not a cell")
 
 	@value.setter
 	def value(self, value):
 		if self.is_cell():
-			self.worksheet[self.x][self.y] = value
+			self.worksheet.set_cell_value(self.x, self.y, value)
 		else:
 			raise Exception("Not a cell")
 			

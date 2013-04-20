@@ -32,6 +32,12 @@ class Worksheet(object):
 		# listener for column additions
 		self._columns = max(self._columns, column)
 	
+	def get_cell_value(self, x, y):
+		return self._cells[x][y]
+	
+	def set_cell_value(self, x, y, value):
+		self._cells[x][y] = value
+	
 	@property
 	def workbook(self):
 			return self._parent
