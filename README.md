@@ -2,7 +2,7 @@
 
 Accelerated Excel XLSX writing library for Python
 
-* Current version: 0.1.0
+* Current version: 0.2.0
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/whitehat2k9)
 * License: Simplified BSD License
 * [Source repository](https://github.com/whitehat2k9/PyExcelerate)
@@ -46,9 +46,10 @@ from pyexcelerate import Workbook
 
 wb = Workbook()
 ws = wb.new_sheet("sheet name")
-ws[1][1] = 15
-ws[1][2] = 20
-ws[1][3] = "=SUM(A1,B1)"
+ws[1][1].value = 15
+ws[1][2].value = 20
+ws[1][3].value = "=SUM(A1,B1)"
+ws[1][4].value = datetime.now()
 wb.save("output.xlsx")
 
 ```
@@ -60,7 +61,7 @@ from pyexcelerate import Workbook
 
 wb = Workbook()
 ws = wb.new_sheet("sheet name")
-ws[1][1] = 15
+ws[1][1].value = 15
 ws.range("A1", "B1").merge()
 wb.save("output.xlsx")
 
