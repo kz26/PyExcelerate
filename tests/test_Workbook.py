@@ -1,7 +1,8 @@
-from Workbook import Workbook
-from nose.tools import eq_
+from ..Workbook import Workbook
 import cStringIO as StringIO
 import time
+
+from nose.tools import eq_
 
 def test_get_xml_data():
     wb = Workbook()

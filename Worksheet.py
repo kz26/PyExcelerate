@@ -1,5 +1,7 @@
-import Range
-from DataTypes import DataTypes
+from . import Range
+from .DataTypes import DataTypes
+
+from . import six
 
 class Worksheet(object):
 	def __init__(self, name, workbook, data=None):
@@ -67,9 +69,9 @@ class Worksheet(object):
 	def get_xml_data(self):
 		# initialize the shared string hashtable
 		# self.shared_strings = SharedStrings.SharedStrings(self)
-		for x, row in self._cells.iteritems():
+		for x, row in six.iteritems(self._cells):
 			row_data = []
-			for y, cell in self._cells[x].iteritems():
+			for y, cell in six.iteritems(self._cells[x]):
 				row_data.append((Range.Range.coordinate_to_string((x, y)), cell, DataTypes.get_type(cell)))
 			yield x, row_data
 
