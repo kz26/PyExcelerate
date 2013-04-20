@@ -3,6 +3,7 @@ import SharedStrings
 
 class Worksheet(object):
 	def __init__(self, name, workbook):
+		self._columns = 0 # cache this for speed
 		self._name = name
 		self._cells = []
 		self._parent = workbook
@@ -25,7 +26,11 @@ class Worksheet(object):
 	
 	@property
 	def num_columns(self):
-		raise Exception("Not implemented")
+		return max(1, self._columns)
+	
+	def report_columns(self, column):
+		# listener for column additions
+		self._columns = max(self._columns, column)
 	
 	@property
 	def workbook(self):

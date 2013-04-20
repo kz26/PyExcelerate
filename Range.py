@@ -7,6 +7,9 @@ class Range(object):
 		self._start = Range.to_coordinate(start)
 		self._end = Range.to_coordinate(end)
 		self._parent = worksheet
+		if self.is_cell():
+			# Report the column as active so the worksheet knows
+			self.worksheet.report_column(self.y)
 	
 	@property
 	def x(self):
@@ -38,7 +41,7 @@ class Range(object):
 			raise Exception("Not a cell")
 	
 	@property
-	def workbook(self):
+	def worksheet(self):
 		return self._parent
 	
 	def is_cell(self):
