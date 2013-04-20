@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name="PyExcelerate",
-    version="0.1.0",
+    version="0.2.0",
     author="Kevin Wang and Kevin Zhang",
     author_email="zhangk@uchicago.edu",
     maintainer="Kevin Zhang",
@@ -15,5 +15,16 @@ setup(
     ],
     packages=[
         'pyexcelerate'
-    ]
+    ],
+    package_data={
+        'pyexcelerate': [
+            'templates/*.xml',
+            'templates/_rels/.rels',
+            'templates/docProps/*.xml',
+            'templates/xl/*.xml',
+            'templates/xl/_rels/*',
+            'templates/xl/worksheets/*.xml',
+        ]
+    }
+
 )

@@ -12,7 +12,7 @@ PyExcelerate is a Python 2/3 library for writing Excel-compatible XLSX spreadshe
 on speed.
 
 ### Benchmarks
-65000 rows x 1000 columns of the number 1
+65000 rows x 1000 columns of the number 1  
 Ubuntu 12.04 LTS, Core i3-2310M 2.1GHz, 8GB DDR3, Python 2.7.3
 
 * PyExcelerate 74.29s
@@ -46,10 +46,10 @@ from pyexcelerate import Workbook
 
 wb = Workbook()
 ws = wb.new_sheet("sheet name")
-ws[1][1].value = 15
+ws[1][1].value = 15 # a number
 ws[1][2].value = 20
-ws[1][3].value = "=SUM(A1,B1)"
-ws[1][4].value = datetime.now()
+ws[1][3].value = "=SUM(A1,B1)" # a formula
+ws[1][4].value = datetime.now() # a date
 wb.save("output.xlsx")
 
 ```
