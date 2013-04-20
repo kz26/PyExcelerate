@@ -1,6 +1,5 @@
 from . import Range
 from .DataTypes import DataTypes
-
 from . import six
 
 class Worksheet(object):
@@ -27,7 +26,11 @@ class Worksheet(object):
 	@property
 	def name(self):
 		return self._name
-		
+	
+	@property
+	def merges(self):
+		return self._merges
+	
 	@property
 	def num_rows(self):
 		if len(self._cells) > 0:

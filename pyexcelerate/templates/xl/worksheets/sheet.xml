@@ -11,13 +11,20 @@
         <row r="{{ x }}">
             {% for cell in row %}
             {% if cell.2 == 3 %}
+            {# Inline String #}
             <c r="{{ cell.0 }}" t="inlineStr">
                 <is><t>{{ cell.1 }}</t></is>
             </c>
             {% elif cell.2 == 4 %} 
+            {# Number #}
             <c r="{{ cell.0 }}" t="n">
                 <v>{{ cell.1 }}</v>
             </c>
+            {% elif cell.2 == 7 %}
+            {# Formula #}
+            <c r="{{ cell.0 }}">
+				<f>{{ cell.1 }}</f>
+			</c>
             {% endif %}
             {% endfor %}
         </row>

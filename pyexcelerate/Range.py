@@ -99,6 +99,14 @@ class Range(object):
 	def __contains__(self, item):
 		return self.intersection(item) == item
 
+	def __hash__(self):
+		def hash(val):
+			return val[0] << 8 + val[1]
+		return hash(self._start) << 24 + hash(self._end)
+
+	def __str__(self):
+		return Range.coordinate_to_string(self._start) + ":" + Range.coordinate_to_string(self._end)
+
 	def __len__(self):
 		if self._start[0] == self._end[0]:
 			return self.width
