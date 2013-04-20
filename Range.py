@@ -21,7 +21,7 @@ class Range(object):
 	
 	@property
 	def coordinate(self):
-		if self._start == self._end:
+		if self.is_cell():
 			return self._start
 		else:
 			raise Exception("Non-singleton range selected")
@@ -29,7 +29,14 @@ class Range(object):
 	@property
 	def value(self):
 		if self.is_cell():
-			return self.worksheet[self._start[0]][self._start[1]]
+			return self.worksheet[self.x][self.y]
+		else:
+			raise Exception("Not a cell")
+
+	@value.setter
+	def value(self, value):
+		if self.is_cell():
+			self.worksheet[self.x][self.y] = value
 		else:
 			raise Exception("Not a cell")
 			
@@ -109,7 +116,7 @@ class Range(object):
 	
 	def get_xml_data(self):
 		if self.is_row():
-			for i in range(1, len(self._parent[self._start[0]])):
-				yield (Range.__coordinate_to_string((self._start[0], i)), self[i].value, DataTypes.DataTypes.get_type(self[i].value))
+			for index, cell in self._parent[self._start[0]]:
+				yield (Range.__coordinate_to_string((self._start[0], index)), cell.value, DataTypes.DataTypes.get_type(cell.value))
 		else:
 			raise Exception("not a valid row")
