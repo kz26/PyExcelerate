@@ -52,9 +52,9 @@ class Range(object):
 		if self.is_cell():
 			self.worksheet.set_cell_value(self.x, self.y, data)
 		else:
-			if data.length <= self.height:
+			if len(data) <= self.height:
 				for row in data:
-					if row.length > self.width:
+					if len(data) > self.width:
 						raise Exception("Row too large for range")
 				for x, row in enumerate(data):
 					for y, value in enumerate(row):
