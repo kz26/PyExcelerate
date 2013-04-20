@@ -1,5 +1,6 @@
 from Workbook import Workbook
 from nose.tools import eq_
+import cStringIO as StringIO
 
 def test_get_xml_data():
     wb = Workbook()
@@ -15,9 +16,10 @@ def test_get_xml_data():
 
 def test_save():
     wb = Workbook()
+    testrow = [[1] * 25 + ["test"] * 25]
     for i in range(5):
-        ws = wb.new_sheet("Test %s" % (i))
-        for j in range(1):
-            ws[j + 1].value = [[i] * 1]
+        ws = wb.new_sheet("Test %s" % (i + 1))
+        for j in range(1, 1001):
+            ws[j].value = testrow
     wb.save("test.xlsx")
 
