@@ -1,5 +1,5 @@
 import Range
-import SharedStrings
+import DataTypes
 
 class Worksheet(object):
 	def __init__(self, name, workbook):
@@ -41,7 +41,14 @@ class Worksheet(object):
 		self._merges.append(range)
 	
 	def get_cell_value(self, x, y):
-		return self._cells[x][y]
+		type = DataTypes.get_type(self._cells[x][y])
+		if type == DataTypes.FORMULA:
+			# remove the equals sign
+			return self._cells[x][y][:1]
+		elif type == DataTypes.INLINE_STRING and self._cells[x][y][2:] == '\'=':
+			return self._cells[x][y][:1]
+		else:
+			return self._cells[x][y]
 	
 	def set_cell_value(self, x, y, value):
 		self._cells[x][y] = value

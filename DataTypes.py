@@ -6,6 +6,7 @@ class DataTypes(object):
 	NUMBER = 4
 	SHARED_STRING = 5
 	STRING = 6
+	FORMULA = 7
 	
 	_enumerations = ["b", "d", "e", "inlineStr", "n", "s", "str"]
 	@staticmethod
@@ -15,7 +16,10 @@ class DataTypes(object):
 	@staticmethod
 	def get_type(value):
 		if isinstance(value, basestring):
-			return DataTypes.INLINE_STRING
+			if len(value) > 0 and value[0] == '=':
+				return DataTypes.FORMULA
+			else:
+				return DataTypes.INLINE_STRING
 		elif isinstance(value, (int, long, float, complex)):
 			return DataTypes.NUMBER
 		else:
