@@ -1,8 +1,7 @@
 from . import Range
 from .DataTypes import DataTypes
 from . import six
-from datetime import datetime
-
+from .HeaderFooter import Header, Footer
 class Worksheet(object):
 	def __init__(self, name, workbook, data=None):
 		self._columns = 0 # cache this for speed
@@ -43,6 +42,10 @@ class Worksheet(object):
 	def num_columns(self):
 		return max(1, self._columns)
 	
+	def cell(self, name):
+		# convenience method
+		return self.range(name, name)
+	
 	def range(self, start, end):
 		# convenience method
 		return Range.Range(start, end, self)
@@ -80,10 +83,7 @@ class Worksheet(object):
 		for x, row in six.iteritems(self._cells):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):
-				if DataTypes.get_type(cell) == DataTypes.DATE:
-					row_data.append((Range.Range.coordinate_to_string((x, y)), datetime.strftime(cell, '%Y-%m-%dT%H:%M:%S'), DataTypes.get_type(cell)))
-				else:
-					row_data.append((Range.Range.coordinate_to_string((x, y)), cell, DataTypes.get_type(cell)))
+				row_data.append((Range.Range.coordinate_to_string((x, y)), cell, DataTypes.get_type(cell)))
 			yield x, row_data
 
 	

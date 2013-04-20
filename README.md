@@ -54,6 +54,18 @@ wb.save("output.xlsx")
 
 ```
 
+### Selecting cells by name
+
+```python
+from pyexcelerate import Workbook
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.cell("A1").value = 12
+wb.save("output.xlsx")
+
+```
+
 ### Merging cells
 
 ```python
