@@ -109,9 +109,7 @@ class Range(object):
 	
 	def get_xml_data(self):
 		if self.is_row():
-			data = []
 			for i in range(1, len(self._parent[self._start[0]])):
-				data.append((Range.__coordinate_to_string((self._start[0], i)), self[i].value, DataTypes.DataTypes.get_type(self[i].value)))
-			return data
+				yield (Range.__coordinate_to_string((self._start[0], i)), self[i].value, DataTypes.DataTypes.get_type(self[i].value))
 		else:
 			raise Exception("not a valid row")
