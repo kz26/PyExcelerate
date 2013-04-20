@@ -6,8 +6,8 @@
         <workbookView xWindow="240" yWindow="60" windowWidth="20115" windowHeight="7755" />
     </bookViews>
     <sheets>
-        {% for sheet in worksheet.get_xml_data() %}
-        <sheet name="{{ sheet.name }}" sheetId="{{ loop.index }}" r:id="rId{{ loop.index }}" />
+        {% for index, sheet in workbook.get_xml_data() %}
+        <sheet name="{{ sheet.name }}" sheetId="{{ index }}" r:id="rId{{ index }}" />
         {% endfor %}
     </sheets>
     <calcPr calcId="145621" />

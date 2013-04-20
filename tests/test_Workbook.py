@@ -17,7 +17,7 @@ def test_save():
     wb = Workbook()
     for i in range(5):
         ws = wb.new_sheet("Test %s" % (i))
-        for j in range(1, 50):
-            ws[j].value = [[i] * 50]
+        for j in range(1):
+            ws[j + 1].value = [[i] * 1]
     wb.save("test.xlsx")
 

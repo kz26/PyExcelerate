@@ -3,7 +3,7 @@
     <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" />
     <Default Extension="xml" ContentType="application/xml" />
     <Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml" />
-    {% for index, sheet in worksheet.get_xml_data() %}
+    {% for index, sheet in workbook.get_xml_data() %}
     <Override PartName="/xl/worksheets/sheet{{ index }}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml" />
     {% endfor %}
 </Types> 

@@ -1,6 +1,6 @@
  <?xml version="1.0" encoding="utf-16"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
-    {% for index, sheet in worksheet.get_xml_data() %}
+    {% for index, sheet in workbook.get_xml_data() %}
     <Relationship Id="rId{{ index }}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet{{ index }}.xml" />
     {% endfor %}
 </Relationships> 

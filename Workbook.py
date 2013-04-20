@@ -26,4 +26,4 @@ class Workbook(object):
         self._writer.save(file_handle)
 
     def save(self, filename):
-        self._save(open(filename, 'w'))
+        self._save(open(filename, 'wb'))
