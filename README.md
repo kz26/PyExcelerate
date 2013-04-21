@@ -12,6 +12,7 @@ PyExcelerate is a Python 2/3 library for writing Excel-compatible XLSX spreadshe
 on speed.
 
 ### Benchmarks
+Benchmark code located in pyexcelerate/tests/benchmark.py
 65000 rows x 100 columns of the number 1  
 Ubuntu 12.04 LTS, Core i3-2310M 2.1GHz, 8GB DDR3, Python 2.7.3
 
@@ -81,4 +82,4 @@ wb.save("output.xlsx")
 
 ## Support
 Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  
-All changes to code must be accompanied by a test.
+All changes to code must be accompanied by a test. We use the Nose testing framework.
