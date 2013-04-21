@@ -39,6 +39,20 @@ wb.save("output.xlsx")
 
 ```
 
+### Writing bulk data to a range
+
+PyExcelerate also permits you to write data to ranges directly, which is faster than writing cell-by-cell.
+
+```python
+from pyexcelerate import Workbook
+
+wb = Workbook()
+ws = wb.new_sheet("test")
+ws.range("B2", "C3").value = [[1, 2], [3, 4]]
+wb.save("output.xlsx")
+
+```
+
 ### Writing cell data
 
 ```python
