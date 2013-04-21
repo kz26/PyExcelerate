@@ -17,14 +17,16 @@ class DataTypes(object):
 		
 	@staticmethod
 	def get_type(value):
-		if isinstance(value, basestring):
+		# Using value.__class__ over isinstance for speed
+		if value.__class__ == str:
 			if len(value) > 0 and value[0] == '=':
 				return DataTypes.FORMULA
 			else:
 				return DataTypes.INLINE_STRING
-		elif isinstance(value, (int, long, float, complex)):
+		# not using in (int, float, long, complex) for speed
+		elif value.__class__ == int or value.__class__ == float or value.__class__ == long or value.__class__ == complex:
 			return DataTypes.NUMBER
-		elif isinstance(value, (datetime)):
+		elif value.__class__ == datetime:
 			return DataTypes.DATE
 		else:
 			return DataTypes.ERROR
