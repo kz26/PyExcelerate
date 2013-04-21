@@ -46,3 +46,13 @@ def test_cell():
 	ws = wb.new_sheet("test")
 	ws.cell("C3").value = "test"
 	eq_(ws[3][3].value, "test")
+
+def test_range():
+	wb = Workbook()
+	ws = wb.new_sheet("test")
+	ws.range("B2", "C3").value = [[1, 2], [3, 4]]
+	eq_(ws[2][2].value, 1)
+	eq_(ws[2][3].value, 2)
+	eq_(ws[3][2].value, 3)
+	eq_(ws[3][3].value, 4)
+	
