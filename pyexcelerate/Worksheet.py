@@ -1,6 +1,8 @@
 from . import Range
 from .DataTypes import DataTypes
 from . import six
+from datetime import datetime
+
 class Worksheet(object):
 	def __init__(self, name, workbook, data=None):
 		self._columns = 0 # cache this for speed
@@ -86,7 +88,11 @@ class Worksheet(object):
 		for x, row in six.iteritems(self._cells):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):
-				row_data.append((Range.Range.coordinate_to_string((x, y)), cell, DataTypes.get_type(cell)))
+				type = DataTypes.get_type(cell)
+				if type == DataTypes.DATE:
+					row_data.append((Range.Range.coordinate_to_string((x, y)), cell.strftime("%Y-%m-%dT%H:%M:%S.%f"), type))
+				else:
+					row_data.append((Range.Range.coordinate_to_string((x, y)), cell, type))
 			yield x, row_data
 
 	
