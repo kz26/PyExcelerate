@@ -1,3 +1,6 @@
+# 0.2.2 - April 22, 2013
+* template path detection fix for PyInstaller (thanks sh0375)
+
 # 0.2.1 - April 21, 2013
 * datetime bugfixes
 * optimization for type-checking

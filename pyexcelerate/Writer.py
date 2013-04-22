@@ -1,4 +1,5 @@
 import os
+import sys
 import tempfile
 from zipfile import ZipFile, ZIP_DEFLATED
 from datetime import datetime
@@ -6,7 +7,11 @@ import time
 from jinja2 import Environment, FileSystemLoader
 
 class Writer(object):
-    TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'templates')
+    if getattr(sys, 'frozen', None):
+        _basedir = sys._MEIPASS
+    else:
+        _basedir = os.path.dirname(__file__)
+    TEMPLATE_PATH = os.path.join(_basedir, 'templates')
     env = Environment(loader=FileSystemLoader(TEMPLATE_PATH), auto_reload=False)
 
     _docProps_app_template = env.get_template("docProps/app.xml")
