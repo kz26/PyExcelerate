@@ -24,7 +24,7 @@ class Writer(object):
         context = {'workbook': self.workbook}
         if extra_context:
             context.update(extra_context)
-        return template.render(context)
+        return template.render(context).encode('utf-8')
 
     def _get_utc_now(self):
         now = datetime.utcnow()
@@ -36,7 +36,7 @@ class Writer(object):
         zf.writestr("docProps/app.xml", self._render_template_wb(self._docProps_app_template))
         zf.writestr("docProps/core.xml", self._render_template_wb(self._docProps_core_template, {'date': self._get_utc_now()}))
         zf.writestr("[Content_Types].xml", self._render_template_wb(self._content_types_template))
-        zf.writestr("_rels/.rels", self._rels_template.render())
+        zf.writestr("_rels/.rels", self._rels_template.render().encode('utf-8'))
         zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
         zf.writestr("xl/_rels/workbook.xml.rels", self._render_template_wb(self._workbook_rels_template))
         for index, sheet in self.workbook.get_xml_data():
@@ -44,7 +44,7 @@ class Writer(object):
             tf = os.fdopen(tfd, 'wb')
             sheetStream = self._worksheet_template.generate({'worksheet': sheet})
             for s in sheetStream:
-                tf.write(s)
+                tf.write(s.encode('utf-8'))
             tf.close()
             zf.write(tfn, "xl/worksheets/sheet%s.xml" % (index))
             os.remove(tfn)
