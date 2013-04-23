@@ -26,7 +26,15 @@ class DataTypes(object):
 		# not using in (int, float, long, complex) for speed
 		elif value.__class__ == int or value.__class__ == float or value.__class__ == long or value.__class__ == complex:
 			return DataTypes.NUMBER
-		elif value.__class__ == datetime:
+		# fall back to the slower isinstance
+		elif isinstance(value, basestring):
+			if len(value) > 0 and value[0] == '=':
+				return DataTypes.FORMULA
+			else:
+				return DataTypes.INLINE_STRING
+		elif isinstance(value, (int, float, long, complex)):
+			return DataTypes.NUMBER
+		elif isinstance(value, datetime):
 			return DataTypes.DATE
 		else:
 			return DataTypes.ERROR

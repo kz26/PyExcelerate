@@ -1,6 +1,8 @@
 from ..DataTypes import DataTypes
 from nose.tools import eq_
 from datetime import datetime
+from ..Workbook import Workbook
+import numpy
 
 def test__to_enumeration_value():
     eq_(DataTypes.to_enumeration_value(DataTypes.BOOLEAN), "b")
@@ -16,3 +18,11 @@ def test__get_type():
     eq_(DataTypes.get_type(15.0), DataTypes.NUMBER)
     eq_(DataTypes.get_type("test"), DataTypes.INLINE_STRING)
     eq_(DataTypes.get_type(datetime.now()), DataTypes.DATE)
+    
+def test_numpy():
+    testData = numpy.ones((5, 5), dtype = int)
+    wb = Workbook()
+    ws = wb.new_sheet("Test 1", data=testData)
+    eq_(ws[1][1].value, 1)
+    eq_(DataTypes.get_type(ws[1][1].value), DataTypes.NUMBER)
+    wb.save("numpy-test.xlsx")
