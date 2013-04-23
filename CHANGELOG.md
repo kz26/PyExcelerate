@@ -1,8 +1,8 @@
 # 0.2.3 - April 23, 2013
-* fix numpy and other subclasses support [#3] (thanks Redoubts)
+* #3 - fix numpy and other subclasses support (thanks Redoubts)
 
 # 0.2.2 - April 22, 2013
-* template path detection fix for PyInstaller [#2] (thanks sh0375)
+* #2 - template path detection fix for PyInstaller (thanks sh0375)
 
 # 0.2.1 - April 21, 2013
 * datetime bugfixes
