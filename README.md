@@ -1,11 +1,12 @@
 # PyExcelerate
 
-Accelerated Excel XLSX writing library for Python
+Accelerated Excel XLSX writing library for Python 2/3
 
-* Current version: 0.2.1
+* Current version: 0.2.3
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/whitehat2k9)
 * License: Simplified BSD License
 * [Source repository](https://github.com/whitehat2k9/PyExcelerate)
+* [PyPI page](https://pypi.python.org/pypi/PyExcelerate)
 
 ## Description
 PyExcelerate is a Python 2/3 library for writing Excel-compatible XLSX spreadsheet files, with an emphasis
