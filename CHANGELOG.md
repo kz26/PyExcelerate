@@ -1,5 +1,6 @@
 # 0.2.3 - April 23, 2013
 * #3 - fix numpy and other subclasses support (thanks Redoubts)
+* #4 - fix issue with range writer (thanks Redoubts)
 
 # 0.2.2 - April 22, 2013
 * #2 - template path detection fix for PyInstaller (thanks sh0375)

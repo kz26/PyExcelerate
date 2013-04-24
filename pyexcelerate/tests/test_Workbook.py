@@ -1,6 +1,7 @@
 from ..Workbook import Workbook
 import cStringIO as StringIO
 import time
+import numpy
 from datetime import datetime
 from nose.tools import eq_
 
@@ -50,9 +51,16 @@ def test_cell():
 def test_range():
 	wb = Workbook()
 	ws = wb.new_sheet("test")
-	ws.range("B2", "C3").value = [[1, 2], [3, 4]]
+	ws.range("B2", "D3").value = [[1, 2, 3], [4, 5, 6]]
 	eq_(ws[2][2].value, 1)
 	eq_(ws[2][3].value, 2)
-	eq_(ws[3][2].value, 3)
-	eq_(ws[3][3].value, 4)
-	
+	eq_(ws[2][4].value, 3)
+	eq_(ws[3][2].value, 4)
+	eq_(ws[3][3].value, 5)
+	eq_(ws[3][4].value, 6)
+
+def test_numpy_range():
+	wb = Workbook()
+	ws = wb.new_sheet("test")
+	ws.range("A1", "GN13").value = numpy.zeros((13,196))
+	wb.save("numpy-range-test.xlsx")

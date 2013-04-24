@@ -12,11 +12,11 @@ class Range(object):
 			self.worksheet.report_column(self.y)
 	
 	@property
-	def width(self):
+	def height(self):
 		return self._end[0] - self._start[0] + 1
 	
 	@property
-	def height(self):
+	def width(self):
 		return self._end[1] - self._start[1] + 1
 
 	@property
@@ -61,13 +61,13 @@ class Range(object):
 		else:
 			if len(data) <= self.height:
 				for row in data:
-					if len(data) > self.width:
-						raise Exception("Row too large for range")
+					if len(row) > self.width:
+						raise Exception("Row too large for range, row has %s columns, but range only has %s" % (len(row), self.width))
 				for x, row in enumerate(data):
 					for y, value in enumerate(row):
 						self.worksheet.set_cell_value(x + self._start[0], y + self._start[1], value)
 			else:
-				raise Exception("Too many rows for range")
+				raise Exception("Too many rows for range, data has %s rows, but range only has %s" % (len(data), self.height))
 
 	@property
 	def worksheet(self):
