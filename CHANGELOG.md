@@ -1,3 +1,6 @@
+# 0.2.4 - May 2, 2013
+* Increased exceleration (in response to issue #1)
+
 # 0.2.3 - April 23, 2013
 * #3 - fix numpy and other subclasses support (thanks Redoubts)
 * #4 - fix issue with range writer (thanks Redoubts)
