@@ -18,8 +18,8 @@ Benchmark code located in pyexcelerate/tests/benchmark.py
 Ubuntu 12.04 LTS, Core i7-2600 3.4GHz, 16GB DDR3, Python 2.7.3
 
 * PyExcelerate 25.5s
-* openpyxl (1.6.2): 38.62s (1.5x slower)
-* xlsxwriter (0.3.2): 367.26s (14.4x slower)
+* xlsxwriter (0.3.2): 38.62s (1.5x slower)
+* openpyxl (1.6.2): 367.26s (14.4x slower)
 
 
 ## Installation
