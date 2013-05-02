@@ -87,15 +87,15 @@ class Worksheet(object):
 		if cell not in self._cell_cache:
 			type = DataTypes.get_type(cell)
 			if type == DataTypes.NUMBER:
-				self._cell_cache[cell] = '<c r="%%s" t="n"><v>%s</v></c>' % (cell)
+				self._cell_cache[cell] = '" t="n"><v>%d</v></c>' % (cell)
 			elif type == DataTypes.INLINE_STRING:
-				self._cell_cache[cell] = '<c r="%%s" t="inlineStr"><is><t>%s</t></is></c>' % (cell)
+				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % (cell)
 			elif type == DataTypes.DATE:
-				self._cell_cache[cell] = '<c r="%%s" t="d"><v>%s</v></c>' % (cell.strftime("%Y-%m-%dT%H:%M:%S.%f"))
+				self._cell_cache[cell] = '" t="d"><v>%s</v></c>' % (cell.strftime("%Y-%m-%dT%H:%M:%S.%f"))
 			elif type == DataTypes.FORMULA:
-				self._cell_cache[cell] = '<c r="%%s"><f>%s</f></c>' % (cell)
+				self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
 		# Don't cache the coordinate location
-		return self._cell_cache[cell] % (Range.Range.coordinate_to_string((x, y)))
+		return '<c r="' + Range.Range.coordinate_to_string((x, y)) + self._cell_cache[cell]
 	
 	def get_xml_data(self):
 		# initialize the shared string hashtable
