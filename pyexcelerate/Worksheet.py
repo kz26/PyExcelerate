@@ -81,6 +81,21 @@ class Worksheet(object):
 	@property
 	def workbook(self):
 			return self._parent
+
+	_cell_cache = {}
+	def __get_cell_data(self, cell, x, y):
+		if cell not in self._cell_cache:
+			type = DataTypes.get_type(cell)
+			if type == DataTypes.NUMBER:
+				self._cell_cache[cell] = '<c r="%%s" t="n"><v>%s</v></c>' % (cell)
+			elif type == DataTypes.INLINE_STRING:
+				self._cell_cache[cell] = '<c r="%%s" t="inlineStr"><is><t>%s</t></is></c>' % (cell)
+			elif type == DataTypes.DATE:
+				self._cell_cache[cell] = '<c r="%%s" t="d"><v>%s</v></c>' % (cell.strftime("%Y-%m-%dT%H:%M:%S.%f"))
+			elif type == DataTypes.FORMULA:
+				self._cell_cache[cell] = '<c r="%%s"><f>%s</f></c>' % (cell)
+		# Don't cache the coordinate location
+		return self._cell_cache[cell] % (Range.Range.coordinate_to_string((x, y)))
 	
 	def get_xml_data(self):
 		# initialize the shared string hashtable
@@ -88,11 +103,5 @@ class Worksheet(object):
 		for x, row in six.iteritems(self._cells):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):
-				type = DataTypes.get_type(cell)
-				if type == DataTypes.DATE:
-					row_data.append((Range.Range.coordinate_to_string((x, y)), cell.strftime("%Y-%m-%dT%H:%M:%S.%f"), type))
-				else:
-					row_data.append((Range.Range.coordinate_to_string((x, y)), cell, type))
+				row_data.append(self.__get_cell_data(cell, x, y))
 			yield x, row_data
-
-	
