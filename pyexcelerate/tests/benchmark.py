@@ -3,7 +3,7 @@ import openpyxl
 import xlsxwriter.workbook
 import time
 
-ROWS = 65000
+ROWS = 6500
 COLUMNS = 100
 testData = [[1] * COLUMNS] * ROWS
 def run_pyexcelerate():
@@ -36,4 +36,4 @@ def run_xlsxwriter():
 def test_all():
     run_pyexcelerate()
     run_xlsxwriter()
-    run_openpyxl()
+    # run_openpyxl()
