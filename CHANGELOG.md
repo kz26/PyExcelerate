@@ -1,3 +1,6 @@
+# 0.2.5 - May 14, 2013
+* Fixed int/float bug (thanks Redoubts)
+
 # 0.2.4 - May 2, 2013
 * Increased exceleration (in response to issue #1)
 

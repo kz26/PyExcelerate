@@ -3,7 +3,7 @@ import openpyxl
 import xlsxwriter.workbook
 import time
 
-ROWS = 6500
+ROWS = 65000
 COLUMNS = 100
 testData = [[1] * COLUMNS] * ROWS
 

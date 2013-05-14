@@ -2,7 +2,7 @@
 
 Accelerated Excel XLSX writing library for Python 2/3
 
-* Current version: 0.2.4
+* Current version: 0.2.5
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/whitehat2k9)
 * License: Simplified BSD License
 * [Source repository](https://github.com/whitehat2k9/PyExcelerate)
