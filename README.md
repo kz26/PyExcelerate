@@ -95,6 +95,11 @@ wb.save("output.xlsx")
 
 ```
 
+## Packaging with PyInstaller, cx\_freeze, py2exe, etc.
+
+PyExelerate has been successfully tested with PyInstaller and cx\_freeze; py2exe should work as well.
+**However, you will need to manually copy the templates directory from PyExcelerate into your app's distribution.**
+
 ## Support
 Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  
 All changes to code must be accompanied by a test. We use the Nose testing framework.

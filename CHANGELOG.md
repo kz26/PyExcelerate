@@ -1,3 +1,6 @@
+# 0.2.6 - July 10, 2013
+* Better PyInstaller compatibility (sys.executable in addition to sys.\_MEIPASS
+
 # 0.2.5 - May 14, 2013
 * Fixed int/float bug (thanks Redoubts)
 

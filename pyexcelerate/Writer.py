@@ -8,7 +8,7 @@ from jinja2 import Environment, FileSystemLoader
 
 class Writer(object):
     if getattr(sys, 'frozen', None):
-        _basedir = sys._MEIPASS
+        _basedir = getattr(sys, '_MEIPASS', sys.executable)
     else:
         _basedir = os.path.dirname(__file__)
     TEMPLATE_PATH = os.path.join(_basedir, 'templates')
