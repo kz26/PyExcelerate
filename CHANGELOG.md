@@ -1,3 +1,8 @@
+# 0.3.0 - July 29, 2013
+* Fixed bug in __coordinate_to_string function
+* Compatibility fixes for Python 3 and numpy datatypes
+* Updated test suite to work with Python 3
+
 # 0.2.6 - July 10, 2013
 * Better PyInstaller compatibility (sys.executable in addition to sys.\_MEIPASS
 

@@ -168,8 +168,7 @@ class Range(object):
 			s = ""	
 			while y >= 0:
 				s = chr((y % 26) + Range.A) + s
-				y /= 26
-				y -= 1
+				y = int(y / 26) - 1
 			Range._cts_cache[y] = s
 		return Range._cts_cache[y] + str(coord[0])
 	
