@@ -1,4 +1,5 @@
 from . import DataTypes
+from . import six
 
 class Range(object):
 	A = ord('A')
@@ -174,7 +175,7 @@ class Range(object):
 	
 	@staticmethod
 	def to_coordinate(value):
-		if isinstance(value, basestring):
+		if isinstance(value, six.string_types):
 			value = Range.string_to_coordinate(value)
 		if (value[0] < 1 or value[0] > 65536) and value[1] != float('inf'):
 			raise Exception("Row index out of bounds")

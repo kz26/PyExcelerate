@@ -1,5 +1,4 @@
 from ..Workbook import Workbook
-import cStringIO as StringIO
 import time
 import numpy
 from datetime import datetime
@@ -21,7 +20,7 @@ def test_save():
     stime = time.clock()
     ws = wb.new_sheet("Test 1", data=testData)
     wb.save("test.xlsx")
-    print "%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime)
+    print("%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
 
 def test_formulas():
 	wb = Workbook()

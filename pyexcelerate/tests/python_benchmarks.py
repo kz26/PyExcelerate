@@ -1,6 +1,5 @@
 import time
 
-
 def test_benchmark():
 	TRIALS = range(1000000)
 	
@@ -16,7 +15,7 @@ def test_benchmark():
 		if not answer:
 			print "failed test"
 			break
-	print "isinstance, %s" % (time.clock() - stime)
+	print("isinstance, %s" % (time.clock() - stime))
 
 	# attempt __class__
 	
@@ -26,7 +25,7 @@ def test_benchmark():
 		if not answer:
 			print "failed test"
 			break
-	print "__class__, set, %s" % (time.clock() - stime)
+	print("__class__, set, %s" % (time.clock() - stime))
 	
 	stime = time.clock()
 	for i in TRIALS:
@@ -34,5 +33,5 @@ def test_benchmark():
 		if not answer:
 			print "failed test"
 			break
-	print "__class__, or, %s" % (time.clock() - stime)
+	print("__class__, or, %s" % (time.clock() - stime))
 	

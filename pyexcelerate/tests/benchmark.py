@@ -12,7 +12,7 @@ def run_pyexcelerate():
     stime = time.clock()
     ws = wb.new_sheet("Test 1", data=testData)
     wb.save("test_pyexcelerate.xlsx")
-    print "pyexcelerate, %s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime)
+    print("pyexcelerate, %s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
     
 def run_openpyxl():
     stime = time.clock()
@@ -22,7 +22,7 @@ def run_openpyxl():
     for row in testData:
         ws.append(row)
     wb.save("test_openpyxl.xlsx")
-    print "openpyxl, %s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime)
+    print("openpyxl, %s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
 
 def run_xlsxwriter():
     stime = time.clock()
@@ -32,7 +32,7 @@ def run_xlsxwriter():
         for col in range(COLUMNS):
             ws.write_number(row, col, 1)
     wb.close()
-    print "xlsxwriter, %s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime)
+    print("xlsxwriter, %s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
 
 def test_all():
     run_pyexcelerate()
