@@ -1,0 +1,14 @@
+class Color(object):
+	def __init__(self, r=255, g=255, b=255, a=0):
+		self.r = r
+		self.g = g
+		self.b = b
+		self.a = a
+
+	@property
+	def hex(self):
+		return '%0.2X%0.2X%0.2X%0.2X' % (self.a, self.r, self.g, self.b)
+		
+	def __eq__(self, other):
+		return self.r == other.r and self.g == other.g and self.b == other.b and self.a == other.a
+Color.WHITE = Color()

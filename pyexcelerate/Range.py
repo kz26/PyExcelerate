@@ -42,23 +42,37 @@ class Range(object):
 			raise Exception("Non-singleton range selected")
 	
 	@property
-	def value(self):
-		if self.is_cell():
-			for merge in self.worksheet.merges:
-				if self in merge:
-					return self.worksheet.get_cell_value(merge._start[0], merge._start[1])
-			return self.worksheet.get_cell_value(self.x, self.y)
-		else:
-			raise Exception("Not a cell")
+	def style(self):
+		return self.__get_attr(self.worksheet.get_cell_style)
+		
+	@style.setter
+	def style(self, data):
+		self.__set_attr(self.worksheet.set_cell_style, data)
 
+	@property
+	def value(self):
+		return self.__get_attr(self.worksheet.get_cell_value)
+		
 	@value.setter
 	def value(self, data):
+		self.__set_attr(self.worksheet.set_cell_value, data)
+
+	def __get_attr(self, method):
 		if self.is_cell():
 			for merge in self.worksheet.merges:
 				if self in merge:
-					self.worksheet.set_cell_value(merge._start[0], merge._start[1], data)
+					return method(merge._start[0], merge._start[1])
+			return method(self.x, self.y)
+		else:
+			raise Exception("Not a cell")
+	
+	def __set_attr(self, method, data):
+		if self.is_cell():
+			for merge in self.worksheet.merges:
+				if self in merge:
+					method(merge._start[0], merge._start[1], data)
 					return
-			self.worksheet.set_cell_value(self.x, self.y, data)
+			method(self.x, self.y, data)
 		else:
 			if len(data) <= self.height:
 				for row in data:
@@ -66,10 +80,10 @@ class Range(object):
 						raise Exception("Row too large for range, row has %s columns, but range only has %s" % (len(row), self.width))
 				for x, row in enumerate(data):
 					for y, value in enumerate(row):
-						self.worksheet.set_cell_value(x + self._start[0], y + self._start[1], value)
+						method(x + self._start[0], y + self._start[1], value)
 			else:
 				raise Exception("Too many rows for range, data has %s rows, but range only has %s" % (len(data), self.height))
-
+	
 	@property
 	def worksheet(self):
 		return self._parent

@@ -5,6 +5,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from datetime import datetime
 import time
 from jinja2 import Environment, FileSystemLoader
+from . import Color
 
 class Writer(object):
     if getattr(sys, 'frozen', None):
@@ -18,6 +19,7 @@ class Writer(object):
     _docProps_core_template = env.get_template("docProps/core.xml")
     _content_types_template = env.get_template("[Content_Types].xml")
     _rels_template = env.get_template("_rels/.rels")
+    _styles_template = env.get_template("xl/styles.xml") 
     _workbook_template = env.get_template("xl/workbook.xml")
     _workbook_rels_template = env.get_template("xl/_rels/workbook.xml.rels")
     _worksheet_template = env.get_template("xl/worksheets/sheet.xml")
@@ -42,6 +44,7 @@ class Writer(object):
         zf.writestr("docProps/core.xml", self._render_template_wb(self._docProps_core_template, {'date': self._get_utc_now()}))
         zf.writestr("[Content_Types].xml", self._render_template_wb(self._content_types_template))
         zf.writestr("_rels/.rels", self._rels_template.render().encode('utf-8'))
+        zf.writestr("xl/styles.xml", self._render_template_wb(self._styles_template, {'Color': Color.Color}))
         zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
         zf.writestr("xl/_rels/workbook.xml.rels", self._render_template_wb(self._workbook_rels_template))
         for index, sheet in self.workbook.get_xml_data():

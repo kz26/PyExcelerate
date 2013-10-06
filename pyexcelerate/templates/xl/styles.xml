@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" mc:Ignorable="x14ac">
+<numFmts>
+{% for style in workbook.styles %}{% if style.format != None %}
+	<numFmt numFmtId="{{ style.numFmtId }}" formatCode="{{ style.format }}"/>
+{% endif %}{% endfor %}
+</numFmts>
+<fonts>
+    <font>
+        <sz val="11"/>
+        <color theme="1"/>
+        <name val="Calibri"/>
+        <family val="2"/>
+        <scheme val="minor"/>
+    </font>
+	{% for style in workbook.styles %}
+    <font>
+{% if style.font.bold %}<b/>{% endif %}{% if style.font.italic %}<i/>{% endif %}{% if style.font.underline %}<u/>{% endif %}{% if style.font.strikethrough %}<strike/>{% endif %}<sz val="{{ style.font.size }}"/><name val="{{ style.font.family }}"/>
+    </font>
+    {% endfor %}
+</fonts>
+<fills>
+    <fill>
+        <patternFill patternType="none"/>
+    </fill><fill>
+        <patternFill patternType="none"/>
+    </fill>{% for style in workbook.styles %}{% if style.fill.background != Color.WHITE %}
+    <fill><patternFill patternType="solid">
+		<fgColor rgb="{{ style.fill.background.hex }}"/>
+	</patternFill></fill>{% endif %}{% endfor %}
+</fills>
+<borders count="1">
+    <border>
+        <left/>
+        <right/>
+        <top/>
+        <bottom/>
+        <diagonal/>
+    </border>
+</borders>
+<cellStyleXfs count="1">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>
+</cellStyleXfs>
+<cellXfs>
+	<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+	{% for style in workbook.styles %}
+	<xf numFmtId="{{ style.numFmtId }}" fontId="{{ style.id }}" borderId="0" xfId="0" applyFont="1"{% if style.fill.background != Color.WHITE %} fillId="{{ style.id + 1 }}" applyFill="1"{% endif %}/>
+    {% endfor %}
+</cellXfs>
+<cellStyles count="1">
+    <cellStyle name="Normal" xfId="0" builtinId="0"/>
+</cellStyles>
+<dxfs count="0"/>
+<tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleLight16"/>
+<extLst>
+    <ext xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main" uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}">
+    <x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/>
+</ext>
+</extLst>
+</styleSheet>
+

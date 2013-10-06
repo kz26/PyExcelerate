@@ -1,4 +1,5 @@
 from . import Range
+from . import Style
 from .DataTypes import DataTypes
 from . import six
 from datetime import datetime
@@ -8,6 +9,8 @@ class Worksheet(object):
 		self._columns = 0 # cache this for speed
 		self._name = name
 		self._cells = {}
+		self._cell_cache = {}
+		self._styles = {}
 		self._parent = workbook
 		self._merges = [] # list of Range objects
 		self._attributes = {}
@@ -23,6 +26,10 @@ class Worksheet(object):
 		if key not in self._cells:
 			self._cells[key] = {}
 		return Range.Range((key, 1), (key, float('inf')), self) # return a row range
+
+	@property
+	def stylesheet(self):
+		return self._stylesheet
 
 	@property
 	def name(self):
@@ -76,16 +83,31 @@ class Worksheet(object):
 	def set_cell_value(self, x, y, value):
 		if x not in self._cells:
 			self._cells[x] = {}
+		if DataTypes.get_type(value) == DataTypes.DATE:
+			self.get_cell_style(x, y).format = 'yyyy-mm-dd'
 		self._cells[x][y] = value
+	
+	def get_cell_style(self, x, y):
+		if x not in self._styles:
+			self._styles[x] = {}
+		if y not in self._styles[x]:
+			self.set_cell_style(x, y, Style.Style())
+		return self._styles[x][y]
+	
+	def set_cell_style(self, x, y, value):
+		if x not in self._styles:
+			self._styles[x] = {}
+		self._styles[x][y] = value
+		self._parent.add_style(value)
 	
 	@property
 	def workbook(self):
 			return self._parent
 
-	_cell_cache = {}
-	def __get_cell_data(self, cell, x, y):
+	def __get_cell_data(self, cell, x, y, style):
 		if cell not in self._cell_cache:
 			type = DataTypes.get_type(cell)
+			
 			if type == DataTypes.NUMBER:
 				if cell.__class__ == int:
 					self._cell_cache[cell] = '" t="n"><v>%d</v></c>' % (cell)
@@ -97,14 +119,23 @@ class Worksheet(object):
 				self._cell_cache[cell] = '" t="d"><v>%s</v></c>' % (cell.strftime("%Y-%m-%dT%H:%M:%S.%f"))
 			elif type == DataTypes.FORMULA:
 				self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
+		
+		if style == None:
+			style_string = ""
+		else:
+			style_string = '" s="%d' % (style.id)
+		
 		# Don't cache the coordinate location
-		return '<c r="' + Range.Range.coordinate_to_string((x, y)) + self._cell_cache[cell]
+		return '<c r="' + Range.Range.coordinate_to_string((x, y)) + style_string + self._cell_cache[cell]
 	
 	def get_xml_data(self):
-		# initialize the shared string hashtable
-		# self.shared_strings = SharedStrings.SharedStrings(self)
+		self._parent.align_styles()
 		for x, row in six.iteritems(self._cells):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):
-				row_data.append(self.__get_cell_data(cell, x, y))
+				if x not in self._styles or y not in self._styles[x]:
+					style = None
+				else:
+					style = self._styles[x][y]
+				row_data.append(self.__get_cell_data(cell, x, y, style))
 			yield x, row_data
