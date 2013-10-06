@@ -19,6 +19,10 @@ class Workbook(object):
 	def add_style(self, style):
 		if style not in self._styles:
 			self._styles.append(style)
+	
+	@property
+	def has_styles(self):
+		return len(self._styles) > 0
 
 	@property
 	def styles(self):
