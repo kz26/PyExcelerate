@@ -1,6 +1,8 @@
 from ..Workbook import Workbook
 import time
 import numpy
+import nose
+import os
 from datetime import datetime
 from nose.tools import eq_
 
@@ -63,3 +65,49 @@ def test_numpy_range():
 	ws = wb.new_sheet("test")
 	ws.range("A1", "GN13").value = numpy.zeros((13,196))
 	wb.save("numpy-range-test.xlsx")
+
+def test_number_precision():
+	try:
+		import xlrd
+	except ImportError:
+		raise nose.SkipTest('xlrd not installed')
+
+	filename = 'precision.xlsx'
+	sheetname = 'Sheet1'
+
+	nums = [
+		1,
+		1.2,
+		1.23,
+		1.234,
+		1.2345,
+		1.23456,
+		1.234567,
+		1.2345678,
+		1.23456789,
+		1.234567890,
+		1.2345678901,
+		1.23456789012,
+		1.234567890123,
+		1.2345678901234,
+		1.23456789012345,
+	]
+
+	write_workbook = Workbook()
+	write_worksheet = write_workbook.new_sheet(sheetname)
+
+	for index, value in enumerate(nums):
+		write_worksheet[index + 1][1].value = value
+
+	write_workbook.save(filename)
+
+	read_workbook = xlrd.open_workbook(filename)
+	read_worksheet = read_workbook.sheet_by_name(sheetname)
+
+	for row_num in range(len(nums)):
+		expected = nums[row_num]
+		got = read_worksheet.cell(row_num, 0).value
+
+	if os.path.exists(filename):
+		os.remove(filename)
+
