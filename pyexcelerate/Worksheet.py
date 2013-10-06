@@ -5,6 +5,7 @@ from . import six
 from datetime import datetime
 
 class Worksheet(object):
+	EXCEL_BASE_DATE = datetime(1900, 1, 1, 0, 0, 0)
 	def __init__(self, name, workbook, data=None):
 		self._columns = 0 # cache this for speed
 		self._name = name
@@ -113,7 +114,10 @@ class Worksheet(object):
 			elif type == DataTypes.INLINE_STRING:
 				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % (cell)
 			elif type == DataTypes.DATE:
-				self._cell_cache[cell] = '" t="d"><v>%s</v></c>' % (cell.strftime("%Y-%m-%dT%H:%M:%S.%f"))
+				delta = cell - Worksheet.EXCEL_BASE_DATE
+				# insert two days. excel is inclusive, datetime is exclusive
+				excel_date = delta.days + (float(delta.seconds) + float(delta.microseconds) / 1E6) / (60 * 60 * 24)
+				self._cell_cache[cell] = '"><v>%s</v></c>' % (excel_date + 1 + (excel_date > 59))
 			elif type == DataTypes.FORMULA:
 				self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
 		
