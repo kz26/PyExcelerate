@@ -17,4 +17,10 @@ def test_style():
 	ws[1][1].style.font.strikethrough = True
 	ws[1][1].style.fill.background = Color(0, 255, 0, 0)
 	ws[1][2].style.fill.background = Color(255, 255, 0, 0)
+	ws[2][1].value = "asdf"
+	ws.range("A2", "B2").merge()
+	eq_(ws[1][2].value, ws[1][1].value)
+	ws[2][2].value = "qwer"
+	eq_(ws[1][2].value, ws[1][1].value)
+	ws[2][1].style.fill.background = Color(0, 255, 0, 0)
 	wb.save("style-test.xlsx")

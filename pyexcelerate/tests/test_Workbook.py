@@ -32,7 +32,6 @@ def test_formulas():
 	ws[1][3].value = '=SUM(A1,B1)'
 	ws[1][4].value = datetime.now()
 	wb.save("formula-test.xlsx")
-	eq_(1,2)
 	
 def test_merge():
 	wb = Workbook()

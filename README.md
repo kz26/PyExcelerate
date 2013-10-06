@@ -4,7 +4,7 @@ Accelerated Excel XLSX writing library for Python 2/3
 
 [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
 
-* Current version: 0.3.0
+* Current version: 0.3.1
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/whitehat2k9)
 * License: Simplified BSD License
 * [Source repository](https://github.com/whitehat2k9/PyExcelerate)
@@ -94,6 +94,23 @@ wb = Workbook()
 ws = wb.new_sheet("sheet name")
 ws[1][1].value = 15
 ws.range("A1", "B1").merge()
+wb.save("output.xlsx")
+
+```
+
+### Styling cells
+
+```python
+from pyexcelerate import Workbook, Color
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws[1][1].value = 1
+ws[1][1].style.font.bold = True
+ws[1][1].style.font.italic = True
+ws[1][1].style.font.underline = True
+ws[1][1].style.font.strikethrough = True
+ws[1][1].style.fill.background = Color(0, 255, 0, 0)
 wb.save("output.xlsx")
 
 ```

@@ -1,3 +1,7 @@
+# 0.3.1 - July 29, 2013
+* Add basic style support
+* Fixed float precision bug (thanks jmcnamara)
+
 # 0.3.0 - July 29, 2013
 * Fixed bug in __coordinate_to_string function
 * Compatibility fixes for Python 3 and numpy datatypes

@@ -25,7 +25,7 @@
     </fill><fill>
         <patternFill patternType="none"/>
     </fill>{% for style in workbook.styles %}{% if style.fill.background != Color.WHITE %}
-    <fill><patternFill patternType="solid">
+    <fill ><patternFill patternType="solid">
 		<fgColor rgb="{{ style.fill.background.hex }}"/>
 	</patternFill></fill>{% endif %}{% endfor %}
 </fills>
@@ -43,8 +43,9 @@
 </cellStyleXfs>
 <cellXfs>
 	<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+	{% set fillId = 2 %}
 	{% for style in workbook.styles %}
-	<xf numFmtId="{{ style.numFmtId }}" fontId="{{ style.id }}" borderId="0" xfId="0" applyFont="1"{% if style.fill.background != Color.WHITE %} fillId="{{ style.id + 1 }}" applyFill="1"{% endif %}/>
+	<xf numFmtId="{{ style.numFmtId }}" fontId="{{ style.id }}" borderId="0" xfId="0" applyFont="1"{% if style.fill.background != Color.WHITE %} fillId="{{ fillId }}" applyFill="1"{% set fillId = fillId + 1 %}{% endif %}/>
     {% endfor %}
 </cellXfs>
 <cellStyles count="1">

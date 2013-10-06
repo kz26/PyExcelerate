@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name="PyExcelerate",
-    version="0.3.0",
+    version="0.3.1",
     author="Kevin Wang and Kevin Zhang",
     author_email="zhangk@uchicago.edu",
     maintainer="Kevin Zhang",
