@@ -109,10 +109,7 @@ class Worksheet(object):
 			type = DataTypes.get_type(cell)
 			
 			if type == DataTypes.NUMBER:
-				if cell.__class__ == int:
-					self._cell_cache[cell] = '" t="n"><v>%d</v></c>' % (cell)
-				else:
-					self._cell_cache[cell] = '" t="n"><v>%f</v></c>' % (cell)
+				self._cell_cache[cell] = '" t="n"><v>%.15g</v></c>' % (cell)
 			elif type == DataTypes.INLINE_STRING:
 				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % (cell)
 			elif type == DataTypes.DATE:

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, time
 from . import six
 try:
 	import numpy as np
@@ -44,7 +44,8 @@ class DataTypes(object):
 			return DataTypes.NUMBER
 		elif HAS_NUMPY and isinstance(value, (np.floating, np.integer, np.complexfloating, np.unsignedinteger)):
 			return DataTypes.NUMBER
-		elif isinstance(value, datetime):
+		elif isinstance(value, (datetime, date, time)):
 			return DataTypes.DATE
 		else:
 			return DataTypes.ERROR
+
