@@ -60,6 +60,7 @@ wb.save("output.xlsx")
 ### Writing cell data
 
 ```python
+from datetime import datetime
 from pyexcelerate import Workbook
 
 wb = Workbook()
