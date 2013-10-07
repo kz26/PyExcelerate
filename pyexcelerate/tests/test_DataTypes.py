@@ -2,6 +2,7 @@ from ..DataTypes import DataTypes
 from nose.tools import eq_
 from datetime import datetime
 from ..Workbook import Workbook
+from .utils import get_output_path
 import numpy
 
 def test__to_enumeration_value():
@@ -25,4 +26,4 @@ def test_numpy():
 	ws = wb.new_sheet("Test 1", data=testData)
 	eq_(ws[1][1].value, 1)
 	eq_(DataTypes.get_type(ws[1][1].value), DataTypes.NUMBER)
-	wb.save("numpy-test.xlsx")
+	wb.save(get_output_path("numpy-test.xlsx"))
