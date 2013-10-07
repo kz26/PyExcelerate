@@ -4,6 +4,7 @@ import time
 import numpy
 from datetime import datetime
 from nose.tools import eq_
+from .utils import get_output_path
 
 def test_style():
 	wb = Workbook()
@@ -23,4 +24,4 @@ def test_style():
 	ws[2][2].value = "qwer"
 	eq_(ws[1][2].value, ws[1][1].value)
 	ws[2][1].style.fill.background = Color(0, 255, 0, 0)
-	wb.save("style-test.xlsx")
+	wb.save(get_output_path("style-test.xlsx"))

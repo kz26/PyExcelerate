@@ -5,6 +5,7 @@ import nose
 import os
 from datetime import datetime
 from nose.tools import eq_
+from .utils import get_output_path
 
 def test_get_xml_data():
     wb = Workbook()
@@ -21,8 +22,8 @@ def test_save():
     testData = [[1] * COLUMNS] * ROWS
     stime = time.clock()
     ws = wb.new_sheet("Test 1", data=testData)
-    wb.save("test.xlsx")
-    print("%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
+    wb.save(get_output_path("test.xlsx"))
+    #print("%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
 
 def test_formulas():
 	wb = Workbook()
@@ -32,7 +33,7 @@ def test_formulas():
 	ws[1][3].value = '=SUM(A1,B1)'
 	ws[1][4].value = datetime.now()
 	ws[1][5].value = datetime(1900,1,1,1,0,0)
-	wb.save("formula-test.xlsx")
+	wb.save(get_output_path("formula-test.xlsx"))
 	
 def test_merge():
 	wb = Workbook()
@@ -42,7 +43,7 @@ def test_merge():
 	eq_(ws[1][2].value, ws[1][1].value)
 	ws[1][2].value = "qwer"
 	eq_(ws[1][2].value, ws[1][1].value)
-	wb.save("merge-test.xlsx")
+	wb.save(get_output_path("merge-test.xlsx"))
 	
 def test_cell():
 	wb = Workbook()
@@ -65,7 +66,7 @@ def test_numpy_range():
 	wb = Workbook()
 	ws = wb.new_sheet("test")
 	ws.range("A1", "GN13").value = numpy.zeros((13,196))
-	wb.save("numpy-range-test.xlsx")
+	wb.save(get_output_path("numpy-range-test.xlsx"))
 
 def test_number_precision():
 	try:
@@ -73,7 +74,7 @@ def test_number_precision():
 	except ImportError:
 		raise nose.SkipTest('xlrd not installed')
 
-	filename = 'precision.xlsx'
+	filename = get_output_path('precision.xlsx')
 	sheetname = 'Sheet1'
 
 	nums = [

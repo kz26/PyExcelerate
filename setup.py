@@ -1,8 +1,11 @@
+#!/usr/bin/python
+
 from distutils.core import setup
+from pyexcelerate import __version__
 
 setup(
     name="PyExcelerate",
-    version="0.3.1",
+    version=__version__,
     author="Kevin Wang and Kevin Zhang",
     author_email="zhangk@uchicago.edu",
     maintainer="Kevin Zhang",
