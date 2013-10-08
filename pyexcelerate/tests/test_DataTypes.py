@@ -1,6 +1,6 @@
 from ..DataTypes import DataTypes
 from nose.tools import eq_
-from datetime import datetime
+from datetime import datetime, date, time
 from ..Workbook import Workbook
 from .utils import get_output_path
 import numpy
@@ -27,3 +27,16 @@ def test_numpy():
 	eq_(ws[1][1].value, 1)
 	eq_(DataTypes.get_type(ws[1][1].value), DataTypes.NUMBER)
 	wb.save(get_output_path("numpy-test.xlsx"))
+
+def test_to_excel_date():
+	eq_(DataTypes.to_excel_date(datetime(1900, 1, 1, 0, 0, 0)), 1.0)
+	eq_(DataTypes.to_excel_date(datetime(1900, 1, 1, 12, 0, 0)), 1.5)
+	eq_(DataTypes.to_excel_date(datetime(1900, 1, 1, 12, 0, 0)), 1.5)
+	eq_(DataTypes.to_excel_date(datetime(2013, 5, 10, 6, 0, 0)), 41404.25)
+	eq_(DataTypes.to_excel_date(date(1900, 1, 1)), 1.0)
+	eq_(DataTypes.to_excel_date(date(2013, 5, 10)), 41404.0)
+	eq_(DataTypes.to_excel_date(time(6, 0, 0)), 0.25)
+	# check excel's improper handling of leap year
+	eq_(DataTypes.to_excel_date(datetime(1900, 2, 28, 0, 0, 0)), 59.0)
+	eq_(DataTypes.to_excel_date(datetime(1900, 3, 1, 0, 0, 0)), 61.0)
+	

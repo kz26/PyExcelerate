@@ -1,6 +1,4 @@
 from ..Workbook import Workbook
-import openpyxl
-import xlsxwriter.workbook
 import time
 from .utils import get_output_path
 
@@ -18,6 +16,10 @@ def run_pyexcelerate():
 	return elapsed
 	
 def run_openpyxl():
+	try:
+		import openpyxl
+	except ImportError:
+		raise 'openpyxl not installled'
 	stime = time.clock()
 	wb = openpyxl.workbook.Workbook(optimized_write=True) 
 	ws = wb.create_sheet()
@@ -30,6 +32,10 @@ def run_openpyxl():
 	return elapsed
 
 def run_xlsxwriter():
+	try:
+		import xlsxwriter.workbook
+	except ImportError:
+		raise 'XlsxWriter not installled'
 	stime = time.clock()
 	wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter.xlsx'), {'constant_memory': True})
 	ws = wb.add_worksheet()
