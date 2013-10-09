@@ -106,7 +106,7 @@ class Worksheet(object):
 			type = DataTypes.get_type(cell)
 			
 			if type == DataTypes.NUMBER:
-				self._cell_cache[cell] = '" t="n"><v>%.15g</v></c>' % (cell)
+				self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
 			elif type == DataTypes.INLINE_STRING:
 				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % (cell)
 			elif type == DataTypes.DATE:
@@ -114,13 +114,10 @@ class Worksheet(object):
 			elif type == DataTypes.FORMULA:
 				self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
 		
-		if style == None:
-			style_string = ""
+		if style:
+			return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
 		else:
-			style_string = '" s="%d' % (style.id)
-		
-		# Don't cache the coordinate location
-		return "<c r=\"%s%s%s" % (Range.Range.coordinate_to_string((x, y)), style_string, self._cell_cache[cell])
+			return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), self._cell_cache[cell])
 	
 	def get_xml_data(self):
 		# Precondition: styles are aligned. if not, then :v

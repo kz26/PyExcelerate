@@ -4,7 +4,7 @@ import time
 
 class Workbook(object):
 	# map for attribute sets => style attribute id's
-	STYLE_ATTRIBUTE_MAP = {'fonts':'font', 'fills':'fill', 'num_fmts':'format'}
+	STYLE_ATTRIBUTE_MAP = {'fonts':'_font', 'fills':'_fill', 'num_fmts':'_format'}
 	STYLE_ID_ATTRIBUTE = 'id'
 	alignment = None
 	def __init__(self, encoding='utf-8'):
@@ -55,7 +55,7 @@ class Workbook(object):
 						# compress individual attributes
 						for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
 							obj = getattr(style, attr_id)
-							if not obj.is_default: # we only care about it if it's not default
+							if obj and not obj.is_default: # we only care about it if it's not default
 								if obj not in items[attr]:
 									items[attr][obj] = len(items[attr]) + 1 # insert it
 								obj.id = items[attr][obj] # apply

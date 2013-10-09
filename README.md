@@ -100,7 +100,7 @@ wb.save("output.xlsx")
 
 ### Styling cells
 
-Styling cells causes **non-negligible** overhead. It **will** increase your execution time. Only style cells if absolutely necessary.
+Styling cells causes **non-negligible** overhead. It **will** increase your execution time (up to 10x longer!). Only style cells if absolutely necessary.
 
 ```python
 from pyexcelerate import Workbook, Color
