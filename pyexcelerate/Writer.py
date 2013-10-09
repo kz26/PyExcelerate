@@ -45,7 +45,7 @@ class Writer(object):
 		zf.writestr("[Content_Types].xml", self._render_template_wb(self._content_types_template))
 		zf.writestr("_rels/.rels", self._rels_template.render().encode('utf-8'))
 		if self.workbook.has_styles:
-			zf.writestr("xl/styles.xml", self._render_template_wb(self._styles_template, {'Color': Color.Color}))
+			zf.writestr("xl/styles.xml", self._render_template_wb(self._styles_template))
 		zf.writestr("xl/workbook.xml", self._render_template_wb(self._workbook_template))
 		zf.writestr("xl/_rels/workbook.xml.rels", self._render_template_wb(self._workbook_rels_template))
 		for index, sheet in self.workbook.get_xml_data():

@@ -8,7 +8,11 @@ class Color(object):
 	@property
 	def hex(self):
 		return '%0.2X%0.2X%0.2X%0.2X' % (self.a, self.r, self.g, self.b)
+	
+	def __hash__(self):
+		return hash((self.r, self.g, self.b, self.a))
 		
 	def __eq__(self, other):
 		return self.r == other.r and self.g == other.g and self.b == other.b and self.a == other.a
-Color.WHITE = Color()
+
+Color.TRANSPARENT = Color()

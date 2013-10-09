@@ -1,5 +1,7 @@
 from . import DataTypes
 from . import six
+from . import Font, Fill, Format
+from six.moves import reduce
 
 class Range(object):
 	A = ord('A')
@@ -56,7 +58,21 @@ class Range(object):
 	@value.setter
 	def value(self, data):
 		self.__set_attr(self.worksheet.set_cell_value, data)
+	
+	# this class permits doing things like range().font.bold = True
+	class AttributeInterceptor(object):
+		def __init__(self, parent, attribute):
+			self.__dict__['_parent_range'] = parent
+			self.__dict__['_attribute'] = attribute
+		def __setattr__(self, name, value):
+			for cell in self._parent_range:
+				setattr(reduce(getattr, self._attribute.split('.'), cell), name, value)
 
+	def __getattr__(self, name):
+		# handles .format, .font, .fill
+		return Range.AttributeInterceptor(self, "style.%s" % name)
+
+	# note that these are not the python __getattr__/__setattr__
 	def __get_attr(self, method):
 		if self.is_cell():
 			for merge in self.worksheet.merges:
@@ -73,6 +89,9 @@ class Range(object):
 					method(merge._start[0], merge._start[1], data)
 					return
 			method(self.x, self.y, data)
+		elif DataTypes.DataTypes.get_type(data) != DataTypes.DataTypes.ERROR:
+			for cell in self:
+				cell.__set_attr(method, data)
 		else:
 			if len(data) <= self.height:
 				for row in data:
@@ -117,6 +136,11 @@ class Range(object):
 	
 	def merge(self):
 		self.worksheet.add_merge(self)
+
+	def __iter__(self):
+		for x in range(self._start[0], self._end[0] + 1):
+			for y in range(self._start[1], self._end[1] + 1):
+				yield Range((x, y), (x, y), self.worksheet)
 
 	def __contains__(self, item):
 		return self.intersection(item) == item

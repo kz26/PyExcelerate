@@ -1,5 +1,6 @@
 from . import Range
 from . import Style
+from . import Format
 from .DataTypes import DataTypes
 from . import six
 from datetime import datetime
@@ -84,7 +85,7 @@ class Worksheet(object):
 		if x not in self._cells:
 			self._cells[x] = {}
 		if DataTypes.get_type(value) == DataTypes.DATE:
-			self.get_cell_style(x, y).format = 'yyyy-mm-dd'
+			self.get_cell_style(x, y).format = Format.Format('yyyy-mm-dd')
 		self._cells[x][y] = value
 	
 	def get_cell_style(self, x, y):
@@ -123,10 +124,10 @@ class Worksheet(object):
 			style_string = '" s="%d' % (style.id)
 		
 		# Don't cache the coordinate location
-		return '<c r="' + Range.Range.coordinate_to_string((x, y)) + style_string + self._cell_cache[cell]
+		return "<c r=\"%s%s%s" % (Range.Range.coordinate_to_string((x, y)), style_string, self._cell_cache[cell])
 	
 	def get_xml_data(self):
-		self._parent.align_styles()
+		# Precondition: styles are aligned. if not, then :v
 		for x, row in six.iteritems(self._cells):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):

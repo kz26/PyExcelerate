@@ -25,3 +25,13 @@ def test_style():
 	eq_(ws[1][2].value, ws[1][1].value)
 	ws[2][1].style.fill.background = Color(0, 255, 0, 0)
 	wb.save(get_output_path("style-test.xlsx"))
+
+def test_style_compression():
+	wb = Workbook()
+	ws = wb.new_sheet("test")
+	ws.range("A1","C3").value = 1
+	ws.range("A1","C1").font.bold = True
+	ws.range("A2","C3").font.italic = True
+	ws.range("A3","C3").fill.background = Color(255, 0, 0, 0)
+	ws.range("C1","C3").font.strikethrough = True
+	wb.save(get_output_path("style-compression-test.xlsx"))
