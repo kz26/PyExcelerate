@@ -11,6 +11,7 @@ install:
   - "pip install xlrd --use-mirrors"
   - "pip install xlsxwriter --use-mirrors"
   - "pip install openpyxl --use-mirrors"
+  - "pip install six --use-mirrors"
 
 #  - "pip install -r requirements.txt --use-mirrors"
 # command to run tests

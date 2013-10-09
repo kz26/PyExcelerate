@@ -122,9 +122,24 @@ wb.save("output.xlsx")
 
 **Note** that `.style.format.format`'s repetition is due to planned support for conditional formatting and other related features. The formatting syntax may be improved in the future.
 
+### Styling ranges
+
+```python
+from pyexcelerate import Workbook, Color
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("test")
+ws.range("A1","C3").value = 1
+ws.range("A1","C1").style.font.bold = True
+ws.range("A2","C3").style.font.italic = True
+ws.range("A3","C3").style.fill.background = Color(255, 0, 0, 0)
+ws.range("C1","C3").style.font.strikethrough = True
+```
+
 ### Linked styles
 
-PyExcelerate supports using style objects instead manually setting each attribute as well.
+PyExcelerate supports using style objects instead manually setting each attribute as well. This permits you to modify the style at a later time.
 
 ```python
 from pyexcelerate import Workbook, Font
