@@ -1,5 +1,6 @@
 from . import Worksheet
 from .Writer import Writer
+import time
 
 class Workbook(object):
 	# map for attribute sets => style attribute id's
@@ -41,9 +42,7 @@ class Workbook(object):
 			yield (index, ws)
 
 	def _align_styles(self):
-		if Workbook.alignment == self and len(self._items) > 0:
-			return self._items
-		else:
+		if Workbook.alignment != self or len(self._items) == 0:
 			Workbook.alignment = self
 			items = dict([(x, {}) for x in Workbook.STYLE_ATTRIBUTE_MAP.keys()])
 			styles = {}
@@ -52,20 +51,21 @@ class Workbook(object):
 				if not style.is_default:
 					if style not in styles:
 						styles[style] = len(styles) + 1
-					setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
-					# compress individual attributes
-					for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
-						obj = getattr(style, attr_id)
-						if not obj.is_default: # we only care about it if it's not default
-							if obj not in items[attr]:
-								items[attr][obj] = len(items[attr]) + 1 # insert it
-							obj.id = items[attr][obj] # apply
+						setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
+						# compress individual attributes
+						for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
+							obj = getattr(style, attr_id)
+							if not obj.is_default: # we only care about it if it's not default
+								if obj not in items[attr]:
+									items[attr][obj] = len(items[attr]) + 1 # insert it
+								obj.id = items[attr][obj] # apply
+					else:
+						setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
 			for k, v in items.items():
 				# ensure it's sorted properly
 				items[k] = [tup[0] for tup in sorted(v.items(), key=lambda x: x[1])]
 			self._items = items
 			self._styles = [tup[0] for tup in sorted(styles.items(), key=lambda x: x[1])]
-
 	def __getattr__(self, name):
 		if Workbook.alignment != self:
 			self._align_styles()
