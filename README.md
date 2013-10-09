@@ -100,8 +100,11 @@ wb.save("output.xlsx")
 
 ### Styling cells
 
+Styling cells causes **non-negligible** overhead. It **will** increase your execution time. Only style cells if absolutely necessary.
+
 ```python
 from pyexcelerate import Workbook, Color
+from datetime import datetime
 
 wb = Workbook()
 ws = wb.new_sheet("sheet name")
@@ -111,6 +114,26 @@ ws[1][1].style.font.italic = True
 ws[1][1].style.font.underline = True
 ws[1][1].style.font.strikethrough = True
 ws[1][1].style.fill.background = Color(0, 255, 0, 0)
+ws[1][2].value = datetime.now()
+ws[1][2].style.format.format = 'mm/dd/yy'
+wb.save("output.xlsx")
+
+```
+
+**Note** that `.style.format.format`'s repetition is due to planned support for conditional formatting and other related features. The formatting syntax may be improved in the future.
+
+### Linked styles
+
+PyExcelerate supports using style objects instead manually setting each attribute as well.
+
+```python
+from pyexcelerate import Workbook, Font
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws[1][1].value = 1
+font = Font(bold=True, italic=True, underline=True, strikethrough=True)
+ws[1][1].style.font = font
 wb.save("output.xlsx")
 
 ```

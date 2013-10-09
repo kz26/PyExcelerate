@@ -1,5 +1,6 @@
 from ..Workbook import Workbook
 from ..Color import Color
+from ..Font import Font
 import time
 import numpy
 from datetime import datetime
@@ -30,8 +31,16 @@ def test_style_compression():
 	wb = Workbook()
 	ws = wb.new_sheet("test")
 	ws.range("A1","C3").value = 1
-	ws.range("A1","C1").font.bold = True
-	ws.range("A2","C3").font.italic = True
-	ws.range("A3","C3").fill.background = Color(255, 0, 0, 0)
-	ws.range("C1","C3").font.strikethrough = True
+	ws.range("A1","C1").style.font.bold = True
+	ws.range("A2","C3").style.font.italic = True
+	ws.range("A3","C3").style.fill.background = Color(255, 0, 0, 0)
+	ws.range("C1","C3").style.font.strikethrough = True
 	wb.save(get_output_path("style-compression-test.xlsx"))
+	
+def test_style_reference():
+	wb = Workbook()
+	ws = wb.new_sheet("test")
+	ws[1][1].value = 1
+	font = Font(bold=True, italic=True, underline=True, strikethrough=True)
+	ws[1][1].style.font = font
+	wb.save(get_output_path("style-reference-test.xlsx"))

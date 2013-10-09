@@ -8,8 +8,8 @@ class Workbook(object):
 	alignment = None
 	def __init__(self, encoding='utf-8'):
 		self._worksheets = []
-		self._styles = [] # list if uncompressed, set if compressed
-		self._items = {} #dictionary containing sets of fonts, fills, etc.
+		self._styles = []
+		self._items = {} #dictionary containing lists of fonts, fills, etc.
 		self._encoding = encoding
 		self._writer = Writer(self)
 

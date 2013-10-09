@@ -3,49 +3,44 @@ from . import six
 from . import Font, Fill, Format
 from six.moves import reduce
 
+#
+# Kevin and Kevin's fair warning: this class has been insanely optimized for speed. It is intended
+# to be immutable. Please don't modify attributes after instantiation. :)
+#
+
 class Range(object):
 	A = ord('A')
 	Z = ord('Z')
-	def __init__(self, start, end, worksheet):
-		self._start = Range.to_coordinate(start)
-		self._end = Range.to_coordinate(end)
-		self._parent = worksheet
-		if self.is_cell():
-			# Report the column as active so the worksheet knows
-			self.worksheet.report_column(self.y)
-	
-	@property
-	def height(self):
-		return self._end[0] - self._start[0] + 1
-	
-	@property
-	def width(self):
-		return self._end[1] - self._start[1] + 1
-
-	@property
-	def x(self):
-		if self.is_row():
-			return self._start[0]
-		else:
-			return self.coordinate[0]
-	
-	@property
-	def y(self):
-		if self.is_column():
-			return self._start[1]
-		else:
-			return self.coordinate[1]
+	def __init__(self, start, end, worksheet, validate=True):
+		self._start = (Range.string_to_coordinate(start) if validate and isinstance(start, six.string_types) else start)
+		self._end = (Range.string_to_coordinate(end) if validate and isinstance(end, six.string_types) else end)
+		if (not (1 <= self._start[0] <= 65536) and self._start[0] != float('inf')) \
+			or (not (1 <= self._end[0] <= 65536) and self._end[0] != float('inf')):
+			raise Exception("Row index out of bounds")
+		if (not (1 <= self._start[1] <= 256) and self._start[1] != float('inf')) \
+			or (not (1 <= self._end[1] <= 256) and self._end[1] != float('inf')):
+			raise Exception("Column index out of bounds")
+		self.worksheet = worksheet
+		self.is_cell = (self._start == self._end)
+		self.is_row = (self._end[1] == float('inf') and self._start[0] == self._end[0] and self._start[1] == 1)
+		self.is_column = (self._end[0] == float('inf') and self._start[1] == self._end[1] and self._start[0] == 1)
+		self.x = (self._start[0] if self.is_row or self.is_cell else None)
+		self.y = (self._start[1] if self.is_column or self.is_cell else None)
+		self.height = (self._end[0] - self._start[0] + 1)
+		self.width = (self._end[1] - self._start[1] + 1)
+		if self.is_cell:
+			worksheet._columns = max(worksheet._columns, self.y)
 	
 	@property
 	def coordinate(self):
-		if self.is_cell():
+		if self.is_cell:
 			return self._start
 		else:
 			raise Exception("Non-singleton range selected")
 	
 	@property
 	def style(self):
-		return self.__get_attr(self.worksheet.get_cell_style)
+		return self.__get_attr(self.worksheet.get_cell_style, Range.AttributeInterceptor(self, 'style'))
 		
 	@style.setter
 	def style(self, data):
@@ -59,31 +54,31 @@ class Range(object):
 	def value(self, data):
 		self.__set_attr(self.worksheet.set_cell_value, data)
 	
-	# this class permits doing things like range().font.bold = True
+	# this class permits doing things like range().style.font.bold = True
 	class AttributeInterceptor(object):
 		def __init__(self, parent, attribute):
 			self.__dict__['_parent_range'] = parent
 			self.__dict__['_attribute'] = attribute
+		def __getattr__(self, name):
+			return Range.AttributeInterceptor(self._parent_range, "%s.%s" % (self._attribute, name))
 		def __setattr__(self, name, value):
 			for cell in self._parent_range:
 				setattr(reduce(getattr, self._attribute.split('.'), cell), name, value)
 
-	def __getattr__(self, name):
-		# handles .format, .font, .fill
-		return Range.AttributeInterceptor(self, "style.%s" % name)
-
 	# note that these are not the python __getattr__/__setattr__
-	def __get_attr(self, method):
-		if self.is_cell():
+	def __get_attr(self, method, default=None):
+		if self.is_cell:
 			for merge in self.worksheet.merges:
 				if self in merge:
 					return method(merge._start[0], merge._start[1])
 			return method(self.x, self.y)
+		elif default:
+			return default
 		else:
-			raise Exception("Not a cell")
+			raise Exception('Non-singleton range selected')
 	
 	def __set_attr(self, method, data):
-		if self.is_cell():
+		if self.is_cell:
 			for merge in self.worksheet.merges:
 				if self in merge:
 					method(merge._start[0], merge._start[1], data)
@@ -102,24 +97,7 @@ class Range(object):
 						method(x + self._start[0], y + self._start[1], value)
 			else:
 				raise Exception("Too many rows for range, data has %s rows, but range only has %s" % (len(data), self.height))
-	
-	@property
-	def worksheet(self):
-		return self._parent
-	
-	def is_cell(self):
-		return self._start == self._end
 
-	def is_row(self):
-		return self._start[0] == self._end[0] \
-			and self._start[1] == 1 \
-			and self._end[1] == float('inf')
-
-	def is_column(self):
-		return self._start[1] == self._end[1] \
-			and self._start[0] == 1 \
-			and self._end[1] == float('inf') \
-	
 	def intersection(self, range):
 		"""
 		Calculates the intersection with another range object
@@ -129,8 +107,10 @@ class Range(object):
 			return None
 		start = (max(self._start[0], range._start[0]), max(self._start[1], range._start[1]))
 		end = (min(self._end[0], range._end[0]), min(self._end[1], range._end[1]))
-		return Range(start, end, self.worksheet)
-		
+		return Range(start, end, self.worksheet, validate=False)
+	
+	__and__ = intersection
+	
 	def intersects(self, range):
 		return intersection(range) == None
 	
@@ -140,7 +120,7 @@ class Range(object):
 	def __iter__(self):
 		for x in range(self._start[0], self._end[0] + 1):
 			for y in range(self._start[1], self._end[1] + 1):
-				yield Range((x, y), (x, y), self.worksheet)
+				yield Range((x, y), (x, y), self.worksheet, validate=False)
 
 	def __contains__(self, item):
 		return self.intersection(item) == item
@@ -166,21 +146,17 @@ class Range(object):
 		return not (self == other)
 	
 	def __getitem__(self, key):
-		if self.is_row():
+		if self.is_row:
 			# return the key'th column
-			newStart = (self.x, key)
-			newEnd = (self.x, key)
-			return Range(newStart, newEnd, self.worksheet)
-		elif self.is_column():
+			return Range((self.x, key), (self.x, key), self.worksheet, validate=False)
+		elif self.is_column:
 			#return the key'th row
-			newStart = (key, self.y)
-			newEnd = (key, self.y)
-			return Range(newStart, newEnd, self.worksheet)			
+			return Range((key, self.y), (key, self.y), self.worksheet, validate=False)			
 		else:
 			raise Exception("Selection not valid")
 	
 	def __setitem__(self, key, value):
-		if self.is_row():
+		if self.is_row:
 			self.worksheet.set_cell_value(self.x, key, value)
 		else:
 			raise Exception("Couldn't set that")
@@ -189,12 +165,12 @@ class Range(object):
 	def string_to_coordinate(s):
 		# Convert a base-26 name to integer
 		y = 0
-		for i in range(len(s)):
-			if ord(s[i]) < Range.A or ord(s[i]) > Range.Z:
-				s = s[i:]
+		for index, c in enumerate(s):
+			if ord(c) < Range.A or ord(c) > Range.Z:
+				s = s[index:]
 				break
 			y *= 26
-			y += ord(s[i]) - Range.A + 1
+			y += ord(c) - Range.A + 1
 		return (int(s), y)
 
 	_cts_cache = {}
@@ -209,13 +185,3 @@ class Range(object):
 				y = int(y / 26) - 1
 			Range._cts_cache[y] = s
 		return Range._cts_cache[y] + str(coord[0])
-	
-	@staticmethod
-	def to_coordinate(value):
-		if isinstance(value, six.string_types):
-			value = Range.string_to_coordinate(value)
-		if (value[0] < 1 or value[0] > 65536) and value[1] != float('inf'):
-			raise Exception("Row index out of bounds")
-		if (value[1] < 1 or value[1] > 256) and value[1] != float('inf'):
-			raise Exception("Column index out of bounds")
-		return value

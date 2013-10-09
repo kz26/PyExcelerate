@@ -1,3 +1,5 @@
+# NB: Not actually used atm
+
 class SharedStrings(object):
 	def __init__(self, workbook):
 		self._parent = workbook

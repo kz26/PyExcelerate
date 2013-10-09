@@ -58,11 +58,7 @@ class Worksheet(object):
 	def range(self, start, end):
 		# convenience method
 		return Range.Range(start, end, self)
-	
-	def report_column(self, column):
-		# listener for column additions
-		self._columns = max(self._columns, column)
-	
+		
 	def add_merge(self, range):
 		for merge in self._merges:
 			if range.intersects(merge):
