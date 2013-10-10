@@ -1,6 +1,8 @@
 from ..Workbook import Workbook
 from ..Color import Color
 from ..Font import Font
+from ..Fill import Fill
+from ..Style import Style
 import time
 import numpy
 from datetime import datetime
@@ -44,3 +46,14 @@ def test_style_reference():
 	font = Font(bold=True, italic=True, underline=True, strikethrough=True)
 	ws[1][1].style.font = font
 	wb.save(get_output_path("style-reference-test.xlsx"))
+
+def test_and_or():
+	bolditalic = Font(bold=True, italic=True)
+	italicunderline = Font(italic=True, underline=True)
+	eq_(Font(italic=True), bolditalic & italicunderline)
+	eq_(Font(bold=True, italic=True, underline=True), bolditalic | italicunderline)
+	
+	fontstyle = Style(font=Font(bold=True))
+	fillstyle = Style(fill=Fill(background=Color(255, 0, 0, 0)))
+	eq_(Style(), fontstyle & fillstyle)
+	eq_(Style(font=Font(bold=True), fill=Fill(background=Color(255, 0, 0, 0))), fontstyle | fillstyle)

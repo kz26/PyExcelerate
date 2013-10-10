@@ -66,6 +66,12 @@ class Style(object):
 			font=Utility.nonboolean_or(self._font, other._font, None), \
 			fill=Utility.nonboolean_or(self._fill, other._fill, None), \
 			format=Utility.nonboolean_or(self._format, other._format, None))
+			
+	def __and__(self, other):
+		return Style( \
+			font=Utility.nonboolean_and(self._font, other._font, None), \
+			fill=Utility.nonboolean_and(self._fill, other._fill, None), \
+			format=Utility.nonboolean_and(self._format, other._format, None))
 	
 	def _to_tuple(self):
 		return (self._font, self._fill, self._format)
