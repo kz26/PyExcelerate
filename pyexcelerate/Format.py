@@ -1,4 +1,5 @@
 from . import six
+from .Utility import Utility
 
 class Format(object):
 	def __init__(self, format=None):
@@ -10,6 +11,12 @@ class Format(object):
 			return self.is_default
 		else:
 			return self.format == other.format
+	
+	def __or__(self, other):
+		return Format(format=Utility.nonboolean_or(self.format, other.format, None))
+	
+	def __and__(self, other):
+		return Format(format=Utility.nonboolean_and(self.format, other.format, None))
 	
 	def __hash__(self):
 		return hash(self.format)

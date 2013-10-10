@@ -1,8 +1,9 @@
+from .Utility import Utility
 from . import Color
 
 class Fill(object):
-	def __init__(self):
-		self.background = Color.Color()
+	def __init__(self, background=None):
+		self.background = (Color.Color() if not background else background)
 
 	@property
 	def is_default(self):
@@ -23,6 +24,12 @@ class Fill(object):
 		else:
 			return "<fill><patternFill patternType=\"solid\"><fgColor rgb=\"%s\"/></patternFill></fill>" % self.background.hex
 	
+	def __or__(self, other):
+		return Fill(background=Utility.nonboolean_or(self.background, other.background, Color.TRANSPARENT))
+		
+	def __and__(self, other):
+		return Fill(background=Utility.nonboolean_and(self.background, other.background, Color.TRANSPARENT))
+		
 	def __str__(self):
 		return "Fill: #%s" % self.background.hex
 	

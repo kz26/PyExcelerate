@@ -1,10 +1,13 @@
 from ..Workbook import Workbook
 from ..Color import Color
+from ..Style import Style
+from ..Font import Font
+from ..Fill import Fill
 import time
 from .utils import get_output_path
 from random import randint
 
-ROWS = 65000
+ROWS = 650
 COLUMNS = 100
 BOLD = 1
 ITALIC = 2
@@ -12,15 +15,40 @@ UNDERLINE = 4
 RED_BG = 8
 testData = [[1] * COLUMNS] * ROWS
 formatData = [[1] * COLUMNS] * ROWS
-def run_pyexcelerate():
+def run_pyexcelerate_value_fastest():
 	wb = Workbook()
 	stime = time.clock()
 	ws = wb.new_sheet('Test 1', data=testData)
-	wb.save(get_output_path('test_pyexcelerate.xlsx'))
+	wb.save(get_output_path('test_pyexcelerate_value_fastest.xlsx'))
 	elapsed = time.clock() - stime
-	print("pyexcelerate, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	print("pyexcelerate value fastest, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
 
+def run_pyexcelerate_value_faster():
+	wb = Workbook()
+	stime = time.clock()
+	ws = wb.new_sheet('Test 1')
+	for row in range(ROWS):
+		for col in range(COLUMNS):
+			ws.set_cell_value(row + 1, col + 1, 1)
+	wb.save(get_output_path('test_pyexcelerate_value_faster.xlsx'))
+	elapsed = time.clock() - stime
+	print("pyexcelerate value faster, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	return elapsed
+	
+
+def run_pyexcelerate_value_fast():
+	wb = Workbook()
+	stime = time.clock()
+	ws = wb.new_sheet('Test 1')
+	for row in range(ROWS):
+		for col in range(COLUMNS):
+			ws[row + 1][col + 1].value = 1
+	wb.save(get_output_path('test_pyexcelerate_value_fast.xlsx'))
+	elapsed = time.clock() - stime
+	print("pyexcelerate value fast, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	return elapsed
+	
 def run_openpyxl():
 	try:
 		import openpyxl
@@ -37,7 +65,7 @@ def run_openpyxl():
 	print("openpyxl, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
 
-def run_xlsxwriter():
+def run_xlsxwriter_value():
 	try:
 		import xlsxwriter.workbook
 	except ImportError:
@@ -52,14 +80,57 @@ def run_xlsxwriter():
 	elapsed = time.clock() - stime
 	print("xlsxwriter, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
-
+	
 def generate_format_data():
 	for row in range(ROWS):
 		for col in range(COLUMNS):
 			formatData[row][col] = randint(1, (1 << 4) - 1)
 	
-
-def run_pyexcelerate_optimization():
+def run_pyexcelerate_style_fastest():
+	wb = Workbook()
+	stime = time.clock()
+	ws = wb.new_sheet('Test 1')
+	bold = Style(font=Font(bold=True))
+	italic = Style(font=Font(italic=True))
+	underline = Style(font=Font(underline=True))
+	red = Style(fill=Fill(background=Color(255,0,0,0)))
+	for row in range(ROWS):
+		for col in range(COLUMNS):
+			ws.set_cell_value(row + 1, col + 1, 1)
+			if formatData[row][col] & BOLD:
+				ws.set_cell_style(row + 1, col + 1, bold)
+			if formatData[row][col] & ITALIC:
+				ws.set_cell_style(row + 1, col + 1, ws.get_cell_style(row + 1, col + 1) | italic)
+			if formatData[row][col] & UNDERLINE:
+				ws.set_cell_style(row + 1, col + 1, ws.get_cell_style(row + 1, col + 1) | underline)
+			if formatData[row][col] & RED_BG:
+				ws.set_cell_style(row + 1, col + 1, ws.get_cell_style(row + 1, col + 1) | red)
+	wb.save(get_output_path('test_pyexcelerate_style_fastest.xlsx'))
+	elapsed = time.clock() - stime
+	print("pyexcelerate style fastest, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	return elapsed
+	
+def run_pyexcelerate_style_faster():
+	wb = Workbook()
+	stime = time.clock()
+	ws = wb.new_sheet('Test 1')
+	for row in range(ROWS):
+		for col in range(COLUMNS):
+			ws.set_cell_value(row + 1, col + 1, 1)
+			if formatData[row][col] & BOLD:
+				ws.get_cell_style(row + 1, col + 1).font.bold = True
+			if formatData[row][col] & ITALIC:
+				ws.get_cell_style(row + 1, col + 1).font.italic = True
+			if formatData[row][col] & UNDERLINE:
+				ws.get_cell_style(row + 1, col + 1).font.underline = True
+			if formatData[row][col] & RED_BG:
+				ws.get_cell_style(row + 1, col + 1).fill.background = Color(255, 0, 0)
+	wb.save(get_output_path('test_pyexcelerate_style_faster.xlsx'))
+	elapsed = time.clock() - stime
+	print("pyexcelerate style faster, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	return elapsed
+	
+def run_pyexcelerate_style_fast():
 	wb = Workbook()
 	stime = time.clock()
 	ws = wb.new_sheet('Test 1')
@@ -67,25 +138,25 @@ def run_pyexcelerate_optimization():
 		for col in range(COLUMNS):
 			ws[row + 1][col + 1].value = 1
 			if formatData[row][col] & BOLD:
-				ws[row + 1][col + 1].font.bold = True
+				ws[row + 1][col + 1].style.font.bold = True
 			if formatData[row][col] & ITALIC:
-				ws[row + 1][col + 1].font.italic = True
+				ws[row + 1][col + 1].style.font.italic = True
 			if formatData[row][col] & UNDERLINE:
-				ws[row + 1][col + 1].font.underline = True
+				ws[row + 1][col + 1].style.font.underline = True
 			if formatData[row][col] & RED_BG:
-				ws[row + 1][col + 1].fill.background = Color(255, 0, 0, 0)
-	wb.save(get_output_path('test_pyexcelerate_opt.xlsx'))
+				ws[row + 1][col + 1].style.fill.background = Color(255, 0, 0, 0)
+	wb.save(get_output_path('test_pyexcelerate_style_fast.xlsx'))
 	elapsed = time.clock() - stime
-	print("pyexcelerate optimization, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	print("pyexcelerate style fast, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
 
-def run_xlsxwriter_optimization():
+def run_xlsxwriter_style():
 	try:
 		import xlsxwriter.workbook
 	except ImportError:
 		raise Exception('XlsxWriter not installled')
 	stime = time.clock()
-	wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_opt.xlsx'), {'constant_memory': True})
+	wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_style.xlsx'), {'constant_memory': True})
 	ws = wb.add_worksheet()
 	for row in range(ROWS):
 		for col in range(COLUMNS):
@@ -98,10 +169,10 @@ def run_xlsxwriter_optimization():
 				format.set_underline()
 			if formatData[row][col] & RED_BG:
 				format.set_bg_color('red')
-			ws.write_number(row, col, 1, format)
+			ws.write_number(row, col, 1, format) 
 	wb.close()
 	elapsed = time.clock() - stime
-	print("xlsxwriter optimization, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	print("xlsxwriter style, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
 
 def run_openpyxl_optimization():
@@ -134,12 +205,14 @@ def run_openpyxl_optimization():
 	return elapsed
 	
 def test_all():
-	run_pyexcelerate()
-	run_xlsxwriter()
-	run_openpyxl()
-	ROWS = 650
-	COLUMNS = 100
+	run_pyexcelerate_value_fastest()
+	run_pyexcelerate_value_faster()
+	run_pyexcelerate_value_fast()
+	run_xlsxwriter_value()
+	#run_openpyxl()
 	generate_format_data()
-	run_pyexcelerate_optimization()
-	run_xlsxwriter_optimization()
-	run_openpyxl_optimization()
+	run_pyexcelerate_style_fastest()
+	run_pyexcelerate_style_faster()
+	run_pyexcelerate_style_fast()
+	run_xlsxwriter_style()
+	#run_openpyxl_optimization()

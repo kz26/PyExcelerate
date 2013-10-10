@@ -1,4 +1,5 @@
 from . import six
+from .Utility import Utility
 
 class Font(object):
 	def __init__(self, bold=False, italic=False, underline=False, strikethrough=False, family='Calibri', size=11):
@@ -25,6 +26,26 @@ class Font(object):
 	@property
 	def is_default(self):
 		return self == Font()
+
+	def __or__(self, other):
+		return Font( \
+			bold = self.bold | other.bold, \
+			italic = self.italic | other.italic, \
+			underline = self.underline | other.underline, \
+			strikethrough = self.strikethrough | other.strikethrough, \
+			family = Utility.nonboolean_or(self.family, other.family, 'Calibri'), \
+			size = Utility.nonboolean_or(self.size, other.size, 11) \
+		)
+
+	def __and__(self, other):
+		return Font( \
+			bold = self.bold & other.bold, \
+			italic = self.italic & other.italic, \
+			underline = self.underline & other.underline, \
+			strikethrough = self.strikethrough & other.strikethrough, \
+			family = Utility.nonboolean_and(self.family, other.family, 'Calibri'), \
+			size = Utility.nonboolean_and(self.size, other.size, 11) \
+		)
 
 	def __eq__(self, other):
 		if other is None:

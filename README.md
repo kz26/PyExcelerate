@@ -32,6 +32,8 @@ Ubuntu 12.04 LTS, Core i7-2600 3.4GHz, 16GB DDR3, Python 2.7.3
 
 ### Writing bulk data
 
+#### Fastest
+
 ```python
 from pyexcelerate import Workbook
 
@@ -47,6 +49,8 @@ wb.save("output.xlsx")
 
 PyExcelerate also permits you to write data to ranges directly, which is faster than writing cell-by-cell.
 
+#### Fastest
+
 ```python
 from pyexcelerate import Workbook
 
@@ -58,6 +62,24 @@ wb.save("output.xlsx")
 ```
 
 ### Writing cell data
+
+#### Faster
+
+```python
+from datetime import datetime
+from pyexcelerate import Workbook
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.set_cell_value(1, 1, 15) # a number
+ws.set_cell_value(1, 2, 20)
+ws.set_cell_value(1, 3, "=SUM(A1,B1)") # a formula
+ws.set_cell_value(1, 4, datetime.now()) # a date
+wb.save("output.xlsx")
+
+```
+
+#### Fast
 
 ```python
 from datetime import datetime
@@ -100,7 +122,48 @@ wb.save("output.xlsx")
 
 ### Styling cells
 
-Styling cells causes **non-negligible** overhead. It **will** increase your execution time (up to 10x longer!). Only style cells if absolutely necessary.
+Styling cells causes **non-negligible** overhead. It **will** increase your execution time (up to 10x longer if done improperly!). Only style cells if absolutely necessary.
+
+#### Fastest
+
+```python
+from pyexcelerate import Workbook, Color, Style, Font, Fill
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.set_cell_value(1, 1, 1)
+ws.set_cell_style(1, 1, Style(font=Font(bold=True)))
+ws.set_cell_style(1, 1, Style(font=Font(italic=True)))
+ws.set_cell_style(1, 1, Style(font=Font(underline=True)))
+ws.set_cell_style(1, 1, Style(font=Font(strikethrough=True)))
+ws.set_cell_style(1, 1, Style(fill=Fill(background=Color(255,0,0,0))))
+ws.set_cell_value(1, 2, datetime.now())
+ws.set_cell_style(1, 1, Style(format=Format('mm/dd/yy')))
+wb.save("output.xlsx")
+
+```
+
+#### Faster
+
+```python
+from pyexcelerate import Workbook, Color
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.set_cell_value(1, 1, 1)
+ws.get_cell_style(1, 1).font.bold = True
+ws.get_cell_style(1, 1).font.italic = True
+ws.get_cell_style(1, 1).font.underline = True
+ws.get_cell_style(1, 1).font.strikethrough = True
+ws.get_cell_style(1, 1).fill.background = Color(0, 255, 0, 0)
+ws.set_cell_value(1, 2, datetime.now())
+ws.get_cell_style(1, 1).format.format = 'mm/dd/yy'
+wb.save("output.xlsx")
+
+```
+#### Fast
 
 ```python
 from pyexcelerate import Workbook, Color

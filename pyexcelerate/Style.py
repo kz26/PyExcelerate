@@ -1,16 +1,15 @@
 from . import six
-from . import Font
-from . import Fill
-from . import Format
+from . import Font, Fill, Format
+from .Utility import Utility
 
 class Style(object):
 	_DEFAULT_FORMAT = Format.Format()
 	_DEFAULT_FILL = Fill.Fill()
 	_DEFAULT_FONT = Font.Font()
-	def __init__(self):
-		self._font = None
-		self._fill = None
-		self._format = None
+	def __init__(self, font=None, fill=None, format=None):
+		self._font = font
+		self._fill = fill
+		self._format = format
 
 	@property
 	def is_default(self):
@@ -61,6 +60,12 @@ class Style(object):
 			return self.is_default
 		else:
 			return self._to_tuple() == other._to_tuple()
+	
+	def __or__(self, other):
+		return Style( \
+			font=Utility.nonboolean_or(self._font, other._font, None), \
+			fill=Utility.nonboolean_or(self._fill, other._fill, None), \
+			format=Utility.nonboolean_or(self._format, other._format, None))
 	
 	def _to_tuple(self):
 		return (self._font, self._fill, self._format)
