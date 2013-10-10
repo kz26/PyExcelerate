@@ -97,14 +97,16 @@ def run_pyexcelerate_style_fastest():
 	for row in range(ROWS):
 		for col in range(COLUMNS):
 			ws.set_cell_value(row + 1, col + 1, 1)
+			style = Style()
 			if formatData[row][col] & BOLD:
-				ws.set_cell_style(row + 1, col + 1, bold)
+				style.font.bold = True
 			if formatData[row][col] & ITALIC:
-				ws.set_cell_style(row + 1, col + 1, ws.get_cell_style(row + 1, col + 1) | italic)
+				style.font.italic = True
 			if formatData[row][col] & UNDERLINE:
-				ws.set_cell_style(row + 1, col + 1, ws.get_cell_style(row + 1, col + 1) | underline)
+				style.font.underline = True
 			if formatData[row][col] & RED_BG:
-				ws.set_cell_style(row + 1, col + 1, ws.get_cell_style(row + 1, col + 1) | red)
+				style.fill.background = Color(255, 0, 0)
+			ws.set_cell_style(row + 1, col + 1, style)
 	wb.save(get_output_path('test_pyexcelerate_style_fastest.xlsx'))
 	elapsed = time.clock() - stime
 	print("pyexcelerate style fastest, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
