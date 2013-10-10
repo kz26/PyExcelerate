@@ -79,6 +79,7 @@ def run_pyexcelerate_optimization():
 	print("pyexcelerate optimization, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
 
+
 def run_xlsxwriter_optimization():
 	try:
 		import xlsxwriter.workbook
@@ -87,22 +88,30 @@ def run_xlsxwriter_optimization():
 	stime = time.clock()
 	wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_opt.xlsx'), {'constant_memory': True})
 	ws = wb.add_worksheet()
+
+	cell_formats = []
+
+	for i in range(16):
+		cell_format = wb.add_format()
+		if i & BOLD:
+			cell_format.set_bold()
+		if i & ITALIC:
+			cell_format.set_italic()
+		if i & UNDERLINE:
+			cell_format.set_underline()
+		if i & RED_BG:
+			cell_format.set_bg_color('red')
+		cell_formats.append(cell_format)
+
 	for row in range(ROWS):
 		for col in range(COLUMNS):
-			format = wb.add_format()
-			if formatData[row][col] & BOLD:
-				format.set_bold()
-			if formatData[row][col] & ITALIC:
-				format.set_italic()
-			if formatData[row][col] & UNDERLINE:
-				format.set_underline()
-			if formatData[row][col] & RED_BG:
-				format.set_bg_color('red')
-			ws.write_number(row, col, 1, format)
+			ws.write_number(row, col, 1, cell_formats[formatData[row][col]])
+
 	wb.close()
 	elapsed = time.clock() - stime
 	print("xlsxwriter optimization, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
+
 
 def run_openpyxl_optimization():
 	try:
