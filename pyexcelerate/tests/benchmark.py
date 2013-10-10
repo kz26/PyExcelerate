@@ -65,19 +65,20 @@ def run_pyexcelerate_optimization():
 	ws = wb.new_sheet('Test 1')
 	for row in range(ROWS):
 		for col in range(COLUMNS):
-			ws[row + 1][col + 1].value = 1
+			ws.set_cell_value(row + 1, col + 1, 1)
 			if formatData[row][col] & BOLD:
-				ws[row + 1][col + 1].font.bold = True
+				ws[row + 1][col + 1].style.font.bold = True
 			if formatData[row][col] & ITALIC:
-				ws[row + 1][col + 1].font.italic = True
+				ws[row + 1][col + 1].style.font.italic = True
 			if formatData[row][col] & UNDERLINE:
-				ws[row + 1][col + 1].font.underline = True
+				ws[row + 1][col + 1].style.font.underline = True
 			if formatData[row][col] & RED_BG:
 				ws[row + 1][col + 1].fill.background = Color(255, 0, 0, 0)
 	wb.save(get_output_path('test_pyexcelerate_opt.xlsx'))
 	elapsed = time.clock() - stime
 	print("pyexcelerate optimization, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
+
 
 def run_xlsxwriter_optimization():
 	try:
@@ -87,18 +88,23 @@ def run_xlsxwriter_optimization():
 	stime = time.clock()
 	wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_opt.xlsx'), {'constant_memory': True})
 	ws = wb.add_worksheet()
+
+	bold = wb.add_format({'bold': True})
+	italic = wb.add_format({'italic': True})
+	underline = wb.add_format({'underline': 1})
+	bg_color = wb.add_format({'bg_color': 'red'})
+
 	for row in range(ROWS):
 		for col in range(COLUMNS):
-			format = wb.add_format()
 			if formatData[row][col] & BOLD:
-				format.set_bold()
+				cell_format = bold
 			if formatData[row][col] & ITALIC:
-				format.set_italic()
+				cell_format = italic
 			if formatData[row][col] & UNDERLINE:
-				format.set_underline()
+				cell_format = underline
 			if formatData[row][col] & RED_BG:
-				format.set_bg_color('red')
-			ws.write_number(row, col, 1, format)
+				cell_format = bg_color
+			ws.write_number(row, col, 1, cell_format)
 	wb.close()
 	elapsed = time.clock() - stime
 	print("xlsxwriter optimization, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
