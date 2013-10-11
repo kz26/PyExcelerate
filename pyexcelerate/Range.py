@@ -1,6 +1,6 @@
 from . import DataTypes
 from . import six
-from . import Font, Fill, Format
+from . import Font, Fill, Format, Style
 from six.moves import reduce
 
 #
@@ -40,6 +40,8 @@ class Range(object):
 	
 	@property
 	def style(self):
+		if self.is_row:
+			return self.__get_attr(self.worksheet.get_cell_style, Range.AttributeInterceptor(self.worksheet.get_row_style(self.x), ''))
 		return self.__get_attr(self.worksheet.get_cell_style, Range.AttributeInterceptor(self, 'style'))
 		
 	@style.setter
@@ -56,14 +58,19 @@ class Range(object):
 	
 	# this class permits doing things like range().style.font.bold = True
 	class AttributeInterceptor(object):
-		def __init__(self, parent, attribute):
-			self.__dict__['_parent_range'] = parent
+		def __init__(self, parent, attribute = ''):
+			self.__dict__['_parent'] = parent
 			self.__dict__['_attribute'] = attribute
 		def __getattr__(self, name):
-			return Range.AttributeInterceptor(self._parent_range, "%s.%s" % (self._attribute, name))
+			if self._attribute == '':
+				return Range.AttributeInterceptor(self._parent, name)
+			return Range.AttributeInterceptor(self._parent, "%s.%s" % (self._attribute, name))
 		def __setattr__(self, name, value):
-			for cell in self._parent_range:
-				setattr(reduce(getattr, self._attribute.split('.'), cell), name, value)
+			if isinstance(self._parent, Style.Style):
+				setattr(reduce(getattr, self._attribute.split('.'), self._parent), name, value)
+			else:
+				for cell in self._parent:
+					setattr(reduce(getattr, self._attribute.split('.'), cell), name, value)
 
 	# note that these are not the python __getattr__/__setattr__
 	def __get_attr(self, method, default=None):
@@ -84,7 +91,11 @@ class Range(object):
 					method(merge._start[0], merge._start[1], data)
 					return
 			method(self.x, self.y, data)
+		elif self.is_row and isinstance(data, Style.Style):
+			# Applying a row style
+			self.worksheet.set_row_style(self.x, data)
 		elif DataTypes.DataTypes.get_type(data) != DataTypes.DataTypes.ERROR:
+			# Attempt to apply in batch
 			for cell in self:
 				cell.__set_attr(method, data)
 		else:
@@ -118,6 +129,8 @@ class Range(object):
 		self.worksheet.add_merge(self)
 
 	def __iter__(self):
+		if self.is_row or self.is_column:
+			raise Exception('Can\'t iterate over an infinite row/column')
 		for x in range(self._start[0], self._end[0] + 1):
 			for y in range(self._start[1], self._end[1] + 1):
 				yield Range((x, y), (x, y), self.worksheet, validate=False)

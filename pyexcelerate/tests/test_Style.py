@@ -47,13 +47,22 @@ def test_style_reference():
 	ws[1][1].style.font = font
 	wb.save(get_output_path("style-reference-test.xlsx"))
 
-def test_and_or():
+def test_style_row():
+	wb = Workbook()
+	ws = wb.new_sheet("test")
+	ws[1].style.fill.background = Color(255, 0, 0)
+	ws[1][3].style.fill.background = Color(0, 255, 0)
+	wb.save(get_output_path("style-row-test.xlsx"))
+
+def test_and_or_xor():
 	bolditalic = Font(bold=True, italic=True)
 	italicunderline = Font(italic=True, underline=True)
 	eq_(Font(italic=True), bolditalic & italicunderline)
 	eq_(Font(bold=True, italic=True, underline=True), bolditalic | italicunderline)
+	eq_(Font(bold=True, underline=True), bolditalic ^ italicunderline)
 	
 	fontstyle = Style(font=Font(bold=True))
 	fillstyle = Style(fill=Fill(background=Color(255, 0, 0, 0)))
 	eq_(Style(), fontstyle & fillstyle)
 	eq_(Style(font=Font(bold=True), fill=Fill(background=Color(255, 0, 0, 0))), fontstyle | fillstyle)
+	eq_(Style(font=Font(bold=True), fill=Fill(background=Color(255, 0, 0, 0))), fontstyle ^ fillstyle)

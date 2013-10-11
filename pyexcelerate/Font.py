@@ -28,23 +28,22 @@ class Font(object):
 		return self == Font()
 
 	def __or__(self, other):
-		return Font( \
-			bold = self.bold | other.bold, \
-			italic = self.italic | other.italic, \
-			underline = self.underline | other.underline, \
-			strikethrough = self.strikethrough | other.strikethrough, \
-			family = Utility.nonboolean_or(self.family, other.family, 'Calibri'), \
-			size = Utility.nonboolean_or(self.size, other.size, 11) \
-		)
+		return self._binary_operation(other, Utility.nonboolean_or)
 
 	def __and__(self, other):
+		return self._binary_operation(other, Utility.nonboolean_and)
+	
+	def __xor__(self, other):
+		return self._binary_operation(other, Utility.nonboolean_xor)
+	
+	def _binary_operation(self, other, operation):
 		return Font( \
-			bold = self.bold & other.bold, \
-			italic = self.italic & other.italic, \
-			underline = self.underline & other.underline, \
-			strikethrough = self.strikethrough & other.strikethrough, \
-			family = Utility.nonboolean_and(self.family, other.family, 'Calibri'), \
-			size = Utility.nonboolean_and(self.size, other.size, 11) \
+			bold = operation(self.bold, other.bold), \
+			italic = operation(self.italic, other.italic), \
+			underline = operation(self.underline, other.underline), \
+			strikethrough = operation(self.strikethrough, other.strikethrough), \
+			family = operation(self.family, other.family, 'Calibri'), \
+			size = operation(self.size, other.size, 11) \
 		)
 
 	def __eq__(self, other):

@@ -30,6 +30,9 @@ class Fill(object):
 	def __and__(self, other):
 		return Fill(background=Utility.nonboolean_and(self.background, other.background, Color.TRANSPARENT))
 		
+	def __xor__(self, other):
+		return Fill(background=Utility.nonboolean_xor(self.background, other.background, Color.TRANSPARENT))
+		
 	def __str__(self):
 		return "Fill: #%s" % self.background.hex
 	

@@ -6,7 +6,7 @@
         </sheetView>
     </sheetViews>
     <sheetFormatPr defaultRowHeight="15" x14ac:dyDescent="0.25" />
-    <sheetData>{% for x, row in worksheet.get_xml_data() %}<row r="{{ x }}">{% for cell in row %}{{ cell }}{% endfor %}</row>{% endfor %}</sheetData>
+    <sheetData>{% for x, row in worksheet.get_xml_data() %}{{ worksheet.get_row_xml_string(x) }}{% for cell in row %}{{ cell }}{% endfor %}</row>{% endfor %}</sheetData>
     {% if worksheet.merges.__len__() > 0 %}
     <mergeCells>{% for merge in worksheet.merges %}<mergeCell ref="{{ merge.__str__() }}"/>{% endfor %}</mergeCells>
     {% endif %}

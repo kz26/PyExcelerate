@@ -200,6 +200,49 @@ ws.range("A3","C3").style.fill.background = Color(255, 0, 0, 0)
 ws.range("C1","C3").style.font.strikethrough = True
 ```
 
+### Styling rows
+
+A simpler (and faster) way to style an entire row.
+
+#### Fastest
+
+```python
+from pyexcelerate import Workbook, Color, Style, Fill
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.set_row_style(1, Style(fill=Fill(background=Color(255,0,0,0))))
+wb.save("output.xlsx")
+
+```
+
+#### Faster
+
+```python
+from pyexcelerate import Workbook, Color
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.get_row_style(1).fill.background = Color(255, 0, 0)
+wb.save("output.xlsx")
+
+```
+
+#### Fast
+
+```python
+from pyexcelerate import Workbook, Color
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws[1].style.fill.background = Color(255, 0, 0)
+wb.save("output.xlsx")
+
+```
+
 ### Linked styles
 
 PyExcelerate supports using style objects instead manually setting each attribute as well. This permits you to modify the style at a later time.

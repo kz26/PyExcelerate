@@ -17,6 +17,9 @@ class Format(object):
 	
 	def __and__(self, other):
 		return Format(format=Utility.nonboolean_and(self.format, other.format, None))
+		
+	def __xor__(self, other):
+		return Format(format=Utility.nonboolean_xor(self.format, other.format, None))
 	
 	def __hash__(self):
 		return hash(self.format)

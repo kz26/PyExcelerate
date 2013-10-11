@@ -62,16 +62,19 @@ class Style(object):
 			return self._to_tuple() == other._to_tuple()
 	
 	def __or__(self, other):
-		return Style( \
-			font=Utility.nonboolean_or(self._font, other._font, None), \
-			fill=Utility.nonboolean_or(self._fill, other._fill, None), \
-			format=Utility.nonboolean_or(self._format, other._format, None))
+		return self._binary_operation(other, Utility.nonboolean_or)
 			
 	def __and__(self, other):
+		return self._binary_operation(other, Utility.nonboolean_and)
+
+	def __xor__(self, other):
+		return self._binary_operation(other, Utility.nonboolean_xor)
+
+	def _binary_operation(self, other, operation):
 		return Style( \
-			font=Utility.nonboolean_and(self._font, other._font, None), \
-			fill=Utility.nonboolean_and(self._fill, other._fill, None), \
-			format=Utility.nonboolean_and(self._format, other._format, None))
+			font=operation(self._font, other._font, None), \
+			fill=operation(self._fill, other._fill, None), \
+			format=operation(self._format, other._format, None))
 	
 	def _to_tuple(self):
 		return (self._font, self._fill, self._format)

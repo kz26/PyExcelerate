@@ -12,6 +12,7 @@ class Worksheet(object):
 		self._cells = {}
 		self._cell_cache = {}
 		self._styles = {}
+		self._row_styles = {}
 		self._parent = workbook
 		self._merges = [] # list of Range objects
 		self._attributes = {}
@@ -68,6 +69,8 @@ class Worksheet(object):
 	def get_cell_value(self, x, y):
 		if x not in self._cells:
 			self._cells[x] = {}
+		if y not in self._cells[x]:
+			return None
 		type = DataTypes.get_type(self._cells[x][y])
 		if type == DataTypes.FORMULA:
 			# remove the equals sign
@@ -96,6 +99,17 @@ class Worksheet(object):
 			self._styles[x] = {}
 		self._styles[x][y] = value
 		self._parent.add_style(value)
+		if not self.get_cell_value(x, y):
+			self.set_cell_value(x, y, '')
+	
+	def get_row_style(self, row):
+		if row not in self._row_styles:
+			self.set_row_style(row, Style.Style())
+		return self._row_styles[row]
+		
+	def set_row_style(self, row, value):
+		self._row_styles[row] = value
+		self._parent.add_style(value)
 	
 	@property
 	def workbook(self):
@@ -118,7 +132,13 @@ class Worksheet(object):
 			return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
 		else:
 			return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), self._cell_cache[cell])
-	
+			
+	def get_row_xml_string(self, row):
+		if row in self._row_styles:
+			return "<row r=\"%d\" s=\"%d\" customFormat=\"1\">" % (row, self._row_styles[row].id)
+		else:
+			return "<row r=\"%d\">" % row
+		
 	def get_xml_data(self):
 		# Precondition: styles are aligned. if not, then :v
 		for x, row in six.iteritems(self._cells):

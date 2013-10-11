@@ -78,7 +78,7 @@ def run_xlsxwriter_value():
 			ws.write_number(row, col, 1)
 	wb.close()
 	elapsed = time.clock() - stime
-	print("xlsxwriter, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	print("xlsxwriter value, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
 	
 def generate_format_data():
@@ -151,7 +151,66 @@ def run_pyexcelerate_style_fast():
 	elapsed = time.clock() - stime
 	print("pyexcelerate style fast, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
+	
+def run_pyexcelerate_style_cheating():
+	wb = Workbook()
+	stime = time.clock()
+	ws = wb.new_sheet('Test 1')
 
+	cell_formats = []
+
+	for i in range(16):
+		cell_format = Style()
+		if i & BOLD:
+			cell_format.font.bold = True
+		if i & ITALIC:
+			cell_format.font.italic = True
+		if i & UNDERLINE:
+			cell_format.font.underline = True
+		if i & RED_BG:
+			cell_format.fill.background = Color(255, 0, 0)
+		cell_formats.append(cell_format)
+
+	for row in range(ROWS):
+		for col in range(COLUMNS):
+			ws.set_cell_value(row + 1, col + 1, 1)
+			ws.set_cell_style(row + 1, col + 1, cell_formats[formatData[row][col]])
+	wb.save(get_output_path('test_pyexcelerate_style_fastest.xlsx'))
+	elapsed = time.clock() - stime
+	print("pyexcelerate style cheating, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	return elapsed
+
+def run_xlsxwriter_style_cheating():
+	try:
+		import xlsxwriter.workbook
+	except ImportError:
+		raise Exception('XlsxWriter not installled')
+	stime = time.clock()
+	wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_style.xlsx'), {'constant_memory': True})
+	ws = wb.add_worksheet()
+	
+	cell_formats = []
+
+	for i in range(16):
+		cell_format = wb.add_format()
+		if i & BOLD:
+			cell_format.set_bold()
+		if i & ITALIC:
+			cell_format.set_italic()
+		if i & UNDERLINE:
+			cell_format.set_underline()
+		if i & RED_BG:
+			cell_format.set_bg_color('red')
+		cell_formats.append(cell_format)
+
+	for row in range(ROWS):
+		for col in range(COLUMNS):
+			ws.write_number(row, col, 1, cell_formats[formatData[row][col]]) 
+	wb.close()
+	elapsed = time.clock() - stime
+	print("xlsxwriter style cheating, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
+	return elapsed
+	
 def run_xlsxwriter_style():
 	try:
 		import xlsxwriter.workbook
@@ -160,6 +219,7 @@ def run_xlsxwriter_style():
 	stime = time.clock()
 	wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_style.xlsx'), {'constant_memory': True})
 	ws = wb.add_worksheet()
+	
 	for row in range(ROWS):
 		for col in range(COLUMNS):
 			format = wb.add_format()
@@ -205,7 +265,10 @@ def run_openpyxl_optimization():
 	elapsed = time.clock() - stime
 	print("openpyxl, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
 	return elapsed
+
+
 	
+
 def test_all():
 	run_pyexcelerate_value_fastest()
 	run_pyexcelerate_value_faster()
@@ -213,8 +276,10 @@ def test_all():
 	run_xlsxwriter_value()
 	#run_openpyxl()
 	generate_format_data()
+	run_pyexcelerate_style_cheating()
 	run_pyexcelerate_style_fastest()
 	run_pyexcelerate_style_faster()
 	run_pyexcelerate_style_fast()
+	run_xlsxwriter_style_cheating()
 	run_xlsxwriter_style()
 	#run_openpyxl_optimization()
