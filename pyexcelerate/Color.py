@@ -10,9 +10,11 @@ class Color(object):
 		return '%0.2X%0.2X%0.2X%0.2X' % (self.a, self.r, self.g, self.b)
 	
 	def __hash__(self):
-		return hash((self.r, self.g, self.b, self.a))
+		return (self.a << 24) + (self.r << 16) + (self.g << 8) + (self.b)
 		
 	def __eq__(self, other):
+		if not other:
+			return False
 		return self.r == other.r and self.g == other.g and self.b == other.b and self.a == other.a
 
 Color.WHITE = Color(255, 255, 255, 255)

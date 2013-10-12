@@ -53,7 +53,7 @@ class Style(object):
 		return "<xf xfId=\"0\" borderId=\"0\" %s/>" % (" ".join(tag))
 		
 	def __hash__(self):
-		return hash((hash(self._font), hash(self._fill), hash(self._format)))
+		return hash(self._to_tuple())
 	
 	def __eq__(self, other):
 		if other is None:

@@ -21,7 +21,7 @@ class Fill(object):
 		if other is None:
 			return self.is_default
 		else:
-			return self.background == other.background
+			return self._background == other._background
 
 	def __hash__(self):
 		return hash(self.background)
