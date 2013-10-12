@@ -18,27 +18,27 @@ class Style(object):
 	@property
 	def format(self):
 		# don't use default because default should be const
-		return self._lazy_get('_format', Format.Format())
+		return Utility.lazy_get(self, '_format', Format.Format())
 	
 	@format.setter
 	def format(self, value):
-		self._lazy_set('_format', Style._DEFAULT_FORMAT, value)
+		Utility.lazy_set(self, '_format', Style._DEFAULT_FORMAT, value)
 	
 	@property
 	def font(self):
-		return self._lazy_get('_font', Font.Font())
+		return Utility.lazy_get(self, '_font', Font.Font())
 	
 	@font.setter
 	def font(self, value):
-		self._lazy_set('_font', Style._DEFAULT_FONT, value)
+		Utility.lazy_set(self, '_font', Style._DEFAULT_FONT, value)
 	
 	@property
 	def fill(self):
-		return self._lazy_get('_fill', Fill.Fill())
+		return Utility.lazy_get(self, '_fill', Fill.Fill())
 	
 	@fill.setter
 	def fill(self, value):
-		self._lazy_set('_fill', Style._DEFAULT_FILL, value)
+		Utility.lazy_set(self, '_fill', Style._DEFAULT_FILL, value)
 	
 	def get_xml_string(self):
 		# Precondition: Workbook._align_styles has been run.
@@ -79,19 +79,6 @@ class Style(object):
 	def _to_tuple(self):
 		return (self._font, self._fill, self._format)
 	
-	def _lazy_get(self, attribute, default):
-		value = getattr(self, attribute)
-		if not value:
-			setattr(self, attribute, default)
-			return default
-		else:
-			return value
-			
-	def _lazy_set(self, attribute, default, value):
-		if value == default:
-			setattr(self, attribute, None)
-		else:
-			setattr(self, attribute, value)
 			
 	def __str__(self):
 		return "%s %s %s" % (self.font, self.fill, self.format)

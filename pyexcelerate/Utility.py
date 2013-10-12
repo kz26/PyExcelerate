@@ -26,3 +26,19 @@ class Utility(object):
 		if right == default:
 			return left
 		return default
+		
+	@staticmethod
+	def lazy_get(self, attribute, default):
+		value = getattr(self, attribute)
+		if not value:
+			setattr(self, attribute, default)
+			return default
+		else:
+			return value
+	
+	@staticmethod
+	def lazy_set(self, attribute, default, value):
+		if value == default:
+			setattr(self, attribute, None)
+		else:
+			setattr(self, attribute, value)
