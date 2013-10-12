@@ -1,5 +1,6 @@
 from . import Worksheet
 from .Writer import Writer
+from . import Utility
 import time
 
 class Workbook(object):
@@ -43,6 +44,7 @@ class Workbook(object):
 
 	def _align_styles(self):
 		if Workbook.alignment != self or len(self._items) == 0:
+			Utility.YOLO = True
 			Workbook.alignment = self
 			items = dict([(x, {}) for x in Workbook.STYLE_ATTRIBUTE_MAP.keys()])
 			styles = {}
@@ -66,6 +68,7 @@ class Workbook(object):
 				items[k] = [tup[0] for tup in sorted(v.items(), key=lambda x: x[1])]
 			self._items = items
 			self._styles = [tup[0] for tup in sorted(styles.items(), key=lambda x: x[1])]
+			Utility.YOLO = False
 	def __getattr__(self, name):
 		if Workbook.alignment != self:
 			self._align_styles()

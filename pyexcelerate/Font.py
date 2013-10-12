@@ -1,5 +1,5 @@
 from . import six
-from .Utility import Utility
+from . import Utility
 from . import Color
 
 class Font(object):
@@ -37,7 +37,7 @@ class Font(object):
 		
 	@property
 	def is_default(self):
-		return self == Font()
+		return self._to_tuple() == Font()._to_tuple()
 
 	def __or__(self, other):
 		return self._binary_operation(other, Utility.nonboolean_or)
@@ -56,20 +56,22 @@ class Font(object):
 			strikethrough = operation(self.strikethrough, other.strikethrough), \
 			family = operation(self.family, other.family, 'Calibri'), \
 			size = operation(self.size, other.size, 11), \
-			color = operation(self._color, other._color, None)
+			color = operation(self._color, other._color, None) \
 		)
 
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
+		elif Utility.YOLO:
+			return (self.family, self.size, self._color) == (other.family, other.size, other._color)
 		else:
 			return self._to_tuple() == other._to_tuple()
 
 	def __hash__(self):
-		return hash(self._to_tuple())
+		return hash((self.bold, self.italic, self.underline, self.strikethrough))
 
 	def _to_tuple(self):
-		return (self.bold, self.italic, self.underline, self.strikethrough, self.family, self.size)
+		return (self.bold, self.italic, self.underline, self.strikethrough, self.family, self.size, self._color)
 
 	def __str__(self):
 		tokens = ["%s, %dpt" % (self.family, self.size)]

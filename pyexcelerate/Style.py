@@ -1,6 +1,6 @@
 from . import six
 from . import Font, Fill, Format
-from .Utility import Utility
+from . import Utility
 
 class Style(object):
 	_DEFAULT_FORMAT = Format.Format()
@@ -53,11 +53,13 @@ class Style(object):
 		return "<xf xfId=\"0\" borderId=\"0\" %s/>" % (" ".join(tag))
 		
 	def __hash__(self):
-		return hash(self._to_tuple())
+		return hash(self._font)
 	
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
+		elif Utility.YOLO:
+			return self._format == other._format and self._fill == other._fill
 		else:
 			return self._to_tuple() == other._to_tuple()
 	

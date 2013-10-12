@@ -1,5 +1,5 @@
 from . import six
-from .Utility import Utility
+from . import Utility
 
 class Format(object):
 	def __init__(self, format=None):
@@ -9,8 +9,7 @@ class Format(object):
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
-		else:
-			return self.format == other.format
+		return self.format == other.format
 	
 	def __or__(self, other):
 		return Format(format=Utility.nonboolean_or(self.format, other.format, None))

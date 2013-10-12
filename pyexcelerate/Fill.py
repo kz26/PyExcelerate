@@ -1,4 +1,4 @@
-from .Utility import Utility
+from . import Utility
 from . import Color
 
 class Fill(object):
@@ -20,8 +20,7 @@ class Fill(object):
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
-		else:
-			return self._background == other._background
+		return self._background == other._background
 
 	def __hash__(self):
 		return hash(self.background)
