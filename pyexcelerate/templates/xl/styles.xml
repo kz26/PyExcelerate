@@ -9,14 +9,9 @@
 <fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>
 {% for fill in workbook.fills %}{{ fill.get_xml_string() }}{% endfor %}
 </fills>
-<borders count="1">
-    <border>
-        <left/>
-        <right/>
-        <top/>
-        <bottom/>
-        <diagonal/>
-    </border>
+<borders>
+<border><left/><right/><top/><bottom/><diagonal/></border>
+{% for borders in workbook.borders %}{{ borders.get_xml_string() }}{% endfor %}
 </borders>
 <cellStyleXfs count="1">
     <xf numFmtId="0" fontId="0" fillId="0" borderId="0"/>

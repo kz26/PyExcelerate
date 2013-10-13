@@ -1,21 +1,27 @@
 from . import six
-from . import Font, Fill, Format, Alignment
+from . import Font, Fill, Format, Alignment, Borders
 from . import Utility
 
 class Style(object):
-	_DEFAULT_FORMAT = Format.Format()
-	_DEFAULT_FILL = Fill.Fill()
-	_DEFAULT_FONT = Font.Font()
-	def __init__(self, font=None, fill=None, format=None, alignment=None):
+	def __init__(self, font=None, fill=None, format=None, alignment=None, borders=None):
 		self._font = font
 		self._fill = fill
 		self._format = format
 		self._alignment = alignment
+		self._borders = borders
 
 	@property
 	def is_default(self):
-		return not (self._font or self._fill or self._format or self._alignment)
+		return not (self._font or self._fill or self._format or self._alignment or self._borders)
 
+	@property
+	def borders(self):
+		return Utility.lazy_get(self, '_borders', Borders.Borders())
+		
+	@borders.setter
+	def borders(self, value):
+		Utility.lazy_set(self, '_borders', None, value)
+		
 	@property
 	def alignment(self):
 		return Utility.lazy_get(self, '_alignment', Alignment.Alignment())
@@ -54,24 +60,26 @@ class Style(object):
 		# Be careful when using this function as id's may be inaccurate if precondition not met.
 		tag = []
 		if not self._format is None:
-			tag.append("numFmtId=\"%d\"" % self.format.id)
+			tag.append("numFmtId=\"%d\"" % self._format.id)
 		if not self._font is None:
-			tag.append("applyFont=\"1\" fontId=\"%d\"" % (self.font.id))
+			tag.append("applyFont=\"1\" fontId=\"%d\"" % (self._font.id))
 		if not self._fill is None:
-			tag.append("applyFill=\"1\" fillId=\"%d\"" % (self.fill.id + 1))
+			tag.append("applyFill=\"1\" fillId=\"%d\"" % (self._fill.id + 1))
+		if not self._borders is None:
+			tag.append("applyBorder=\"1\" borderId=\"%d\"" % (self._borders.id))
 		if self._alignment is None:
-			return "<xf xfId=\"0\" borderId=\"0\" %s/>" % (" ".join(tag))
+			return "<xf xfId=\"0\" %s/>" % (" ".join(tag))
 		else:
-			return "<xf xfId=\"0\" borderId=\"0\" %s applyAlignment=\"1\">%s</xf>" % (" ".join(tag), self._alignment.get_xml_string())
+			return "<xf xfId=\"0\"  %s applyAlignment=\"1\">%s</xf>" % (" ".join(tag), self._alignment.get_xml_string())
 		
 	def __hash__(self):
-		return hash(self._font)
+		return hash((self._font, self._fill))
 	
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
 		elif Utility.YOLO:
-			return self._format == other._format and self._fill == other._fill
+			return self._format == other._format and self._alignment == other._alignment and self._borders == other._borders
 		else:
 			return self._to_tuple() == other._to_tuple()
 	
@@ -88,10 +96,13 @@ class Style(object):
 		return Style( \
 			font=operation(self._font, other._font, None), \
 			fill=operation(self._fill, other._fill, None), \
-			format=operation(self._format, other._format, None))
+			format=operation(self._format, other._format, None), \
+			alignment=operation(self._alignment, other._alignment, None), \
+			borders=operation(self._borders, other._borders, None) \
+		)
 	
 	def _to_tuple(self):
-		return (self._font, self._fill, self._format)
+		return (self._font, self._fill, self._format, self._alignment, self._borders)
 	
 			
 	def __str__(self):

@@ -30,6 +30,9 @@ def test_style():
 	ws[1][1].style.alignment.vertical = 'top'
 	ws[1][1].style.alignment.horizontal = 'right'
 	ws[1][1].style.alignment.rotation = 90
+	ws[3][3].style.borders.top.color = Color(255, 0, 0, 0)
+	ws[3][3].style.borders.left.color = Color(0, 255, 0, 0)
+	ws[3][4].style.borders.right.style = '-.'
 	wb.save(get_output_path("style-test.xlsx"))
 
 def test_style_compression():

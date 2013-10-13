@@ -17,5 +17,8 @@ class Color(object):
 			return False
 		return self.r == other.r and self.g == other.g and self.b == other.b and self.a == other.a
 
+	def __str__(self):
+		return self.hex
+
 Color.WHITE = Color(255, 255, 255, 255)
 Color.BLACK = Color(0, 0, 0, 255)

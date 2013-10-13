@@ -5,7 +5,7 @@ import time
 
 class Workbook(object):
 	# map for attribute sets => style attribute id's
-	STYLE_ATTRIBUTE_MAP = {'fonts':'_font', 'fills':'_fill', 'num_fmts':'_format'}
+	STYLE_ATTRIBUTE_MAP = {'fonts':'_font', 'fills':'_fill', 'num_fmts':'_format', 'borders':'_borders'}
 	STYLE_ID_ATTRIBUTE = 'id'
 	alignment = None
 	def __init__(self, encoding='utf-8'):
