@@ -11,7 +11,7 @@ class Fill(object):
 		
 	@background.setter
 	def background(self, value):
-		Utility.lazy_set(self, '_background', Color.Color(), value)
+		Utility.lazy_set(self, '_background', None, value)
 
 	@property
 	def is_default(self):

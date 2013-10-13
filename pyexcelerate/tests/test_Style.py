@@ -27,6 +27,9 @@ def test_style():
 	ws[2][2].value = "qwer"
 	eq_(ws[1][2].value, ws[1][1].value)
 	ws[2][1].style.fill.background = Color(0, 255, 0, 0)
+	ws[1][1].style.alignment.vertical = 'top'
+	ws[1][1].style.alignment.horizontal = 'right'
+	ws[1][1].style.alignment.rotation = 90
 	wb.save(get_output_path("style-test.xlsx"))
 
 def test_style_compression():

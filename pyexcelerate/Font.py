@@ -33,7 +33,7 @@ class Font(object):
 		
 	@color.setter
 	def color(self, value):
-		Utility.lazy_set(self, '_color', Color.Color(), value)
+		Utility.lazy_set(self, '_color', None, value)
 		
 	@property
 	def is_default(self):

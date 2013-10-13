@@ -33,7 +33,8 @@ def lazy_get(self, attribute, default):
 		
 def lazy_set(self, attribute, default, value):
 	if value == default:
-		setattr(self, attribute, None)
+		setattr(self, attribute, default)
 	else:
 		setattr(self, attribute, value)
+
 YOLO = False # are we aligning?
