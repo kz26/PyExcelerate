@@ -43,7 +43,7 @@ class Workbook(object):
 			yield (index, ws)
 
 	def _align_styles(self):
-		if Workbook.alignment != self or len(self._items) == 0:
+		if Workbook.alignment != self:
 			Utility.YOLO = True
 			Workbook.alignment = self
 			items = dict([(x, {}) for x in Workbook.STYLE_ATTRIBUTE_MAP.keys()])

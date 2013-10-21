@@ -161,6 +161,8 @@ class Range(object):
 	def __getitem__(self, key):
 		if self.is_row:
 			# return the key'th column
+			if isinstance(key, six.string_types):
+				key = Range.string_to_coordinate(key)
 			return Range((self.x, key), (self.x, key), self.worksheet, validate=False)
 		elif self.is_column:
 			#return the key'th row
@@ -178,13 +180,17 @@ class Range(object):
 	def string_to_coordinate(s):
 		# Convert a base-26 name to integer
 		y = 0
+		l = len(s)
 		for index, c in enumerate(s):
 			if ord(c) < Range.A or ord(c) > Range.Z:
 				s = s[index:]
 				break
 			y *= 26
 			y += ord(c) - Range.A + 1
-		return (int(s), y)
+		if len(s) == l:
+			return y
+		else:
+			return (int(s), y)
 
 	_cts_cache = {}
 	@staticmethod

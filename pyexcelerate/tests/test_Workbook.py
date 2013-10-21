@@ -28,7 +28,7 @@ def test_save():
 def test_formulas():
 	wb = Workbook()
 	ws = wb.new_sheet("test")
-	ws[1][1].value = 1
+	ws[1]['A'].value = 1
 	ws[1][2].value = 2
 	ws[1][3].value = '=SUM(A1,B1)'
 	ws[1][4].value = datetime.now()
