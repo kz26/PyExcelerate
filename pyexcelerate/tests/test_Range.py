@@ -1,5 +1,4 @@
 from ..Workbook import Workbook
-from ..Worksheet import Worksheet
 from ..Range import Range
 from nose.tools import eq_
 
