@@ -60,6 +60,19 @@ def test_no_intersection():
     eq_(r1.intersects(r2), False)
     eq_(r1.intersection(r2), None)
 
+def test_range_equal_to_none():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C3", ws)
+    r2 =  Range("B2", "D4", ws)
+    eq_(r1.intersection(r2) == None, False)
+
+def test_range_equal_to_itself():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C3", ws)
+    eq_(r1 == r1, True)
+
 """
 def test_get_xml_data():
     wb = Workbook()
