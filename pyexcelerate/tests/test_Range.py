@@ -27,6 +27,15 @@ def test__coordinate_to_string():
     eq_(cts((1, 27)), "AA1")
     eq_(cts((1, 28)), "AB1")
 
+def test_merge():
+     wb = Workbook()
+     ws = wb.new_sheet("Test")
+     r1 =  Range("A1", "A5", ws)
+     r1.merge()
+     r2 =  Range("B1", "B5", ws)
+     r2.merge()
+     eq_(len(ws.merges), 2)
+
 def test_horizontal_intersection():
     wb = Workbook()
     ws = wb.new_sheet("Test")
