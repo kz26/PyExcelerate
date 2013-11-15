@@ -1,6 +1,7 @@
 from ..Workbook import Workbook
+from ..Worksheet import Worksheet
 from ..Range import Range
-from nose.tools import eq_
+from nose.tools import eq_, ok_
 
 def test__string_to_coordinate():
     stc = Range.string_to_coordinate
@@ -26,6 +27,39 @@ def test__coordinate_to_string():
     eq_(cts((39, 2)), "B39")
     eq_(cts((1, 27)), "AA1")
     eq_(cts((1, 28)), "AB1")
+
+def test_horizontal_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "A3", ws)
+    r2 =  Range("A2", "A4", ws)
+    ok_(r1.intersects(r2))
+    eq_(r1.intersection(r2), Range("A2", "A3", ws))
+
+def test_vertical_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C1", ws)
+    r2 =  Range("B1", "D1", ws)
+    ok_(r1.intersects(r2))
+    eq_(r1.intersection(r2), Range("B1", "C1", ws))
+
+def test_rectangular_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C3", ws)
+    r2 =  Range("B2", "D4", ws)
+    ok_(r1.intersects(r2))
+    eq_(r1.intersection(r2), Range("B2", "C3", ws))
+
+def test_no_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "B2", ws)
+    r2 =  Range("C3", "D4", ws)
+    ok_(not r1.intersects(r2))
+    eq_(r1.intersection(r2), None)
+
 """
 def test_get_xml_data():
     wb = Workbook()
