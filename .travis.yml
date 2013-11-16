@@ -6,14 +6,16 @@ python:
 
 # command to install dependencies
 install:
-  - "pip install jinja2 --use-mirrors"
-  - "pip install numpy --use-mirrors"  # skip tests which require numpy is not present?
-  - "pip install xlrd --use-mirrors"
-  - "pip install xlsxwriter --use-mirrors"
-  - "pip install openpyxl --use-mirrors"
-  - "pip install six --use-mirrors"
+  - pip install -r requirements.txt --use-mirrors
+  - pip install numpy --use-mirrors
+  - pip install xlrd --use-mirrors
+  - pip install xlsxwriter --use-mirrors
+  - pip install openpyxl --use-mirrors
+  - pip install coveralls --use-mirrors
 
-#  - "pip install -r requirements.txt --use-mirrors"
 # command to run tests
+script:
+  - nosetests --with-coverage --cover-package=pyexcelerate
 
-script: nosetests
+after_success:
+  - coveralls

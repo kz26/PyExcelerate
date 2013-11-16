@@ -14,20 +14,10 @@ setup(
     description="Accelerated Excel XLSX Writing Library for Python",
     license="LICENSE",
     install_requires=[
-        'Jinja2'
+        'Jinja2',
+		'six'
     ],
     packages=[	
         'pyexcelerate'
-    ],
-    package_data={
-        'pyexcelerate': [
-            'templates/*.xml',
-            'templates/_rels/.rels',
-            'templates/docProps/*.xml',
-            'templates/xl/*.xml',
-            'templates/xl/_rels/*',
-            'templates/xl/worksheets/*.xml',
-        ]
-    }
-
+    ]
 )
