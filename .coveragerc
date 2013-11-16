@@ -2,4 +2,4 @@
 omit = 
 	pyexcelerate/six.py
 	*/python?.?/*
-	*/site-packages/nose/*
+	*/site-packages/*
