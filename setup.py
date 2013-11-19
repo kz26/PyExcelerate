@@ -1,33 +1,22 @@
 #!/usr/bin/python
 
-from distutils.core import setup
+from setuptools import setup
 from pyexcelerate import __version__
 
 setup(
     name="PyExcelerate",
     version=__version__,
     author="Kevin Wang and Kevin Zhang",
-    author_email="zhangk@uchicago.edu",
+    author_email="kevin@kevinzhang.me",
     maintainer="Kevin Zhang",
-    maintainer_email="zhangk@uchicago.edu",
-    url="https://github.com/whitehat2k9/PyExcelerate",
-    description="Accelerated Excel XLSX Writing Library for Python",
-    license="LICENSE",
+    maintainer_email="kevin@kevinzhang.me",
+    url="https://github.com/kz26/PyExcelerate",
+    description="Accelerated Excel XLSX Writing Library for Python 2/3",
     install_requires=[
-        'Jinja2'
+        'Jinja2',
+		'six'
     ],
     packages=[	
         'pyexcelerate'
-    ],
-    package_data={
-        'pyexcelerate': [
-            'templates/*.xml',
-            'templates/_rels/.rels',
-            'templates/docProps/*.xml',
-            'templates/xl/*.xml',
-            'templates/xl/_rels/*',
-            'templates/xl/worksheets/*.xml',
-        ]
-    }
-
+    ]
 )

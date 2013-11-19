@@ -7,7 +7,7 @@ import time
 from .utils import get_output_path
 from random import randint
 
-ROWS = 650
+ROWS = 1000
 COLUMNS = 100
 BOLD = 1
 ITALIC = 2
@@ -270,16 +270,16 @@ def run_openpyxl_optimization():
 	
 
 def test_all():
-	run_pyexcelerate_value_fastest()
-	run_pyexcelerate_value_faster()
-	run_pyexcelerate_value_fast()
-	run_xlsxwriter_value()
+	#run_pyexcelerate_value_fastest()
+	#run_pyexcelerate_value_faster()
+	#run_pyexcelerate_value_fast()
+	#run_xlsxwriter_value()
 	#run_openpyxl()
-	generate_format_data()
-	run_pyexcelerate_style_cheating()
+	#generate_format_data()
+	#run_pyexcelerate_style_cheating()
 	run_pyexcelerate_style_fastest()
-	run_pyexcelerate_style_faster()
-	run_pyexcelerate_style_fast()
-	run_xlsxwriter_style_cheating()
-	run_xlsxwriter_style()
+	#run_pyexcelerate_style_faster()
+	#run_pyexcelerate_style_fast()
+	#run_xlsxwriter_style_cheating()
+	#run_xlsxwriter_style()
 	#run_openpyxl_optimization()

@@ -1,5 +1,7 @@
-# 0.3.1 - July 29, 2013
-* Add basic style support
+
+# 0.4.0 - November 15 , 2013
+* Add basic style support (see README.md for usage and examples)
+* Merge and intersection logic bugfixes (thanks morty)
 * Fixed float precision bug (thanks jmcnamara)
 
 # 0.3.0 - July 29, 2013

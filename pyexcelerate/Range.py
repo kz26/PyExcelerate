@@ -118,12 +118,14 @@ class Range(object):
 			return None
 		start = (max(self._start[0], range._start[0]), max(self._start[1], range._start[1]))
 		end = (min(self._end[0], range._end[0]), min(self._end[1], range._end[1]))
+		if end[0] < start[0] or end[1] < start[1]:
+			return None
 		return Range(start, end, self.worksheet, validate=False)
 	
 	__and__ = intersection
 	
 	def intersects(self, range):
-		return intersection(range) == None
+		return self.intersection(range) is not None
 	
 	def merge(self):
 		self.worksheet.add_merge(self)
@@ -153,6 +155,8 @@ class Range(object):
 			return self.height
 
 	def __eq__(self, other):
+		if other is None:
+			return False
 		return self._start == other._start and self._end == other._end
 	
 	def __ne__(self, other):

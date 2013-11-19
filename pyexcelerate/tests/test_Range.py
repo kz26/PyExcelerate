@@ -26,6 +26,61 @@ def test__coordinate_to_string():
     eq_(cts((39, 2)), "B39")
     eq_(cts((1, 27)), "AA1")
     eq_(cts((1, 28)), "AB1")
+
+def test_merge():
+     wb = Workbook()
+     ws = wb.new_sheet("Test")
+     r1 =  Range("A1", "A5", ws)
+     r1.merge()
+     r2 =  Range("B1", "B5", ws)
+     r2.merge()
+     eq_(len(ws.merges), 2)
+
+def test_horizontal_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "A3", ws)
+    r2 =  Range("A2", "A4", ws)
+    eq_(r1.intersects(r2), True)
+    eq_(r1.intersection(r2), Range("A2", "A3", ws))
+
+def test_vertical_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C1", ws)
+    r2 =  Range("B1", "D1", ws)
+    eq_(r1.intersects(r2), True)
+    eq_(r1.intersection(r2), Range("B1", "C1", ws))
+
+def test_rectangular_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C3", ws)
+    r2 =  Range("B2", "D4", ws)
+    eq_(r1.intersects(r2), True)
+    eq_(r1.intersection(r2), Range("B2", "C3", ws))
+
+def test_no_intersection():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "B2", ws)
+    r2 =  Range("C3", "D4", ws)
+    eq_(r1.intersects(r2), False)
+    eq_(r1.intersection(r2), None)
+
+def test_range_equal_to_none():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C3", ws)
+    r2 =  Range("B2", "D4", ws)
+    eq_(r1.intersection(r2) == None, False)
+
+def test_range_equal_to_itself():
+    wb = Workbook()
+    ws = wb.new_sheet("Test")
+    r1 =  Range("A1", "C3", ws)
+    eq_(r1 == r1, True)
+
 """
 def test_get_xml_data():
     wb = Workbook()

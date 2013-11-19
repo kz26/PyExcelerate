@@ -1,0 +1,6 @@
+[run]
+omit = 
+	pyexcelerate/six.py
+	pyexcelerate/tests/*
+	*/python?.?/*
+	*/site-packages/*
