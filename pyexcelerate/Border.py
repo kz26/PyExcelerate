@@ -1,6 +1,9 @@
 from . import Utility
 from . import Color
 
+#
+# An object representing a single border
+#
 class Border(object):
 	STYLE_MAPPING = { \
 		'dashDot': ('.-', '-.', 'dash dot'), \

@@ -76,7 +76,7 @@ class Borders(object):
 		return self._binary_operation(other, Utility.nonboolean_xor)
 	
 	def _binary_operation(self, other, operation):
-		return Border( \
+		return Borders( \
 			top = operation(self._top, other._top, None), \
 			left = operation(self._left, other._left, None), \
 			right = operation(self._right, other._right, None), \

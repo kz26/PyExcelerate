@@ -94,11 +94,11 @@ class Style(object):
 
 	def _binary_operation(self, other, operation):
 		return Style( \
-			font=operation(self._font, other._font, None), \
-			fill=operation(self._fill, other._fill, None), \
-			format=operation(self._format, other._format, None), \
-			alignment=operation(self._alignment, other._alignment, None), \
-			borders=operation(self._borders, other._borders, None) \
+			font=operation(self.font, other.font), \
+			fill=operation(self.fill, other.fill), \
+			format=operation(self.format, other.format), \
+			alignment=operation(self.alignment, other.alignment), \
+			borders=operation(self.borders, other.borders) \
 		)
 	
 	def _to_tuple(self):
@@ -106,7 +106,7 @@ class Style(object):
 	
 			
 	def __str__(self):
-		return "%s %s %s" % (self.font, self.fill, self.format)
+		return "%s %s %s %s" % (self.font, self.fill, self.format, self.alignment)
 		
 	def __repr__(self):
 		return "<%s>" % self.__str__()
