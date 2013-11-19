@@ -39,4 +39,3 @@ def test_to_excel_date():
 	# check excel's improper handling of leap year
 	eq_(DataTypes.to_excel_date(datetime(1900, 2, 28, 0, 0, 0)), 59.0)
 	eq_(DataTypes.to_excel_date(datetime(1900, 3, 1, 0, 0, 0)), 61.0)
-	

@@ -68,6 +68,13 @@ def test_numpy_range():
 	ws.range("A1", "GN13").value = numpy.zeros((13,196))
 	wb.save(get_output_path("numpy-range-test.xlsx"))
 
+def test_none():
+     testData = [[1,2,None]]
+     wb = Workbook()
+     ws = wb.new_sheet("Test 1", data=testData)
+     ws[1][1].style.font.bold = True
+     wb.save(get_output_path("none-test.xlsx"))
+     
 def test_number_precision():
 	try:
 		import xlrd
