@@ -116,6 +116,8 @@ class Worksheet(object):
 			return self._parent
 
 	def __get_cell_data(self, cell, x, y, style):
+		if cell is None:
+			return "" # no cell data
 		if cell not in self._cell_cache:
 			type = DataTypes.get_type(cell)
 			
@@ -148,6 +150,5 @@ class Worksheet(object):
 					style = None
 				else:
 					style = self._styles[x][y]
-				if cell is not None:
-					row_data.append(self.__get_cell_data(cell, x, y, style))
+				row_data.append(self.__get_cell_data(cell, x, y, style))
 			yield x, row_data
