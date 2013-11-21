@@ -4,6 +4,7 @@ from . import Format
 from .DataTypes import DataTypes
 from . import six
 from datetime import datetime
+from xml.sax.saxutils import escape
 
 class Worksheet(object):
 	def __init__(self, name, workbook, data=None):
@@ -122,7 +123,7 @@ class Worksheet(object):
 			if type == DataTypes.NUMBER:
 				self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
 			elif type == DataTypes.INLINE_STRING:
-				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % (cell)
+				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell)
 			elif type == DataTypes.DATE:
 				self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
 			elif type == DataTypes.FORMULA:
