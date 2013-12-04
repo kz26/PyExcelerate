@@ -1,11 +1,10 @@
 #!/usr/bin/python
 
 from setuptools import setup
-from pyexcelerate import __version__
 
 setup(
 	name="PyExcelerate",
-	version=__version__,
+	version='0.4.1',
 	author="Kevin Wang and Kevin Zhang",
 	author_email="kevin@kevinzhang.me",
 	maintainer="Kevin Zhang",
