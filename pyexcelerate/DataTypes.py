@@ -1,5 +1,5 @@
 from datetime import datetime, date, time
-from . import six
+import six
 try:
 	import numpy as np
 	HAS_NUMPY = True

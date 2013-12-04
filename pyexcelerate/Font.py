@@ -1,4 +1,4 @@
-from . import six
+import six
 from .Utility import Utility
 from . import Color
 

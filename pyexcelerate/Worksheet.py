@@ -2,7 +2,7 @@ from . import Range
 from . import Style
 from . import Format
 from .DataTypes import DataTypes
-from . import six
+import six
 from datetime import datetime
 
 class Worksheet(object):

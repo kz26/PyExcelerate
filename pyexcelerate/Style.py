@@ -1,4 +1,4 @@
-from . import six
+import six
 from . import Font, Fill, Format
 from .Utility import Utility
 
