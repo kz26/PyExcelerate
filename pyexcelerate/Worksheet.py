@@ -25,9 +25,15 @@ class Worksheet(object):
 					self._columns = max(self._columns, y)
 
 	def __getitem__(self, key):
-		if key not in self._cells:
-			self._cells[key] = {}
-		return Range.Range((key, 1), (key, float('inf')), self) # return a row range
+		if isinstance(key, slice):
+			if key.step is not None and key.step > 1:
+				raise Exception("PyExcelerate doesn't support slicing with steps")
+			else:
+				return Range.Range((key.start or 1, 1), (key.stop or float('inf'), float('inf')), self)
+		else:
+			if key not in self._cells:
+				self._cells[key] = {}
+			return Range.Range((key, 1), (key, float('inf')), self) # return a row range
 
 	@property
 	def stylesheet(self):

@@ -1,4 +1,5 @@
 from ..Workbook import Workbook
+from ..Color import Color
 import time
 import numpy
 import nose
@@ -61,7 +62,7 @@ def test_range():
 	eq_(ws[3][2].value, 4)
 	eq_(ws[3][3].value, 5)
 	eq_(ws[3][4].value, 6)
-
+	
 def test_numpy_range():
 	wb = Workbook()
 	ws = wb.new_sheet("test")
@@ -120,3 +121,8 @@ def test_number_precision():
 	if os.path.exists(filename):
 		os.remove(filename)
 
+def test_column_select():
+	wb = Workbook()
+	ws = wb.new_sheet("Test")
+	print(ws[1:3])
+	ws[1:3][1].style.fill.background = Color(255, 0, 0)
