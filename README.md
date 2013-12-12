@@ -15,8 +15,8 @@ Accelerated Excel XLSX writing library for Python 2/3
 
 Thanks for supporting us! We take Bitcoin! Donate 50/50 please.
 
-1M9MAvqn6eD41FC4bfLaWaKJ9qhaDUCDVb - Kevin Wang
-16jBgGqW6x945545a8nso4bhhDrqmZCQZq - Kevin Zhang
+`1M9MAvqn6eD41FC4bfLaWaKJ9qhaDUCDVb` Kevin Wang
+`16jBgGqW6x945545a8nso4bhhDrqmZCQZq` Kevin Zhang
 
 ## Description
 PyExcelerate is a Python 2/3 library for writing Excel-compatible XLSX spreadsheet files, with an emphasis
