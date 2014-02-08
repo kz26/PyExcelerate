@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 from . import six
 from . import Font, Fill, Format, Alignment, Borders
 from . import Utility
+=======
+import six
+from . import Font, Fill, Format
+from .Utility import Utility
+>>>>>>> 42821a78d23943486dba10bab45f24eb1c966360
 
 class Style(object):
 	def __init__(self, font=None, fill=None, format=None, alignment=None, borders=None):

@@ -1,3 +1,6 @@
+# 0.4.1 - December 4, 2013
+* Fix import errors caused by missing templates
+* Remove bundled six.py and use system-wide six.py instead
 
 # 0.4.0 - November 15 , 2013
 * Add basic style support (see README.md for usage and examples)
@@ -10,7 +13,7 @@
 * Updated test suite to work with Python 3
 
 # 0.2.6 - July 10, 2013
-* Better PyInstaller compatibility (sys.executable in addition to sys.\_MEIPASS
+* Better PyInstaller compatibility (sys.executable in addition to sys.\_MEIPASS)
 
 # 0.2.5 - May 14, 2013
 * Fixed int/float bug (thanks Redoubts)

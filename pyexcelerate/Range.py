@@ -1,5 +1,5 @@
 from . import DataTypes
-from . import six
+import six
 from . import Font, Fill, Format, Style
 from six.moves import reduce
 

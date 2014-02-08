@@ -28,6 +28,13 @@ def test_numpy():
 	eq_(DataTypes.get_type(ws[1][1].value), DataTypes.NUMBER)
 	wb.save(get_output_path("numpy-test.xlsx"))
 
+def test_ampersand_escaping():
+	testData = [["http://example.com/?one=1&two=2"]]
+	wb = Workbook()
+	ws = wb.new_sheet("Test 1", data=testData)
+	data = list(ws.get_xml_data())
+	assert "http://example.com/?one=1&amp;two=2" in data[0][1][0]
+
 def test_to_excel_date():
 	eq_(DataTypes.to_excel_date(datetime(1900, 1, 1, 0, 0, 0)), 1.0)
 	eq_(DataTypes.to_excel_date(datetime(1900, 1, 1, 12, 0, 0)), 1.5)
