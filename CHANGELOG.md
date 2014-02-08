@@ -1,3 +1,7 @@
+# 0.5.0 - February 7, 2014 - "YOLO"
+* Implement new "YOLO" mode for increased PyExceleration
+* Fix tests/benchmark.py and update benchmark data
+
 # 0.4.1 - December 4, 2013
 * Fix import errors caused by missing templates
 * Remove bundled six.py and use system-wide six.py instead

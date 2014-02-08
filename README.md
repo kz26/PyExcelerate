@@ -5,7 +5,7 @@ Accelerated Excel XLSX writing library for Python 2/3
 [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
 [![Coverage Status](https://coveralls.io/repos/kz26/PyExcelerate/badge.png)](https://coveralls.io/r/kz26/PyExcelerate)
 
-* Current version: 0.4.1
+* Current version: 0.5.0
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/kz26)
 * License: Simplified BSD License
 * [Source repository](https://github.com/kz26/PyExcelerate)
@@ -28,13 +28,28 @@ on speed.
 
 ### Benchmarks
 Benchmark code located in pyexcelerate/tests/benchmark.py   
-65000 rows x 100 columns of the number 1  
-Ubuntu 12.04 LTS, Core i7-2600 3.4GHz, 16GB DDR3, Python 2.7.3
+Ubuntu 12.04 LTS, Core i5-3450, 8GB DDR3, Python 2.7.3
 
-* PyExcelerate 25.5s
-* xlsxwriter (0.3.2): 38.62s (1.5x slower)
-* openpyxl (1.6.2): 367.26s (14.4x slower)
+```
 
+TEST_NAME, NUM_ROWS, NUM_COLS, TIME_IN_SECONDS
+
+pyexcelerate value fastest, 1000, 100, 0.47
+pyexcelerate value faster, 1000, 100, 0.51
+pyexcelerate value fast, 1000, 100, 1.53
+xlsxwriter value, 1000, 100, 0.84
+openpyxl, 1000, 100, 2.74
+pyexcelerate style cheating, 1000, 100, 1.23
+pyexcelerate style fastest, 1000, 100, 2.4
+pyexcelerate style faster, 1000, 100, 2.75
+pyexcelerate style fast, 1000, 100, 6.15
+xlsxwriter style cheating, 1000, 100, 1.21
+xlsxwriter style, 1000, 100, 4.85
+openpyxl, 1000, 100, 6.32
+
+* cheating refers to pregeneration of styles
+
+```
 
 ## Installation
 

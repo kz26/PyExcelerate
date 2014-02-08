@@ -5,4 +5,4 @@ from .Font import Font
 from .Format import Format
 from .Alignment import Alignment
 
-__version__ = '0.4.1'
+__version__ = '0.5.0'
