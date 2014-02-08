@@ -23,12 +23,9 @@ class Range(object):
 		self.worksheet = worksheet
 		self.is_cell = (self._start == self._end)
 		
-		self.is_rows = (self._end[1] == float('inf') and self._start[1] == 1)
-		self.is_row = (self.is_rows and self._start[0] == self._end[0])
-		
-		self.is_columns = (self._end[0] == float('inf') and self._start[0] == 1)
-		self.is_column = (self.is_columns and self._start[1] == self._end[1])
-		
+		self.is_row = (self._end[1] == float('inf') and self._start[0] == self._end[0] and self._start[1] == 1)
+		self.is_column = (self._end[0] == float('inf') and self._start[1] == self._end[1] and self._start[0] == 1)
+ 		
 		self.x = (self._start[0] if self.is_row or self.is_cell else None)
 		self.y = (self._start[1] if self.is_column or self.is_cell else None)
 		self.height = (self._end[0] - self._start[0] + 1)

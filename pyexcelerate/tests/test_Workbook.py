@@ -121,8 +121,8 @@ def test_number_precision():
 	if os.path.exists(filename):
 		os.remove(filename)
 
-def test_column_select():
-	wb = Workbook()
-	ws = wb.new_sheet("Test")
-	print(ws[1:3])
-	ws[1:3][1].style.fill.background = Color(255, 0, 0)
+#def test_column_select():
+#	wb = Workbook()
+#	ws = wb.new_sheet("Test")
+#	print(ws[1:3])
+#	ws[1:3][1].style.fill.background = Color(255, 0, 0)
