@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-from . import six
 from . import Utility
-=======
 import six
-from .Utility import Utility
->>>>>>> 42821a78d23943486dba10bab45f24eb1c966360
 
 class Format(object):
 	def __init__(self, format=None):
