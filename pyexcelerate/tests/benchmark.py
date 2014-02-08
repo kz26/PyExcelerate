@@ -247,20 +247,20 @@ def run_openpyxl_optimization():
 	ws = wb.create_sheet()
 	ws.title = 'Test 1'
 	for col_idx in range(COLUMNS):
-		col = get_column_letter(col_idx + 1)
+		col = openpyxl.cell.get_column_letter(col_idx + 1)
 		for row in range(ROWS):
 			ws.cell('%s%s'%(col, row + 1)).value = 1
-			if formatData[row][col] & BOLD:
+			if formatData[row][col_idx] & BOLD:
 				ws.cell('%s%s'%(col, row + 1)).style.font.bold = True
-			if formatData[row][col] & ITALIC:
+			if formatData[row][col_idx] & ITALIC:
 				ws.cell('%s%s'%(col, row + 1)).style.font.italic = True
-			if formatData[row][col] & UNDERLINE:
+			if formatData[row][col_idx] & UNDERLINE:
 				ws.cell('%s%s'%(col, row + 1)).style.font.underline = True
-			if formatData[row][col] & RED_BG:
+			if formatData[row][col_idx] & RED_BG:
 				ws.cell('%s%s'%(col, row + 1)).style.fill.fill_type = openpyxl.style.Fill.FILL_SOLID
-				ws.cell('%s%s'%(col, row + 1)).style.fill.start_color = openpyxl.style.Color(Color.RED)
-				ws.cell('%s%s'%(col, row + 1)).style.fill.end_color = openpyxl.style.Color(Color.RED)
-			ws.write_number(row, col, 1, format)
+				ws.cell('%s%s'%(col, row + 1)).style.fill.start_color = openpyxl.style.Color(openpyxl.style.Color.RED)
+				ws.cell('%s%s'%(col, row + 1)).style.fill.end_color = openpyxl.style.Color(openpyxl.style.Color.RED)
+			ws.cell('%s%s'%(col, row + 1)).value = 1
 	wb.save(get_output_path('test_openpyxl_opt.xlsx'))
 	elapsed = time.clock() - stime
 	print("openpyxl, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
@@ -270,16 +270,16 @@ def run_openpyxl_optimization():
 	
 
 def test_all():
-	#run_pyexcelerate_value_fastest()
-	#run_pyexcelerate_value_faster()
-	#run_pyexcelerate_value_fast()
-	#run_xlsxwriter_value()
-	#run_openpyxl()
-	#generate_format_data()
-	#run_pyexcelerate_style_cheating()
+	run_pyexcelerate_value_fastest()
+	run_pyexcelerate_value_faster()
+	run_pyexcelerate_value_fast()
+	run_xlsxwriter_value()
+	run_openpyxl()
+	generate_format_data()
+	run_pyexcelerate_style_cheating()
 	run_pyexcelerate_style_fastest()
-	#run_pyexcelerate_style_faster()
-	#run_pyexcelerate_style_fast()
-	#run_xlsxwriter_style_cheating()
-	#run_xlsxwriter_style()
-	#run_openpyxl_optimization()
+	run_pyexcelerate_style_faster()
+	run_pyexcelerate_style_fast()
+	run_xlsxwriter_style_cheating()
+	run_xlsxwriter_style()
+	run_openpyxl_optimization()
