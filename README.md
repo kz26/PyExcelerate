@@ -11,10 +11,10 @@ Accelerated Excel XLSX writing library for Python 2/3
 * [Source repository](https://github.com/kz26/PyExcelerate)
 * [PyPI page](https://pypi.python.org/pypi/PyExcelerate)
 
-#### Donate to the Developers
+## Donate to the Developers
 
 Thanks for supporting us! We take Bitcoin! Donate 50/50 please.
-=======
+
 Did you find PyExcelerate useful? Then consider a donation of bitcoins to the developers and help fund these poor hungry students.
 When donating, please split 50/50.     
 
