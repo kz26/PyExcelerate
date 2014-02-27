@@ -34,6 +34,7 @@ def test_formulas():
 	ws[1][3].value = '=SUM(A1,B1)'
 	ws[1][4].value = datetime.now()
 	ws[1][5].value = datetime(1900,1,1,1,0,0)
+	ws[1][6].value = True
 	wb.save(get_output_path("formula-test.xlsx"))
 	
 def test_merge():

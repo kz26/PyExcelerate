@@ -17,12 +17,7 @@ class DataTypes(object):
 	FORMULA = 7
 	EXCEL_BASE_DATE = datetime(1900, 1, 1, 0, 0, 0)
 	
-	_enumerations = ["b", "d", "e", "inlineStr", "n", "s", "str"]
 	_numberTypes = six.integer_types + (float, complex)
-
-	@staticmethod
-	def to_enumeration_value(index):
-		return DataTypes._enumerations[index]
 		
 	@staticmethod
 	def get_type(value):
@@ -33,6 +28,8 @@ class DataTypes(object):
 			else:
 				return DataTypes.INLINE_STRING
 		# not using in (int, float, long, complex) for speed
+		elif value.__class__ == bool:
+			return DataTypes.BOOLEAN
 		elif value.__class__ in DataTypes._numberTypes:
 			return DataTypes.NUMBER
 		# fall back to the slower isinstance
@@ -41,6 +38,8 @@ class DataTypes(object):
 				return DataTypes.FORMULA
 			else:
 				return DataTypes.INLINE_STRING
+		elif isinstance(value, bool):
+			return DataTypes.BOOLEAN
 		elif isinstance(value, DataTypes._numberTypes):
 			return DataTypes.NUMBER
 		elif HAS_NUMPY and isinstance(value, (np.floating, np.integer, np.complexfloating, np.unsignedinteger)):

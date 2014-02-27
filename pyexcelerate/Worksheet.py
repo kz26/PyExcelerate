@@ -125,7 +125,8 @@ class Worksheet(object):
 	def __get_cell_data(self, cell, x, y, style):
 		if cell is None:
 			return "" # no cell data
-		if cell not in self._cell_cache:
+		if cell not in self._cell_cache or cell.__class__ == bool:
+			# boolean values are treated oddly in dictionaries, manually override
 			type = DataTypes.get_type(cell)
 			
 			if type == DataTypes.NUMBER:
@@ -136,6 +137,8 @@ class Worksheet(object):
 				self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
 			elif type == DataTypes.FORMULA:
 				self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
+			elif type == DataTypes.BOOLEAN:
+				self._cell_cache[cell] = '" t="b"><v>%d</v></c>' % (cell)
 		
 		if style:
 			return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
