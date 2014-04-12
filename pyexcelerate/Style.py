@@ -3,16 +3,21 @@ from . import Utility
 import six
 
 class Style(object):
-	def __init__(self, font=None, fill=None, format=None, alignment=None, borders=None):
+	def __init__(self, font=None, fill=None, format=None, alignment=None, borders=None, size=None):
 		self._font = font
 		self._fill = fill
 		self._format = format
 		self._alignment = alignment
 		self._borders = borders
+		self._size = size
 
 	@property
+	def size(self):
+		return self._size		
+	
+	@property
 	def is_default(self):
-		return not (self._font or self._fill or self._format or self._alignment or self._borders)
+		return not (self._font or self._fill or self._format or self._alignment or self._borders or self._size is not None)
 
 	@property
 	def borders(self):

@@ -270,6 +270,41 @@ wb.save("output.xlsx")
 
 ```
 
+### Styling columns
+
+#### Fastest
+
+```python
+from pyexcelerate import Workbook, Color, Style, Fill
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.set_col_style(1, Style(fill=Fill(background=Color(255,0,0,0))))
+wb.save("output.xlsx")
+
+```
+
+### Setting row heights and column widths
+
+Row heights and column widths are set using the `size` attribute in `Style`. Appropriate values are:
+*	`-1` for auto-fit
+*	`0` for hidden
+*	Any other value for the appropriate size.
+
+For example, to hide column B:
+
+```python
+from pyexcelerate import Workbook, Color, Style, Fill
+from datetime import datetime
+
+wb = Workbook()
+ws = wb.new_sheet("sheet name")
+ws.set_col_style(2, Style(size=0)))
+wb.save("output.xlsx")
+
+```
+
 ### Linked styles
 
 PyExcelerate supports using style objects instead manually setting each attribute as well. This permits you to modify the style at a later time.

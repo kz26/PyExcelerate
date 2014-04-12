@@ -69,6 +69,7 @@ class Workbook(object):
 			self._items = items
 			self._styles = [tup[0] for tup in sorted(styles.items(), key=lambda x: x[1])]
 			Utility.YOLO = False
+			
 	def __getattr__(self, name):
 		if Workbook.alignment != self:
 			self._align_styles()

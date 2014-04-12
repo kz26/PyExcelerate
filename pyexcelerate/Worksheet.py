@@ -14,6 +14,7 @@ class Worksheet(object):
 		self._cell_cache = {}
 		self._styles = {}
 		self._row_styles = {}
+		self._col_styles = {}
 		self._parent = workbook
 		self._merges = [] # list of Range objects
 		self._attributes = {}
@@ -39,6 +40,10 @@ class Worksheet(object):
 	@property
 	def stylesheet(self):
 		return self._stylesheet
+
+	@property
+	def col_styles(self):
+		return self._col_styles.items()
 
 	@property
 	def name(self):
@@ -116,7 +121,16 @@ class Worksheet(object):
 		
 	def set_row_style(self, row, value):
 		self._row_styles[row] = value
-		self._parent.add_style(value)
+		self.workbook.add_style(value)
+		
+	def get_col_style(self, col):
+		if col not in self._col_styles:
+			self.set_col_style(col, Style.Style())
+		return self._col_styles[col]
+		
+	def set_col_style(self, col, value):
+		self._col_styles[col] = value
+		self.workbook.add_style(value)
 	
 	@property
 	def workbook(self):
@@ -144,10 +158,49 @@ class Worksheet(object):
 			return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
 		else:
 			return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), self._cell_cache[cell])
-			
+	
+	def get_col_xml_string(self, col):
+		if col in self._col_styles and not self._col_styles[col].is_default:
+			style = self._col_styles[col]
+			if style.size == -1:
+				size = 0
+				for x, row in self._cells.items():
+					for y, cell in row.items():
+						size = max((len(str(cell)) * 7 + 5) / 7, size)
+			else:
+				size = style.size if style.size else 15
+				
+			return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (
+				col, col,
+				1 if style.size == 0 else 0, # hidden
+				1 if style.size == -1 else 0, # best fit
+				1 if style.size is not None else 0, # customWidth
+				size,
+				style.id)
+		else:
+			return "<col min=\"%d\" max=\"%d\">" % (col, col)
+	
 	def get_row_xml_string(self, row):
-		if row in self._row_styles:
-			return "<row r=\"%d\" s=\"%d\" customFormat=\"1\">" % (row, self._row_styles[row].id)
+		if row in self._row_styles and not self._row_styles[row].is_default:
+			style = self._row_styles[row]
+			if style.size == -1:
+				size = 0
+				for x, r in self._cells.items():
+					for y, cell in r.items():
+						try:
+							font_size = self._styles[x][y].font.size
+						except:
+							font_size = 11
+						size = max(font_size * (cell.count('\n') + 1) + 4, size)
+			else:
+				size = style.size if style.size else 15
+			return "<row r=\"%d\" s=\"%d\" customFormat=\"1\" hidden=\"%d\" customHeight=\"%d\" ht=\"%f\">" % (
+				row,
+				style.id,
+				1 if style.size == 0 else 0, # hidden
+				1 if style.size is not None else 0, # customHeight
+				size
+			)
 		else:
 			return "<row r=\"%d\">" % row
 		
