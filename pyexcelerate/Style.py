@@ -107,7 +107,7 @@ class Style(object):
 		)
 	
 	def _to_tuple(self):
-		return (self._font, self._fill, self._format, self._alignment, self._borders)
+		return (self._font, self._fill, self._format, self._alignment, self._borders, self._size)
 	
 			
 	def __str__(self):
