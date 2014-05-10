@@ -1,4 +1,5 @@
 from datetime import datetime, date, time
+import decimal
 import six
 try:
 	import numpy as np
@@ -17,7 +18,7 @@ class DataTypes(object):
 	FORMULA = 7
 	EXCEL_BASE_DATE = datetime(1900, 1, 1, 0, 0, 0)
 	
-	_numberTypes = six.integer_types + (float, complex)
+	_numberTypes = six.integer_types + (float, complex, decimal.Decimal)
 		
 	@staticmethod
 	def get_type(value):

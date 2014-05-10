@@ -5,4 +5,8 @@ from .Font import Font
 from .Format import Format
 from .Alignment import Alignment
 
-__version__ = '0.5.0'
+try:
+	import pkg_resources
+	__version__ = pkg_resources.require('PyExcelerate')[0].version
+except:
+	__version__ = 'unknown'

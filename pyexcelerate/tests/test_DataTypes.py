@@ -3,11 +3,13 @@ from nose.tools import eq_
 from datetime import datetime, date, time
 from ..Workbook import Workbook
 from .utils import get_output_path
+from decimal import Decimal
 import numpy
 
 def test__get_type():
 	eq_(DataTypes.get_type(15), DataTypes.NUMBER)
 	eq_(DataTypes.get_type(15.0), DataTypes.NUMBER)
+	eq_(DataTypes.get_type(Decimal('15.0')), DataTypes.NUMBER)
 	eq_(DataTypes.get_type("test"), DataTypes.INLINE_STRING)
 	eq_(DataTypes.get_type(datetime.now()), DataTypes.DATE)
 	eq_(DataTypes.get_type(True), DataTypes.BOOLEAN)
