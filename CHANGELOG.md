@@ -1,3 +1,7 @@
+0.6.1 - May 11, 2014
+* Add PyInstaller hook
+* Indicate that PyInstaller is the only supported packager
+
 0.6.0 - May 10, 2014
 * Support for setting row/column widths
 * Fix issue #22 - Decimal data type (thanks rhyek)

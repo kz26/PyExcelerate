@@ -7,14 +7,14 @@ import time
 from jinja2 import Environment, FileSystemLoader
 from . import Color
 
-class Writer(object):
-	if getattr(sys, 'frozen', None):
-		_basedir = getattr(sys, '_MEIPASS', sys.executable)
-	else:
-		_basedir = os.path.dirname(__file__)
-	TEMPLATE_PATH = os.path.join(_basedir, 'templates')
-	env = Environment(loader=FileSystemLoader(TEMPLATE_PATH), auto_reload=False)
+if getattr(sys, 'frozen', False):
+	_basedir = os.path.join(sys._MEIPASS, 'pyexcelerate')
+else:
+	_basedir = os.path.dirname(__file__)
+_TEMPLATE_PATH = os.path.join(_basedir, 'templates')
 
+class Writer(object):
+	env = Environment(loader=FileSystemLoader(_TEMPLATE_PATH), auto_reload=False)
 	_docProps_app_template = env.get_template("docProps/app.xml")
 	_docProps_core_template = env.get_template("docProps/core.xml")
 	_content_types_template = env.get_template("[Content_Types].xml")

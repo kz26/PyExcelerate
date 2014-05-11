@@ -5,7 +5,7 @@ Accelerated Excel XLSX writing library for Python 2/3
 [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
 [![Coverage Status](https://coveralls.io/repos/kz26/PyExcelerate/badge.png)](https://coveralls.io/r/kz26/PyExcelerate)
 
-* Current version: 0.6.0
+* Current version: 0.6.1
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/kz26)
 * License: Simplified BSD License
 * [Source repository](https://github.com/kz26/PyExcelerate)
@@ -321,10 +321,10 @@ wb.save("output.xlsx")
 
 ```
 
-## Packaging with PyInstaller, cx\_freeze, py2exe, etc.
+## Packaging with PyInstaller.
 
-PyExelerate has been successfully tested with PyInstaller and cx\_freeze; py2exe should work as well.
-**However, you will need to manually copy the templates directory from PyExcelerate into your app's distribution.**
+PyInstaller is the only packager officially supported by PyExcelerate. Copy hook-pyexcelerate.py to your PyInstaller hooks directory.
+
 
 ## Support
 Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  
