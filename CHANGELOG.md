@@ -1,3 +1,6 @@
+0.6.2
+* Python 3.4 added to list of supported Python versions
+
 0.6.1 - May 11, 2014
 * Add PyInstaller hook
 * Indicate that PyInstaller is the only supported packager
