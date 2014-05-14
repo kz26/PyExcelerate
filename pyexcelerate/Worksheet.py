@@ -209,9 +209,13 @@ class Worksheet(object):
 		for x, row in six.iteritems(self._cells):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):
-				if x not in self._styles or y not in self._styles[x]:
-					style = None
-				else:
+				if x in self._styles and y in self._styles[x]:
 					style = self._styles[x][y]
+				elif x in self._row_styles:
+					style = self._row_styles[x]
+				elif y in self._col_styles:
+					style = self._col_styles[y]
+				else:
+					style = None
 				row_data.append(self.__get_cell_data(cell, x, y, style))
 			yield x, row_data
