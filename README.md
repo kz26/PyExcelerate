@@ -288,6 +288,29 @@ wb.save("output.xlsx")
 
 ```
 
+### Available style attributes
+
+Consistent with the implementation patterns above, the following style parameters are available:
+
+```python
+ws[1][1].style.font.bold = True
+ws[1][1].style.font.italic = True
+ws[1][1].style.font.underline = True
+ws[1][1].style.font.strikethrough = True
+ws[1][1].style.font.color = Color(255, 0, 255)
+ws[1][1].style.fill.background = Color(0, 255, 0)
+ws[1][1].style.alignment.vertical = 'top'
+ws[1][1].style.alignment.horizontal = 'right'
+ws[1][1].style.alignment.rotation = 90
+ws[1][1].style.alignment.wrap_text = True
+ws[1][1].style.borders.top.color = Color(255, 0, 0)
+ws[1][1].style.borders.right.style = '-.'
+```
+
+Each attribute also has constructors for implementing via `set_cell_style()`.
+
+The following border styles are available: `.-`, `..-`, `--`, `..`, `=`, `.`, `medium -.`, `medium -..`, `medium --`, `/-.`, `_`
+
 ### Setting row heights and column widths
 
 Row heights and column widths are set using the `size` attribute in `Style`. Appropriate values are:

@@ -35,6 +35,9 @@ def test_style():
 	ws[3][3].style.borders.top.color = Color(255, 0, 0)
 	ws[3][3].style.borders.left.color = Color(0, 255, 0)
 	ws[3][4].style.borders.right.style = '-.'
+	ws[4][1].value = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis fermentum metus id congue. Sed ultrices velit id sapien sodales bibendum. Mauris volutpat porta arcu non bibendum. Pellentesque adipiscing lacus quam, ac congue ipsum fringilla sed. Praesent dapibus dignissim elit vel dictum. Pellentesque commodo iaculis ipsum a rhoncus. Sed mattis neque eget justo dignissim scelerisque. Nam odio neque, mattis et libero id, posuere aliquam mi.'
+	ws[4][2].value = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis fermentum metus id congue. Sed ultrices velit id sapien sodales bibendum. Mauris volutpat porta arcu non bibendum. Pellentesque adipiscing lacus quam, ac congue ipsum fringilla sed. Praesent dapibus dignissim elit vel dictum. Pellentesque commodo iaculis ipsum a rhoncus. Sed mattis neque eget justo dignissim scelerisque. Nam odio neque, mattis et libero id, posuere aliquam mi.'
+	ws[4][1].style.alignment.wrap_text = True
 	wb.save(get_output_path("style-test.xlsx"))
 
 def test_style_compression():

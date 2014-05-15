@@ -3,10 +3,21 @@ from . import Utility
 from . import Color
 
 class Alignment(object):
-	def __init__(self, horizontal='left', vertical='bottom', rotation=0):
+	def __init__(self, horizontal='left', vertical='bottom', rotation=0, wrap_text=False):
 		self._horizontal = horizontal
 		self._vertical = vertical
 		self._rotation = rotation
+		self._wrap_text = wrap_text
+	
+	@property
+	def wrap_text(self):
+		return self._wrap_text
+	
+	@wrap_text.setter
+	def wrap_text(self, value):
+		if value not in (True, False):
+			raise Exception('Invalid wrap text alignment value.')
+		self._wrap_text = value
 	
 	@property
 	def horizontal(self):
@@ -38,10 +49,10 @@ class Alignment(object):
 	
 	@property
 	def is_default(self):
-		return self._horizontal == 'left' and self._vertical == 'bottom' and self._rotation == 0
+		return self._horizontal == 'left' and self._vertical == 'bottom' and self._rotation == 0 and not self._wrap_text
 
 	def get_xml_string(self):
-		return "<alignment horizontal=\"%s\" vertical=\"%s\" textRotation=\"%.15g\"/>" % (self._horizontal, self._vertical, self._rotation)
+		return "<alignment horizontal=\"%s\" vertical=\"%s\" textRotation=\"%.15g\" wrapText=\"%d\"/>" % (self._horizontal, self._vertical, self._rotation, 1 if self._wrap_text else 0)
 
 	def __or__(self, other):
 		return self._binary_operation(other, Utility.nonboolean_or)
@@ -56,7 +67,8 @@ class Alignment(object):
 		return Alignment( \
 			horizontal = operation(self._horizontal, other._horizontal, 'left'), \
 			vertical = operation(self._vertical, other._vertical, 'bottom'), \
-			rotation = operation(self._rotation, other._rotation, 0) \
+			rotation = operation(self._rotation, other._rotation, 0), \
+			wrap_text = operation(self._wrap_text, other._wrap_text, False)
 		)
 	
 	def __eq__(self, other):
@@ -65,7 +77,7 @@ class Alignment(object):
 		elif Utility.YOLO:
 			return self._vertical == other._vertical and self._rotation == other._rotation
 		else:
-			return self._vertical == other._vertical and self._rotation == other._rotation and self._horizontal == other._horizontal
+			return self._vertical == other._vertical and self._rotation == other._rotation and self._horizontal == other._horizontal and self._wrap_text == other._wrap_text
 	
 	def __hash__(self):
 		return hash((self._horizontal))
