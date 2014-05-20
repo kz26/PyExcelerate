@@ -1,8 +1,9 @@
 # PyExcelerate
 
-Accelerated Excel XLSX writing library for Python 2/3
+Accelerated Excel XLSX writing library for Python
 
-[![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
+master: [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
+dev: [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=dev)](https://travis-ci.org/kz26/PyExcelerate)    
 [![Coverage Status](https://coveralls.io/repos/kz26/PyExcelerate/badge.png)](https://coveralls.io/r/kz26/PyExcelerate)
 
 * Current version: 0.6.1
@@ -23,7 +24,7 @@ When donating, please split 50/50.
 `16jBgGqW6x945545a8nso4bhhDrqmZCQZq` Kevin Zhang
 
 ## Description
-PyExcelerate is a Python 2/3 library for writing Excel-compatible XLSX spreadsheet files, with an emphasis
+PyExcelerate is a Python for writing Excel-compatible XLSX spreadsheet files, with an emphasis
 on speed.
 
 ### Benchmarks
@@ -52,6 +53,8 @@ openpyxl, 1000, 100, 6.32
 ```
 
 ## Installation
+
+PyExcelerate is supported on Python 2.6, 2.7, 3.3, and 3.4.
 
     pip install pyexcelerate
 
@@ -285,6 +288,29 @@ wb.save("output.xlsx")
 
 ```
 
+### Available style attributes
+
+Consistent with the implementation patterns above, the following style parameters are available:
+
+```python
+ws[1][1].style.font.bold = True
+ws[1][1].style.font.italic = True
+ws[1][1].style.font.underline = True
+ws[1][1].style.font.strikethrough = True
+ws[1][1].style.font.color = Color(255, 0, 255)
+ws[1][1].style.fill.background = Color(0, 255, 0)
+ws[1][1].style.alignment.vertical = 'top'
+ws[1][1].style.alignment.horizontal = 'right'
+ws[1][1].style.alignment.rotation = 90
+ws[1][1].style.alignment.wrap_text = True
+ws[1][1].style.borders.top.color = Color(255, 0, 0)
+ws[1][1].style.borders.right.style = '-.'
+```
+
+Each attribute also has constructors for implementing via `set_cell_style()`.
+
+The following border styles are available: `.-`, `..-`, `--`, `..`, `=`, `.`, `medium -.`, `medium -..`, `medium --`, `/-.`, `_`
+
 ### Setting row heights and column widths
 
 Row heights and column widths are set using the `size` attribute in `Style`. Appropriate values are:
@@ -321,11 +347,11 @@ wb.save("output.xlsx")
 
 ```
 
-## Packaging with PyInstaller.
+## Packaging with PyInstaller
 
 PyInstaller is the only packager officially supported by PyExcelerate. Copy hook-pyexcelerate.py to your PyInstaller hooks directory.
 
 
 ## Support
 Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  
-All changes to code must be accompanied by a test. We use the Nose testing framework.
+**Please base all pull requests against the dev branch. All changes to code should be accompanied by a test when appropriate.** We use the Nose testing framework.
