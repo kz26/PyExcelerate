@@ -1,12 +1,12 @@
-from .Workbook import Workbook
-from .Style import Style
-from .Fill import Fill
-from .Font import Font
-from .Format import Format
-from .Alignment import Alignment
+from .Workbook import Workbook  # noqa
+from .Style import Style  # noqa
+from .Fill import Fill  # noqa
+from .Font import Font  # noqa
+from .Format import Format  # noqa
+from .Alignment import Alignment  # noqa
 
 try:
-	import pkg_resources
-	__version__ = pkg_resources.require('PyExcelerate')[0].version
+    import pkg_resources
+    __version__ = pkg_resources.require('PyExcelerate')[0].version
 except:
-	__version__ = 'unknown'
+    __version__ = 'unknown'

@@ -1,4 +1,5 @@
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZipFile
+
 
 class VirtualDirectory(object):
     def __init__(self, *args, **kwargs):
@@ -24,7 +25,7 @@ class VirtualDirectory(object):
         return d
 
     def add_file(self, path, data):
-        ps = path.split("/") 
+        ps = path.split("/")
         if len(ps) == 1:
             self.files[ps[0]] = data
         else:
@@ -38,10 +39,10 @@ class VirtualDirectory(object):
             yield (d.directories, d.files)
             if d.directories:
                 dirs.extend(d.directories)
-            
+
 
 class Filesystem(VirtualDirectory):
     def writeZip(self, path):
-        zf = ZipFile(path, 'w', 'ZIP_DEFLATED') 
-        for f, d in self.files.items(): 
+        zf = ZipFile(path, 'w', 'ZIP_DEFLATED')
+        for f, d in self.files.items():
             zf.writestr(f, d)
