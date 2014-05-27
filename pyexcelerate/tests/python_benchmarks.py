@@ -1,3 +1,4 @@
+import time
 from nose.tools import *  # noqa
 
 
