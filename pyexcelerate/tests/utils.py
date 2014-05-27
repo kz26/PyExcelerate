@@ -1,5 +1,5 @@
 import os
-import shutil
+
 
 def get_output_path(fn):
     out_dir = os.path.join(os.path.dirname(__file__), 'output')

@@ -20,7 +20,7 @@ formatData = [[1] * COLUMNS] * ROWS
 def run_pyexcelerate_value_fastest():
     wb = Workbook()
     stime = time.clock()
-    ws = wb.new_sheet('Test 1', data=testData)
+    wb.new_sheet('Test 1', data=testData)
     wb.save(get_output_path('test_pyexcelerate_value_fastest.xlsx'))
     elapsed = time.clock() - stime
     print("pyexcelerate value fastest, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
@@ -59,7 +59,7 @@ def run_openpyxl():
     except ImportError:
         raise Exception('openpyxl not installled')
     stime = time.clock()
-    wb = openpyxl.workbook.Workbook(optimized_write=True) 
+    wb = openpyxl.workbook.Workbook(optimized_write=True)
     ws = wb.create_sheet()
     ws.title = 'Test 1'
     for row in testData:
@@ -76,7 +76,9 @@ def run_xlsxwriter_value():
     except ImportError:
         raise Exception('XlsxWriter not installled')
     stime = time.clock()
-    wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter.xlsx'), {'constant_memory': True})
+    wb = xlsxwriter.workbook.Workbook(
+        get_output_path('test_xlsxwriter.xlsx'), {'constant_memory': True}
+    )
     ws = wb.add_worksheet()
     for row in range(ROWS):
         for col in range(COLUMNS):
@@ -97,10 +99,12 @@ def run_pyexcelerate_style_fastest():
     wb = Workbook()
     stime = time.clock()
     ws = wb.new_sheet('Test 1')
-    bold = Style(font=Font(bold=True))
-    italic = Style(font=Font(italic=True))
-    underline = Style(font=Font(underline=True))
-    red = Style(fill=Fill(background=Color(255,0,0,0)))
+
+    Style(font=Font(bold=True))
+    Style(font=Font(italic=True))
+    Style(font=Font(underline=True))
+    Style(fill=Fill(background=Color(255, 0, 0, 0)))
+
     for row in range(ROWS):
         for col in range(COLUMNS):
             ws.set_cell_value(row + 1, col + 1, 1)
@@ -134,7 +138,9 @@ def run_pyexcelerate_style_faster():
             if formatData[row][col] & UNDERLINE:
                 ws.get_cell_style(row + 1, col + 1).font.underline = True
             if formatData[row][col] & RED_BG:
-                ws.get_cell_style(row + 1, col + 1).fill.background = Color(255, 0, 0)
+                ws.get_cell_style(row + 1, col + 1).fill.background = \
+                    Color(255, 0, 0)
+
     wb.save(get_output_path('test_pyexcelerate_style_faster.xlsx'))
     elapsed = time.clock() - stime
     print("pyexcelerate style faster, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
@@ -155,7 +161,9 @@ def run_pyexcelerate_style_fast():
             if formatData[row][col] & UNDERLINE:
                 ws[row + 1][col + 1].style.font.underline = True
             if formatData[row][col] & RED_BG:
-                ws[row + 1][col + 1].style.fill.background = Color(255, 0, 0, 0)
+                ws[row + 1][col + 1].style.fill.background = \
+                    Color(255, 0, 0, 0)
+
     wb.save(get_output_path('test_pyexcelerate_style_fast.xlsx'))
     elapsed = time.clock() - stime
     print("pyexcelerate style fast, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
@@ -184,7 +192,9 @@ def run_pyexcelerate_style_cheating():
     for row in range(ROWS):
         for col in range(COLUMNS):
             ws.set_cell_value(row + 1, col + 1, 1)
-            ws.set_cell_style(row + 1, col + 1, cell_formats[formatData[row][col]])
+            ws.set_cell_style(
+                row + 1, col + 1, cell_formats[formatData[row][col]])
+
     wb.save(get_output_path('test_pyexcelerate_style_fastest.xlsx'))
     elapsed = time.clock() - stime
     print("pyexcelerate style cheating, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
@@ -197,9 +207,12 @@ def run_xlsxwriter_style_cheating():
     except ImportError:
         raise Exception('XlsxWriter not installled')
     stime = time.clock()
-    wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_style.xlsx'), {'constant_memory': True})
+    wb = xlsxwriter.workbook.Workbook(
+        get_output_path('test_xlsxwriter_style.xlsx'),
+        {'constant_memory': True}
+    )
     ws = wb.add_worksheet()
-    
+
     cell_formats = []
 
     for i in range(16):
@@ -216,7 +229,8 @@ def run_xlsxwriter_style_cheating():
 
     for row in range(ROWS):
         for col in range(COLUMNS):
-            ws.write_number(row, col, 1, cell_formats[formatData[row][col]]) 
+            ws.write_number(row, col, 1, cell_formats[formatData[row][col]])
+
     wb.close()
     elapsed = time.clock() - stime
     print("xlsxwriter style cheating, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
@@ -229,9 +243,13 @@ def run_xlsxwriter_style():
     except ImportError:
         raise Exception('XlsxWriter not installled')
     stime = time.clock()
-    wb = xlsxwriter.workbook.Workbook(get_output_path('test_xlsxwriter_style.xlsx'), {'constant_memory': True})
+    wb = xlsxwriter.workbook.Workbook(
+        get_output_path('test_xlsxwriter_style.xlsx'),
+        {'constant_memory': True}
+    )
+
     ws = wb.add_worksheet()
-    
+
     for row in range(ROWS):
         for col in range(COLUMNS):
             format = wb.add_format()
@@ -243,7 +261,8 @@ def run_xlsxwriter_style():
                 format.set_underline()
             if formatData[row][col] & RED_BG:
                 format.set_bg_color('red')
-            ws.write_number(row, col, 1, format) 
+            ws.write_number(row, col, 1, format)
+
     wb.close()
     elapsed = time.clock() - stime
     print("xlsxwriter style, %s, %s, %s" % (ROWS, COLUMNS, elapsed))
@@ -256,24 +275,31 @@ def run_openpyxl_optimization():
     except ImportError:
         raise Exception('openpyxl not installled')
     stime = time.clock()
-    wb = openpyxl.workbook.Workbook(optimized_write=True) 
+    wb = openpyxl.workbook.Workbook(optimized_write=True)
     ws = wb.create_sheet()
     ws.title = 'Test 1'
     for col_idx in range(COLUMNS):
         col = openpyxl.cell.get_column_letter(col_idx + 1)
         for row in range(ROWS):
-            ws.cell('%s%s'%(col, row + 1)).value = 1
+            ws.cell('%s%s' % (col, row + 1)).value = 1
             if formatData[row][col_idx] & BOLD:
-                ws.cell('%s%s'%(col, row + 1)).style.font.bold = True
+                ws.cell('%s%s' % (col, row + 1)).style.font.bold = True
             if formatData[row][col_idx] & ITALIC:
-                ws.cell('%s%s'%(col, row + 1)).style.font.italic = True
+                ws.cell('%s%s' % (col, row + 1)).style.font.italic = True
             if formatData[row][col_idx] & UNDERLINE:
-                ws.cell('%s%s'%(col, row + 1)).style.font.underline = True
+                ws.cell('%s%s' % (col, row + 1)).style.font.underline = True
             if formatData[row][col_idx] & RED_BG:
-                ws.cell('%s%s'%(col, row + 1)).style.fill.fill_type = openpyxl.style.Fill.FILL_SOLID
-                ws.cell('%s%s'%(col, row + 1)).style.fill.start_color = openpyxl.style.Color(openpyxl.style.Color.RED)
-                ws.cell('%s%s'%(col, row + 1)).style.fill.end_color = openpyxl.style.Color(openpyxl.style.Color.RED)
-            ws.cell('%s%s'%(col, row + 1)).value = 1
+                ws.cell('%s%s' % (col, row + 1)).style.fill.fill_type = \
+                    openpyxl.style.Fill.FILL_SOLID
+
+                ws.cell('%s%s' % (col, row + 1)).style.fill.start_color = \
+                    openpyxl.style.Color(openpyxl.style.Color.RED)
+
+                ws.cell('%s%s' % (col, row + 1)).style.fill.end_color = \
+                    openpyxl.style.Color(openpyxl.style.Color.RED)
+
+            ws.cell('%s%s' % (col, row + 1)).value = 1
+
     wb.save(get_output_path('test_openpyxl_opt.xlsx'))
     elapsed = time.clock() - stime
     print("openpyxl, %s, %s, %s" % (ROWS, COLUMNS, elapsed))

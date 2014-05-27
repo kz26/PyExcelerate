@@ -4,9 +4,6 @@ from ..Font import Font
 from ..Fill import Fill
 from ..Style import Style
 from ..Alignment import Alignment
-import time
-import numpy
-from datetime import datetime
 from nose.tools import eq_
 from .utils import get_output_path
 
@@ -42,11 +39,11 @@ def test_style():
 def test_style_compression():
     wb = Workbook()
     ws = wb.new_sheet("test")
-    ws.range("A1","C3").value = 1
-    ws.range("A1","C1").style.font.bold = True
-    ws.range("A2","C3").style.font.italic = True
-    ws.range("A3","C3").style.fill.background = Color(255, 0, 0)
-    ws.range("C1","C3").style.font.strikethrough = True
+    ws.range("A1", "C3").value = 1
+    ws.range("A1", "C1").style.font.bold = True
+    ws.range("A2", "C3").style.font.italic = True
+    ws.range("A3", "C3").style.fill.background = Color(255, 0, 0)
+    ws.range("C1", "C3").style.font.strikethrough = True
     wb.save(get_output_path("style-compression-test.xlsx"))
 
 
@@ -75,10 +72,12 @@ def test_style_row_col():
     eq_(Style(), ws.get_col_style(1))
     ws.set_row_style(1, Style(size=-1))
     ws.set_row_style(2, Style(size=0))
-    ws.set_row_style(3, Style(size=100, fill=Fill(background=Color(0, 255, 0, 0))))
+    ws.set_row_style(
+        3, Style(size=100, fill=Fill(background=Color(0, 255, 0, 0))))
     ws.set_col_style(1, Style(size=-1))
     ws.set_col_style(2, Style(size=0))
-    ws.set_col_style(3, Style(size=100, fill=Fill(background=Color(255, 0, 0, 0))))
+    ws.set_col_style(
+        3, Style(size=100, fill=Fill(background=Color(255, 0, 0, 0))))
     wb.save(get_output_path("style-auto-row-col-test.xlsx"))
 
 
@@ -86,20 +85,25 @@ def test_and_or_xor():
     bolditalic = Font(bold=True, italic=True)
     italicunderline = Font(italic=True, underline=True)
     eq_(Font(italic=True), bolditalic & italicunderline)
-    eq_(Font(bold=True, italic=True, underline=True), bolditalic | italicunderline)
+    eq_(Font(bold=True, italic=True, underline=True),
+        bolditalic | italicunderline)
     eq_(Font(bold=True, underline=True), bolditalic ^ italicunderline)
-    
+
     fontstyle = Style(font=Font(bold=True))
     fillstyle = Style(fill=Fill(background=Color(255, 0, 0, 0)))
     eq_(Style(), fontstyle & fillstyle)
-    eq_(Style(font=Font(bold=True), fill=Fill(background=Color(255, 0, 0, 0))), fontstyle | fillstyle)
-    eq_(Style(font=Font(bold=True), fill=Fill(background=Color(255, 0, 0, 0))), fontstyle ^ fillstyle)
-    
+    eq_(Style(font=Font(bold=True), fill=Fill(background=Color(255, 0, 0, 0))),
+        fontstyle | fillstyle)
+    eq_(Style(font=Font(bold=True), fill=Fill(background=Color(255, 0, 0, 0))),
+        fontstyle ^ fillstyle)
+
     leftstyle = Style(alignment=Alignment('right', 'top'))
     bottomstyle = Style(alignment=Alignment(vertical='top', rotation=15))
-    eq_(Style(alignment=Alignment('right', 'top', 15)), leftstyle | bottomstyle)
+    eq_(Style(alignment=Alignment('right', 'top', 15)),
+        leftstyle | bottomstyle)
     eq_(Style(alignment=Alignment(vertical='top')), leftstyle & bottomstyle)
-    eq_(Style(alignment=Alignment('right', rotation=15)), leftstyle ^ bottomstyle)
+    eq_(Style(alignment=Alignment('right', rotation=15)),
+        leftstyle ^ bottomstyle)
 
 
 def test_str_():

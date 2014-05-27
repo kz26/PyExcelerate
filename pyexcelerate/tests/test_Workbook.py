@@ -1,5 +1,4 @@
 from ..Workbook import Workbook
-from ..Color import Color
 import time
 import numpy
 import nose
@@ -21,12 +20,13 @@ def test_get_xml_data():
 def test_save():
     ROWS = 65
     COLUMNS = 100
+
     wb = Workbook()
     testData = [[1] * COLUMNS] * ROWS
-    stime = time.clock()
-    ws = wb.new_sheet("Test 1", data=testData)
+    time.clock()
+    wb.new_sheet("Test 1", data=testData)
     wb.save(get_output_path("test.xlsx"))
-    #print("%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
+    # print("%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
 
 
 def test_formulas():
@@ -36,7 +36,7 @@ def test_formulas():
     ws[1][2].value = 2
     ws[1][3].value = '=SUM(A1,B1)'
     ws[1][4].value = datetime.now()
-    ws[1][5].value = datetime(1900,1,1,1,0,0)
+    ws[1][5].value = datetime(1900, 1, 1, 1, 0, 0)
     ws[1][6].value = True
     wb.save(get_output_path("formula-test.xlsx"))
 
@@ -74,12 +74,12 @@ def test_range():
 def test_numpy_range():
     wb = Workbook()
     ws = wb.new_sheet("test")
-    ws.range("A1", "GN13").value = numpy.zeros((13,196))
+    ws.range("A1", "GN13").value = numpy.zeros((13, 196))
     wb.save(get_output_path("numpy-range-test.xlsx"))
 
 
 def test_none():
-    testData = [[1,2,None]]
+    testData = [[1, 2, None]]
     wb = Workbook()
     ws = wb.new_sheet("Test 1", data=testData)
     ws[1][1].style.font.bold = True
@@ -131,8 +131,8 @@ def test_number_precision():
     if os.path.exists(filename):
         os.remove(filename)
 
-#def test_column_select():
-#   wb = Workbook()
-#   ws = wb.new_sheet("Test")
-#   print(ws[1:3])
-#   ws[1:3][1].style.fill.background = Color(255, 0, 0)
+# def test_column_select():
+#    wb = Workbook()
+#    ws = wb.new_sheet("Test")
+#    print(ws[1:3])
+#    ws[1:3][1].style.fill.background = Color(255, 0, 0)

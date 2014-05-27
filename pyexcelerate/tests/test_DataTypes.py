@@ -17,7 +17,7 @@ def test__get_type():
 
 
 def test_numpy():
-    testData = numpy.ones((5, 5), dtype = int)
+    testData = numpy.ones((5, 5), dtype=int)
     wb = Workbook()
     ws = wb.new_sheet("Test 1", data=testData)
     eq_(ws[1][1].value, 1)
