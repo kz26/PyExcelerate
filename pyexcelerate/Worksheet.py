@@ -3,13 +3,12 @@ from . import Style
 from . import Format
 from .DataTypes import DataTypes
 import six
-from datetime import datetime
 from xml.sax.saxutils import escape
 
 
 class Worksheet(object):
     def __init__(self, name, workbook, data=None):
-        self._columns = 0 # cache this for speed
+        self._columns = 0  # cache this for speed
         self._name = name
         self._cells = {}
         self._cell_cache = {}
@@ -17,9 +16,9 @@ class Worksheet(object):
         self._row_styles = {}
         self._col_styles = {}
         self._parent = workbook
-        self._merges = [] # list of Range objects
+        self._merges = []  # list of Range objects
         self._attributes = {}
-        if data != None:
+        if data is not None:
             for x, row in enumerate(data, 1):
                 for y, cell in enumerate(row, 1):
                     if x not in self._cells:
@@ -30,13 +29,20 @@ class Worksheet(object):
     def __getitem__(self, key):
         if isinstance(key, slice):
             if key.step is not None and key.step > 1:
-                raise Exception("PyExcelerate doesn't support slicing with steps")
+                raise Exception("PyExcelerate doesn't support "
+                                "slicing with steps")
             else:
-                return Range.Range((key.start or 1, 1), (key.stop or float('inf'), float('inf')), self)
+                return Range.Range(
+                    (key.start or 1, 1),
+                    (key.stop or float('inf'), float('inf')),
+                    self
+                )
         else:
             if key not in self._cells:
                 self._cells[key] = {}
-            return Range.Range((key, 1), (key, float('inf')), self) # return a row range
+
+            # return a row range
+            return Range.Range((key, 1), (key, float('inf')), self)
 
     @property
     def stylesheet(self):
@@ -141,24 +147,30 @@ class Worksheet(object):
         if cell is None:
             return "" # no cell data
         if cell not in self._cell_cache or cell.__class__ == bool:
-            # boolean values are treated oddly in dictionaries, manually override
+            # boolean values are treated oddly in dictionaries,
+            # manually override
             type = DataTypes.get_type(cell)
             
             if type == DataTypes.NUMBER:
                 self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
             elif type == DataTypes.INLINE_STRING:
-                self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell)
+                self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell)  # flake8: noqa
             elif type == DataTypes.DATE:
-                self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
+                self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))  # flake8: noqa
             elif type == DataTypes.FORMULA:
                 self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
             elif type == DataTypes.BOOLEAN:
                 self._cell_cache[cell] = '" t="b"><v>%d</v></c>' % (cell)
         
         if style:
-            return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
+            return "<c r=\"%s\" s=\"%d%s" % \
+                   (Range.Range.coordinate_to_string((x, y)),
+                    style.id,
+                    self._cell_cache[cell])
         else:
-            return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), self._cell_cache[cell])
+            return "<c r=\"%s%s" % \
+                   (Range.Range.coordinate_to_string((x, y)),
+                    self._cell_cache[cell])
     
     def get_col_xml_string(self, col):
         if col in self._col_styles and not self._col_styles[col].is_default:
@@ -171,13 +183,15 @@ class Worksheet(object):
             else:
                 size = style.size if style.size else 15
                 
-            return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (
+            return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (  # flake8: noqa
                 col, col,
                 1 if style.size == 0 else 0, # hidden
                 1 if style.size == -1 else 0, # best fit
                 1 if style.size is not None else 0, # customWidth
                 size,
-                style.id)
+                style.id
+            )
+
         else:
             return "<col min=\"%d\" max=\"%d\">" % (col, col)
     

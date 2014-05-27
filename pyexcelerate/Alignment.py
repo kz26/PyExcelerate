@@ -1,6 +1,4 @@
-import six
 from . import Utility
-from . import Color
 
 
 class Alignment(object):
@@ -39,10 +37,14 @@ class Alignment(object):
 
     @property
     def is_default(self):
-        return self._horizontal == 'left' and self._vertical == 'bottom' and self._rotation == 0
+        return (self._horizontal == 'left' and
+                self._vertical == 'bottom' and
+                self._rotation == 0)
 
     def get_xml_string(self):
-        return "<alignment horizontal=\"%s\" vertical=\"%s\" textRotation=\"%.15g\"/>" % (self._horizontal, self._vertical, self._rotation)
+        return "<alignment horizontal=\"%s\" " \
+               "vertical=\"%s\" textRotation=\"%.15g\"/>" % \
+               (self._horizontal, self._vertical, self._rotation)
 
     def __or__(self, other):
         return self._binary_operation(other, Utility.nonboolean_or)
@@ -54,22 +56,27 @@ class Alignment(object):
         return self._binary_operation(other, Utility.nonboolean_xor)
 
     def _binary_operation(self, other, operation):
-        return Alignment( \
-            horizontal = operation(self._horizontal, other._horizontal, 'left'), \
-            vertical = operation(self._vertical, other._vertical, 'bottom'), \
-            rotation = operation(self._rotation, other._rotation, 0) \
+        return Alignment(
+            horizontal=operation(self._horizontal, other._horizontal, 'left'),
+            vertical=operation(self._vertical, other._vertical, 'bottom'),
+            rotation=operation(self._rotation, other._rotation, 0)
         )
 
     def __eq__(self, other):
         if other is None:
             return self.is_default
         elif Utility.YOLO:
-            return self._vertical == other._vertical and self._rotation == other._rotation
+            return (self._vertical == other._vertical and
+                    self._rotation == other._rotation)
         else:
-            return self._vertical == other._vertical and self._rotation == other._rotation and self._horizontal == other._horizontal
+            return (self._vertical == other._vertical and
+                    self._rotation == other._rotation and
+                    self._horizontal == other._horizontal)
 
     def __hash__(self):
-        return hash((self._horizontal))
+        return hash(self._horizontal)
 
     def __str__(self):
-        return "Align: %s %s %s" % (self._horizontal, self._vertical, self._rotation)
+        return "Align: %s %s %s" % (self._horizontal,
+                                    self._vertical,
+                                    self._rotation)

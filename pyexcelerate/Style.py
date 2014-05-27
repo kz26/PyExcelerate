@@ -1,10 +1,10 @@
 from . import Font, Fill, Format, Alignment, Borders
 from . import Utility
-import six
 
 
 class Style(object):
-    def __init__(self, font=None, fill=None, format=None, alignment=None, borders=None, size=None):
+    def __init__(self, font=None, fill=None, format=None, alignment=None,
+                 borders=None, size=None):
         self._font = font
         self._fill = fill
         self._format = format
@@ -14,11 +14,16 @@ class Style(object):
 
     @property
     def size(self):
-        return self._size       
+        return self._size
 
     @property
     def is_default(self):
-        return not (self._font or self._fill or self._format or self._alignment or self._borders or self._size is not None)
+        return not (self._font or
+                    self._fill or
+                    self._format or
+                    self._alignment or
+                    self._borders or
+                    self._size is not None)
 
     @property
     def borders(self):
@@ -66,18 +71,20 @@ class Style(object):
         # Be careful when using this function as id's may be inaccurate
         # if precondition not met.
         tag = []
-        if not self._format is None:
+        if self._format is not None:
             tag.append("numFmtId=\"%d\"" % self._format.id)
-        if not self._font is None:
+        if self._font is not None:
             tag.append("applyFont=\"1\" fontId=\"%d\"" % (self._font.id))
-        if not self._fill is None:
+        if self._fill is not None:
             tag.append("applyFill=\"1\" fillId=\"%d\"" % (self._fill.id + 1))
-        if not self._borders is None:
-            tag.append("applyBorder=\"1\" borderId=\"%d\"" % (self._borders.id))
+        if self._borders is not None:
+            tag.append("applyBorder=\"1\" borderId=\"%d\"" %
+                       (self._borders.id))
         if self._alignment is None:
             return "<xf xfId=\"0\" %s/>" % (" ".join(tag))
         else:
-            return "<xf xfId=\"0\"  %s applyAlignment=\"1\">%s</xf>" % (" ".join(tag), self._alignment.get_xml_string())
+            return "<xf xfId=\"0\"  %s applyAlignment=\"1\">%s</xf>" % \
+                   (" ".join(tag), self._alignment.get_xml_string())
 
     def __hash__(self):
         return hash((self._font, self._fill))
@@ -86,7 +93,9 @@ class Style(object):
         if other is None:
             return self.is_default
         elif Utility.YOLO:
-            return self._format == other._format and self._alignment == other._alignment and self._borders == other._borders
+            return (self._format == other._format and
+                    self._alignment == other._alignment and
+                    self._borders == other._borders)
         else:
             return self._to_tuple() == other._to_tuple()
 
@@ -100,19 +109,21 @@ class Style(object):
         return self._binary_operation(other, Utility.nonboolean_xor)
 
     def _binary_operation(self, other, operation):
-        return Style( \
-            font=operation(self.font, other.font), \
-            fill=operation(self.fill, other.fill), \
-            format=operation(self.format, other.format), \
-            alignment=operation(self.alignment, other.alignment), \
-            borders=operation(self.borders, other.borders) \
+        return Style(
+            font=operation(self.font, other.font),
+            fill=operation(self.fill, other.fill),
+            format=operation(self.format, other.format),
+            alignment=operation(self.alignment, other.alignment),
+            borders=operation(self.borders, other.borders)
         )
 
     def _to_tuple(self):
-        return (self._font, self._fill, self._format, self._alignment, self._borders, self._size)
+        return (self._font, self._fill, self._format,
+                self._alignment, self._borders, self._size)
 
     def __str__(self):
-        return "%s %s %s %s" % (self.font, self.fill, self.format, self.alignment)
+        return "%s %s %s %s" % \
+               (self.font, self.fill, self.format, self.alignment)
 
     def __repr__(self):
         return "<%s>" % self.__str__()

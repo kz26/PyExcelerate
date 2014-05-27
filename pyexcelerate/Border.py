@@ -7,20 +7,21 @@ from . import Color
 
 
 class Border(object):
-    STYLE_MAPPING = { \
-        'dashDot': ('.-', '-.', 'dash dot'), \
-        'dashDotDot': ('..-', '-..', 'dash dot dot'), \
-        'dashed': ('--'), \
-        'dotted': ('..', ':'), \
-        'double': ('='), \
-        'hair': ('hairline', '.'), \
-        'medium': (), \
-        'mediumDashDot': ('medium dash dot', 'medium -.', 'medium .-'), \
-        'mediumDashDotDot': ('medium dash dot dot', 'medium -..', 'medium ..-'), \
-        'mediumDashed': ('medium dashed', 'medium --'), \
-        'slantDashDot': ('/-.', 'slant dash dot'), \
-        'thick': (), \
-        'thin': ('_') \
+    STYLE_MAPPING = {
+        'dashDot': ('.-', '-.', 'dash dot'),
+        'dashDotDot': ('..-', '-..', 'dash dot dot'),
+        'dashed': '--',
+        'dotted': ('..', ':'),
+        'double': '=',
+        'hair': ('hairline', '.'),
+        'medium': (),
+        'mediumDashDot': ('medium dash dot', 'medium -.', 'medium .-'),
+        'mediumDashDotDot': ('medium dash dot dot',
+                             'medium -..', 'medium ..-'),
+        'mediumDashed': ('medium dashed', 'medium --'),
+        'slantDashDot': ('/-.', 'slant dash dot'),
+        'thick': (),
+        'thin': '_'
     }
 
     def __init__(self, color=None, style='thin'):

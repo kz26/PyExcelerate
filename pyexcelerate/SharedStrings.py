@@ -10,7 +10,7 @@ class SharedStrings(object):
     @property
     def workbook(self):
         return self._parent
-        
+
     def get_key(self, s):
         # get the key for s
         if s not in self._map:
