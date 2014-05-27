@@ -6,7 +6,7 @@ from .Format import Format
 from .Alignment import Alignment
 
 try:
-	import pkg_resources
-	__version__ = pkg_resources.require('PyExcelerate')[0].version
+    import pkg_resources
+    __version__ = pkg_resources.require('PyExcelerate')[0].version
 except:
-	__version__ = 'unknown'
+    __version__ = 'unknown'

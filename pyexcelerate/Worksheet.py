@@ -6,212 +6,213 @@ import six
 from datetime import datetime
 from xml.sax.saxutils import escape
 
+
 class Worksheet(object):
-	def __init__(self, name, workbook, data=None):
-		self._columns = 0 # cache this for speed
-		self._name = name
-		self._cells = {}
-		self._cell_cache = {}
-		self._styles = {}
-		self._row_styles = {}
-		self._col_styles = {}
-		self._parent = workbook
-		self._merges = [] # list of Range objects
-		self._attributes = {}
-		if data != None:
-			for x, row in enumerate(data, 1):
-				for y, cell in enumerate(row, 1):
-					if x not in self._cells:
-						self._cells[x] = {}
-					self._cells[x][y] = cell
-					self._columns = max(self._columns, y)
+    def __init__(self, name, workbook, data=None):
+        self._columns = 0 # cache this for speed
+        self._name = name
+        self._cells = {}
+        self._cell_cache = {}
+        self._styles = {}
+        self._row_styles = {}
+        self._col_styles = {}
+        self._parent = workbook
+        self._merges = [] # list of Range objects
+        self._attributes = {}
+        if data != None:
+            for x, row in enumerate(data, 1):
+                for y, cell in enumerate(row, 1):
+                    if x not in self._cells:
+                        self._cells[x] = {}
+                    self._cells[x][y] = cell
+                    self._columns = max(self._columns, y)
 
-	def __getitem__(self, key):
-		if isinstance(key, slice):
-			if key.step is not None and key.step > 1:
-				raise Exception("PyExcelerate doesn't support slicing with steps")
-			else:
-				return Range.Range((key.start or 1, 1), (key.stop or float('inf'), float('inf')), self)
-		else:
-			if key not in self._cells:
-				self._cells[key] = {}
-			return Range.Range((key, 1), (key, float('inf')), self) # return a row range
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            if key.step is not None and key.step > 1:
+                raise Exception("PyExcelerate doesn't support slicing with steps")
+            else:
+                return Range.Range((key.start or 1, 1), (key.stop or float('inf'), float('inf')), self)
+        else:
+            if key not in self._cells:
+                self._cells[key] = {}
+            return Range.Range((key, 1), (key, float('inf')), self) # return a row range
 
-	@property
-	def stylesheet(self):
-		return self._stylesheet
+    @property
+    def stylesheet(self):
+        return self._stylesheet
 
-	@property
-	def col_styles(self):
-		return self._col_styles.items()
+    @property
+    def col_styles(self):
+        return self._col_styles.items()
 
-	@property
-	def name(self):
-		return self._name
-	
-	@property
-	def merges(self):
-		return self._merges
-	
-	@property
-	def num_rows(self):
-		if len(self._cells) > 0:
-			return max(self._cells.keys())
-		else:
-			return 1
-	
-	@property
-	def num_columns(self):
-		return max(1, self._columns)
-	
-	def cell(self, name):
-		# convenience method
-		return self.range(name, name)
-	
-	def range(self, start, end):
-		# convenience method
-		return Range.Range(start, end, self)
-		
-	def add_merge(self, range):
-		for merge in self._merges:
-			if range.intersects(merge):
-				raise Exception("Invalid merge, intersects existing")
-		self._merges.append(range)
-	
-	def get_cell_value(self, x, y):
-		if x not in self._cells:
-			self._cells[x] = {}
-		if y not in self._cells[x]:
-			return None
-		type = DataTypes.get_type(self._cells[x][y])
-		if type == DataTypes.FORMULA:
-			# remove the equals sign
-			return self._cells[x][y][:1]
-		elif type == DataTypes.INLINE_STRING and self._cells[x][y][2:] == '\'=':
-			return self._cells[x][y][:1]
-		else:
-			return self._cells[x][y]
-	
-	def set_cell_value(self, x, y, value):
-		if x not in self._cells:
-			self._cells[x] = {}
-		if DataTypes.get_type(value) == DataTypes.DATE:
-			self.get_cell_style(x, y).format = Format.Format('yyyy-mm-dd')
-		self._cells[x][y] = value
-	
-	def get_cell_style(self, x, y):
-		if x not in self._styles:
-			self._styles[x] = {}
-		if y not in self._styles[x]:
-			self.set_cell_style(x, y, Style.Style())
-		return self._styles[x][y]
-	
-	def set_cell_style(self, x, y, value):
-		if x not in self._styles:
-			self._styles[x] = {}
-		self._styles[x][y] = value
-		self._parent.add_style(value)
-		if not self.get_cell_value(x, y):
-			self.set_cell_value(x, y, '')
-	
-	def get_row_style(self, row):
-		if row not in self._row_styles:
-			self.set_row_style(row, Style.Style())
-		return self._row_styles[row]
-		
-	def set_row_style(self, row, value):
-		self._row_styles[row] = value
-		self.workbook.add_style(value)
-		
-	def get_col_style(self, col):
-		if col not in self._col_styles:
-			self.set_col_style(col, Style.Style())
-		return self._col_styles[col]
-		
-	def set_col_style(self, col, value):
-		self._col_styles[col] = value
-		self.workbook.add_style(value)
-	
-	@property
-	def workbook(self):
-			return self._parent
+    @property
+    def name(self):
+        return self._name
+    
+    @property
+    def merges(self):
+        return self._merges
+    
+    @property
+    def num_rows(self):
+        if len(self._cells) > 0:
+            return max(self._cells.keys())
+        else:
+            return 1
+    
+    @property
+    def num_columns(self):
+        return max(1, self._columns)
+    
+    def cell(self, name):
+        # convenience method
+        return self.range(name, name)
+    
+    def range(self, start, end):
+        # convenience method
+        return Range.Range(start, end, self)
+        
+    def add_merge(self, range):
+        for merge in self._merges:
+            if range.intersects(merge):
+                raise Exception("Invalid merge, intersects existing")
+        self._merges.append(range)
+    
+    def get_cell_value(self, x, y):
+        if x not in self._cells:
+            self._cells[x] = {}
+        if y not in self._cells[x]:
+            return None
+        type = DataTypes.get_type(self._cells[x][y])
+        if type == DataTypes.FORMULA:
+            # remove the equals sign
+            return self._cells[x][y][:1]
+        elif type == DataTypes.INLINE_STRING and self._cells[x][y][2:] == '\'=':
+            return self._cells[x][y][:1]
+        else:
+            return self._cells[x][y]
+    
+    def set_cell_value(self, x, y, value):
+        if x not in self._cells:
+            self._cells[x] = {}
+        if DataTypes.get_type(value) == DataTypes.DATE:
+            self.get_cell_style(x, y).format = Format.Format('yyyy-mm-dd')
+        self._cells[x][y] = value
+    
+    def get_cell_style(self, x, y):
+        if x not in self._styles:
+            self._styles[x] = {}
+        if y not in self._styles[x]:
+            self.set_cell_style(x, y, Style.Style())
+        return self._styles[x][y]
+    
+    def set_cell_style(self, x, y, value):
+        if x not in self._styles:
+            self._styles[x] = {}
+        self._styles[x][y] = value
+        self._parent.add_style(value)
+        if not self.get_cell_value(x, y):
+            self.set_cell_value(x, y, '')
+    
+    def get_row_style(self, row):
+        if row not in self._row_styles:
+            self.set_row_style(row, Style.Style())
+        return self._row_styles[row]
+        
+    def set_row_style(self, row, value):
+        self._row_styles[row] = value
+        self.workbook.add_style(value)
+        
+    def get_col_style(self, col):
+        if col not in self._col_styles:
+            self.set_col_style(col, Style.Style())
+        return self._col_styles[col]
+        
+    def set_col_style(self, col, value):
+        self._col_styles[col] = value
+        self.workbook.add_style(value)
+    
+    @property
+    def workbook(self):
+            return self._parent
 
-	def __get_cell_data(self, cell, x, y, style):
-		if cell is None:
-			return "" # no cell data
-		if cell not in self._cell_cache or cell.__class__ == bool:
-			# boolean values are treated oddly in dictionaries, manually override
-			type = DataTypes.get_type(cell)
-			
-			if type == DataTypes.NUMBER:
-				self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
-			elif type == DataTypes.INLINE_STRING:
-				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell)
-			elif type == DataTypes.DATE:
-				self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
-			elif type == DataTypes.FORMULA:
-				self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
-			elif type == DataTypes.BOOLEAN:
-				self._cell_cache[cell] = '" t="b"><v>%d</v></c>' % (cell)
-		
-		if style:
-			return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
-		else:
-			return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), self._cell_cache[cell])
-	
-	def get_col_xml_string(self, col):
-		if col in self._col_styles and not self._col_styles[col].is_default:
-			style = self._col_styles[col]
-			if style.size == -1:
-				size = 0
-				for x, row in self._cells.items():
-					for y, cell in row.items():
-						size = max((len(str(cell)) * 7 + 5) / 7, size)
-			else:
-				size = style.size if style.size else 15
-				
-			return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (
-				col, col,
-				1 if style.size == 0 else 0, # hidden
-				1 if style.size == -1 else 0, # best fit
-				1 if style.size is not None else 0, # customWidth
-				size,
-				style.id)
-		else:
-			return "<col min=\"%d\" max=\"%d\">" % (col, col)
-	
-	def get_row_xml_string(self, row):
-		if row in self._row_styles and not self._row_styles[row].is_default:
-			style = self._row_styles[row]
-			if style.size == -1:
-				size = 0
-				for x, r in self._cells.items():
-					for y, cell in r.items():
-						try:
-							font_size = self._styles[x][y].font.size
-						except:
-							font_size = 11
-						size = max(font_size * (cell.count('\n') + 1) + 4, size)
-			else:
-				size = style.size if style.size else 15
-			return "<row r=\"%d\" s=\"%d\" customFormat=\"1\" hidden=\"%d\" customHeight=\"%d\" ht=\"%f\">" % (
-				row,
-				style.id,
-				1 if style.size == 0 else 0, # hidden
-				1 if style.size is not None else 0, # customHeight
-				size
-			)
-		else:
-			return "<row r=\"%d\">" % row
-		
-	def get_xml_data(self):
-		# Precondition: styles are aligned. if not, then :v
-		for x, row in six.iteritems(self._cells):
-			row_data = []
-			for y, cell in six.iteritems(self._cells[x]):
-				if x not in self._styles or y not in self._styles[x]:
-					style = None
-				else:
-					style = self._styles[x][y]
-				row_data.append(self.__get_cell_data(cell, x, y, style))
-			yield x, row_data
+    def __get_cell_data(self, cell, x, y, style):
+        if cell is None:
+            return "" # no cell data
+        if cell not in self._cell_cache or cell.__class__ == bool:
+            # boolean values are treated oddly in dictionaries, manually override
+            type = DataTypes.get_type(cell)
+            
+            if type == DataTypes.NUMBER:
+                self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
+            elif type == DataTypes.INLINE_STRING:
+                self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell)
+            elif type == DataTypes.DATE:
+                self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
+            elif type == DataTypes.FORMULA:
+                self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
+            elif type == DataTypes.BOOLEAN:
+                self._cell_cache[cell] = '" t="b"><v>%d</v></c>' % (cell)
+        
+        if style:
+            return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
+        else:
+            return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), self._cell_cache[cell])
+    
+    def get_col_xml_string(self, col):
+        if col in self._col_styles and not self._col_styles[col].is_default:
+            style = self._col_styles[col]
+            if style.size == -1:
+                size = 0
+                for x, row in self._cells.items():
+                    for y, cell in row.items():
+                        size = max((len(str(cell)) * 7 + 5) / 7, size)
+            else:
+                size = style.size if style.size else 15
+                
+            return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (
+                col, col,
+                1 if style.size == 0 else 0, # hidden
+                1 if style.size == -1 else 0, # best fit
+                1 if style.size is not None else 0, # customWidth
+                size,
+                style.id)
+        else:
+            return "<col min=\"%d\" max=\"%d\">" % (col, col)
+    
+    def get_row_xml_string(self, row):
+        if row in self._row_styles and not self._row_styles[row].is_default:
+            style = self._row_styles[row]
+            if style.size == -1:
+                size = 0
+                for x, r in self._cells.items():
+                    for y, cell in r.items():
+                        try:
+                            font_size = self._styles[x][y].font.size
+                        except:
+                            font_size = 11
+                        size = max(font_size * (cell.count('\n') + 1) + 4, size)
+            else:
+                size = style.size if style.size else 15
+            return "<row r=\"%d\" s=\"%d\" customFormat=\"1\" hidden=\"%d\" customHeight=\"%d\" ht=\"%f\">" % (
+                row,
+                style.id,
+                1 if style.size == 0 else 0, # hidden
+                1 if style.size is not None else 0, # customHeight
+                size
+            )
+        else:
+            return "<row r=\"%d\">" % row
+        
+    def get_xml_data(self):
+        # Precondition: styles are aligned. if not, then :v
+        for x, row in six.iteritems(self._cells):
+            row_data = []
+            for y, cell in six.iteritems(self._cells[x]):
+                if x not in self._styles or y not in self._styles[x]:
+                    style = None
+                else:
+                    style = self._styles[x][y]
+                row_data.append(self.__get_cell_data(cell, x, y, style))
+            yield x, row_data
