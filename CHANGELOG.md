@@ -1,3 +1,6 @@
+0.6.3
+* Max rows fix (issues #25 and #27)
+
 0.6.2
 * Python 3.4 added to list of supported Python versions
 
