@@ -347,7 +347,7 @@ wb.save("output.xlsx")
 
 ## Packaging with PyInstaller
 
-PyInstaller is the only packager officially supported by PyExcelerate. Copy hook-pyexcelerate.py to your PyInstaller hooks directory.
+PyInstaller is the only packager officially supported by PyExcelerate. Copy hook-pyexcelerate.Writer.py to your PyInstaller hooks directory.
 
 
 ## Support
