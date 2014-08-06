@@ -16,11 +16,14 @@ class Workbook(object):
 		self._writer = Writer(self)
 
 	def add_sheet(self, worksheet):
+		for sheet in self._worksheets:
+			if sheet.name == worksheet.name:
+				raise Exception("There is already a worksheet with the name '%s'. Duplicate worksheet names are not permitted." % worksheet.name)
 		self._worksheets.append(worksheet)
 		
 	def new_sheet(self, sheet_name, data=None, force_name=False):
 		worksheet = Worksheet.Worksheet(sheet_name, self, data, force_name)
-		self._worksheets.append(worksheet)
+		self.add_sheet(worksheet)
 		return worksheet
 
 	def add_style(self, style):

@@ -85,6 +85,17 @@ def test_name_length():
 def test_name_length_force():
     wb = Workbook()
     ws = wb.new_sheet('12345678901234567890123456789012', force_name=True)
+    
+@raises(Exception)
+def test_name_duplicate():
+    wb = Workbook()
+    ws = wb.new_sheet('1234')
+    ws = wb.new_sheet('1234')
+
+def test_name_no_duplicate():
+    wb = Workbook()
+    ws = wb.new_sheet('1234')
+    ws = wb.new_sheet('12356')
 	
 
 def test_number_precision():
