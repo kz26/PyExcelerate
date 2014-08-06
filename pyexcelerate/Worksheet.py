@@ -7,8 +7,10 @@ from datetime import datetime
 from xml.sax.saxutils import escape
 
 class Worksheet(object):
-	def __init__(self, name, workbook, data=None):
+	def __init__(self, name, workbook, data=None, force_name=False):
 		self._columns = 0 # cache this for speed
+		if len(name) > 31 and not force_name: # http://stackoverflow.com/questions/3681868/is-there-a-limit-on-an-excel-worksheets-name-length
+			raise Exception('Excel does not permit worksheet names longer than 31 characters. Set force_name=True to disable this restriction.')
 		self._name = name
 		self._cells = {}
 		self._cell_cache = {}

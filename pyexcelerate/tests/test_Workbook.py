@@ -5,7 +5,7 @@ import numpy
 import nose
 import os
 from datetime import datetime
-from nose.tools import eq_
+from nose.tools import eq_, raises
 from .utils import get_output_path
 
 def test_get_xml_data():
@@ -71,12 +71,22 @@ def test_numpy_range():
 	wb.save(get_output_path("numpy-range-test.xlsx"))
 
 def test_none():
-     testData = [[1,2,None]]
-     wb = Workbook()
-     ws = wb.new_sheet("Test 1", data=testData)
-     ws[1][1].style.font.bold = True
-     wb.save(get_output_path("none-test.xlsx"))
-     
+	testData = [[1,2,None]]
+	wb = Workbook()
+	ws = wb.new_sheet("Test 1", data=testData)
+	ws[1][1].style.font.bold = True
+	wb.save(get_output_path("none-test.xlsx"))
+	
+@raises(Exception)
+def test_name_length():
+    wb = Workbook()
+    ws = wb.new_sheet('12345678901234567890123456789012')
+
+def test_name_length_force():
+    wb = Workbook()
+    ws = wb.new_sheet('12345678901234567890123456789012', force_name=True)
+	
+
 def test_number_precision():
 	try:
 		import xlrd
