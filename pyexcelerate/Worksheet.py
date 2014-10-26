@@ -167,8 +167,8 @@ class Worksheet(object):
 			if style.size == -1:
 				size = 0
 				for x, row in self._cells.items():
-					for y, cell in row.items():
-						size = max((len(str(cell)) * 7 + 5) / 7, size)
+					if col in row:
+						size = max((len(str(row[col])) * 7 + 5) / 7, size)
 			else:
 				size = style.size if style.size else 15
 				
@@ -187,13 +187,12 @@ class Worksheet(object):
 			style = self._row_styles[row]
 			if style.size == -1:
 				size = 0
-				for x, r in self._cells.items():
-					for y, cell in r.items():
-						try:
-							font_size = self._styles[x][y].font.size
-						except:
-							font_size = 11
-						size = max(font_size * (cell.count('\n') + 1) + 4, size)
+				for y, cell in self._cells[row].items():
+					try:
+						font_size = self._styles[row][y].font.size
+					except:
+						font_size = 11
+					size = max(font_size * (cell.count('\n') + 1) + 4, size)
 			else:
 				size = style.size if style.size else 15
 			return "<row r=\"%d\" s=\"%d\" customFormat=\"1\" hidden=\"%d\" customHeight=\"%d\" ht=\"%f\">" % (
@@ -208,6 +207,10 @@ class Worksheet(object):
 		
 	def get_xml_data(self):
 		# Precondition: styles are aligned. if not, then :v
+		# check if we have any row styles that don't have data
+		for x, style in six.iteritems(self._row_styles):
+			if x not in self._cells:
+				self._cells[x] = {}
 		for x, row in six.iteritems(self._cells):
 			row_data = []
 			for y, cell in six.iteritems(self._cells[x]):

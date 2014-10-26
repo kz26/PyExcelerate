@@ -68,15 +68,21 @@ def test_style_row():
 def test_style_row_col():
 	wb = Workbook()
 	ws = wb.new_sheet("test")
-	ws.range("A1", "D4").value = 'sdfgs5b56seb6se56bse5jsdfljg'
+	ws[1][1].value = 'asdf'
+	ws[1][3].value = 'asdf\nasdf\nasdf\nasdf'
+	ws[3][1].value = 'asdfasdfasdfasdfasdfasdfasdfasdf'
 	eq_(Style(), ws.get_row_style(1))
 	eq_(Style(), ws.get_col_style(1))
 	ws.set_row_style(1, Style(size=-1))
-	ws.set_row_style(2, Style(size=0))
-	ws.set_row_style(3, Style(size=100, fill=Fill(background=Color(0, 255, 0, 0))))
+	ws.set_row_style(2, Style(size=-1))
+	ws.set_row_style(3, Style(size=-1))
+	ws.set_row_style(4, Style(size=0))
+	ws.set_row_style(5, Style(size=100, fill=Fill(background=Color(0, 255, 0, 0))))
 	ws.set_col_style(1, Style(size=-1))
-	ws.set_col_style(2, Style(size=0))
-	ws.set_col_style(3, Style(size=100, fill=Fill(background=Color(255, 0, 0, 0))))
+	ws.set_col_style(2, Style(size=-1))
+	ws.set_col_style(3, Style(size=-1))
+	ws.set_col_style(4, Style(size=0))
+	ws.set_col_style(5, Style(size=100, fill=Fill(background=Color(255, 0, 0, 0))))
 	wb.save(get_output_path("style-auto-row-col-test.xlsx"))
 
 def test_and_or_xor():
