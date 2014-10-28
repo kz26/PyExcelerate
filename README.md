@@ -6,7 +6,6 @@ master: [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=mast
 dev: [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=dev)](https://travis-ci.org/kz26/PyExcelerate)    
 [![Coverage Status](https://coveralls.io/repos/kz26/PyExcelerate/badge.png)](https://coveralls.io/r/kz26/PyExcelerate)
 
-* Current version: 0.6.3
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/kz26)
 * License: Simplified BSD License
 * [Source repository](https://github.com/kz26/PyExcelerate)
