@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
 	name="PyExcelerate",
-	version='0.6.3',
+	version='0.6.4',
 	author="Kevin Wang and Kevin Zhang",
 	author_email="kevin@kevinzhang.me",
 	maintainer="Kevin Zhang",
