@@ -1,3 +1,9 @@
+0.6.4
+* Add check for duplicate worksheet names
+* Add check for worksheet name length (for Excel compatibility)
+* Autofit bug fix (issue #28)
+* other minor fixes
+
 0.6.3
 * Max rows fix (issues #25 and #27)
 
