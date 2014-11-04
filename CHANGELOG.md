@@ -1,3 +1,6 @@
+0.6.5
+* Add missing Color import in init (PR #29)
+
 0.6.4
 * Add check for duplicate worksheet names
 * Add check for worksheet name length (for Excel compatibility)
