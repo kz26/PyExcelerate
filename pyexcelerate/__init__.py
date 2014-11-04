@@ -4,6 +4,7 @@ from .Fill import Fill
 from .Font import Font
 from .Format import Format
 from .Alignment import Alignment
+from .Color import Color
 
 try:
 	import pkg_resources
