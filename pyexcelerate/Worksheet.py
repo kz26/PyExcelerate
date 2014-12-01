@@ -20,7 +20,7 @@ class Worksheet(object):
 		self._parent = workbook
 		self._merges = [] # list of Range objects
 		self._attributes = {}
-		if data != None:
+		if data is not None:
 			for x, row in enumerate(data, 1):
 				for y, cell in enumerate(row, 1):
 					if x not in self._cells:
