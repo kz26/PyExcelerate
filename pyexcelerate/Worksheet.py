@@ -113,7 +113,7 @@ class Worksheet(object):
 			self._styles[x] = {}
 		self._styles[x][y] = value
 		self._parent.add_style(value)
-		if not self.get_cell_value(x, y):
+		if self.get_cell_value(x, y) is None:
 			self.set_cell_value(x, y, '')
 	
 	def get_row_style(self, row):
