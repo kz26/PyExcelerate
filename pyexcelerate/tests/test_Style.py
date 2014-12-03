@@ -107,3 +107,14 @@ def test_and_or_xor():
 def test_str_():
 	font = Font(bold=True, italic=True, underline=True, strikethrough=True)
 	eq_(font.__repr__(), "<Font: Calibri, 11pt b i u s>")
+
+def test_no_style():
+	import openpyxl
+	data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] # data is a 2D array
+	filename = get_output_path("no_style.xlsx")
+	sheetname = "test"
+	wb = Workbook()
+	wb.new_sheet(sheetname, data=data)
+	wb.save(filename)
+	wbr = openpyxl.reader.excel.load_workbook(filename=filename,use_iterators=True)
+	mySheet = wbr.get_sheet_by_name(sheetname)

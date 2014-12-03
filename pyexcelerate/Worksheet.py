@@ -20,7 +20,7 @@ class Worksheet(object):
 		self._parent = workbook
 		self._merges = [] # list of Range objects
 		self._attributes = {}
-		if data != None:
+		if data is not None:
 			for x, row in enumerate(data, 1):
 				for y, cell in enumerate(row, 1):
 					if x not in self._cells:
@@ -113,7 +113,7 @@ class Worksheet(object):
 			self._styles[x] = {}
 		self._styles[x][y] = value
 		self._parent.add_style(value)
-		if not self.get_cell_value(x, y):
+		if self.get_cell_value(x, y) is None:
 			self.set_cell_value(x, y, '')
 	
 	def get_row_style(self, row):
