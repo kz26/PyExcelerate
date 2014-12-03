@@ -1,3 +1,7 @@
+0.6.6
+* enhancement: empty stylesheet behavior for openpyxl compatibility and improved performance (issue #34)
+* Bugfix: zero values deleted when styles are set (issue #30)
+
 0.6.5
 * Add missing Color import in init (PR #29)
 

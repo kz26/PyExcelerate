@@ -350,5 +350,4 @@ PyInstaller is the only packager officially supported by PyExcelerate. Copy hook
 
 
 ## Support
-Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  
-**Please base all pull requests against the dev branch. All changes to code should be accompanied by a test when appropriate.** We use the Nose testing framework.
+Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  **Pull requests should be based against the dev branch. All changes to code should be accompanied by a test when appropriate.** We use the Nose testing framework.

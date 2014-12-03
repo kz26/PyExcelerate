@@ -111,7 +111,7 @@ def test_str_():
 def test_no_style():
 	import openpyxl
 	data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] # data is a 2D array
-	filename = "no_style.xlsx"
+	filename = get_output_path("no_style.xlsx")
 	sheetname = "test"
 	wb = Workbook()
 	wb.new_sheet(sheetname, data=data)
