@@ -3,6 +3,7 @@ from . import Style
 from . import Format
 from .DataTypes import DataTypes
 import six
+import math
 from datetime import datetime
 from xml.sax.saxutils import escape
 
@@ -146,7 +147,12 @@ class Worksheet(object):
 			type = DataTypes.get_type(cell)
 			
 			if type == DataTypes.NUMBER:
-				self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
+				if math.isnan(cell):
+					self._cell_cache[cell] = '" t="e"><v>#NUM!</v></c>'
+				elif math.isinf(cell):
+					self._cell_cache[cell] = '" t="e"><v>#DIV/0!</v></c>'
+				else:
+					self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
 			elif type == DataTypes.INLINE_STRING:
 				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell)
 			elif type == DataTypes.DATE:

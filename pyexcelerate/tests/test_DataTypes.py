@@ -10,6 +10,10 @@ def test__get_type():
 	eq_(DataTypes.get_type(15), DataTypes.NUMBER)
 	eq_(DataTypes.get_type(15.0), DataTypes.NUMBER)
 	eq_(DataTypes.get_type(Decimal('15.0')), DataTypes.NUMBER)
+	eq_(DataTypes.get_type(float('inf')), DataTypes.NUMBER)
+	eq_(DataTypes.get_type(float('nan')), DataTypes.NUMBER)
+	eq_(DataTypes.get_type(numpy.inf), DataTypes.NUMBER)
+	eq_(DataTypes.get_type(numpy.nan), DataTypes.NUMBER)
 	eq_(DataTypes.get_type("test"), DataTypes.INLINE_STRING)
 	eq_(DataTypes.get_type(datetime.now()), DataTypes.DATE)
 	eq_(DataTypes.get_type(True), DataTypes.BOOLEAN)
@@ -18,6 +22,10 @@ def test_numpy():
 	testData = numpy.ones((5, 5), dtype = int)
 	wb = Workbook()
 	ws = wb.new_sheet("Test 1", data=testData)
+	ws[6][1].value = numpy.inf
+	ws[6][2].value = numpy.nan
+	ws[7][1].value = float('inf')
+	ws[7][2].value = float('nan')
 	eq_(ws[1][1].value, 1)
 	eq_(DataTypes.get_type(ws[1][1].value), DataTypes.NUMBER)
 	wb.save(get_output_path("numpy-test.xlsx"))
