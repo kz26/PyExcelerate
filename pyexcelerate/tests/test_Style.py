@@ -5,8 +5,8 @@ from ..Fill import Fill
 from ..Style import Style
 from ..Alignment import Alignment
 import time
-import numpy
 from datetime import datetime
+import nose
 from nose.tools import eq_
 from .utils import get_output_path
 
@@ -108,8 +108,11 @@ def test_str_():
 	font = Font(bold=True, italic=True, underline=True, strikethrough=True)
 	eq_(font.__repr__(), "<Font: Calibri, 11pt b i u s>")
 
-def test_no_style():
-	import openpyxl
+def test_no_style_xml():
+	try:
+		import openpyxl
+	except ImportError:
+		raise nose.SkipTest('openpyxl not installed')
 	data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] # data is a 2D array
 	filename = get_output_path("no_style.xlsx")
 	sheetname = "test"

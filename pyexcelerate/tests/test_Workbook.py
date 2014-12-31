@@ -1,7 +1,6 @@
 from ..Workbook import Workbook
 from ..Color import Color
 import time
-import numpy
 import nose
 import os
 from datetime import datetime
@@ -64,7 +63,12 @@ def test_range():
 	eq_(ws[3][3].value, 5)
 	eq_(ws[3][4].value, 6)
 	
+
 def test_numpy_range():
+	try:
+		import numpy
+	except ImportError:
+		raise nose.SkipTest('numpy not installed')
 	wb = Workbook()
 	ws = wb.new_sheet("test")
 	ws.range("A1", "GN13").value = numpy.zeros((13,196))

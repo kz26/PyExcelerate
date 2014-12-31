@@ -1,23 +1,41 @@
+# -*- coding: utf-8 -*-
+
 from ..DataTypes import DataTypes
+import nose
 from nose.tools import eq_
 from datetime import datetime, date, time
 from ..Workbook import Workbook
 from .utils import get_output_path
 from decimal import Decimal
-import numpy
 
 def test__get_type():
 	eq_(DataTypes.get_type(15), DataTypes.NUMBER)
 	eq_(DataTypes.get_type(15.0), DataTypes.NUMBER)
 	eq_(DataTypes.get_type(Decimal('15.0')), DataTypes.NUMBER)
+	eq_(DataTypes.get_type(float('inf')), DataTypes.NUMBER)
+	eq_(DataTypes.get_type(float('nan')), DataTypes.NUMBER)
+	try:
+		import numpy
+		eq_(DataTypes.get_type(numpy.inf), DataTypes.NUMBER)
+		eq_(DataTypes.get_type(numpy.nan), DataTypes.NUMBER)
+	except ImportError:
+		pass
 	eq_(DataTypes.get_type("test"), DataTypes.INLINE_STRING)
 	eq_(DataTypes.get_type(datetime.now()), DataTypes.DATE)
 	eq_(DataTypes.get_type(True), DataTypes.BOOLEAN)
 	
 def test_numpy():
+	try:
+		import numpy
+	except ImportError:
+		raise nose.SkipTest('numpy not installed')
 	testData = numpy.ones((5, 5), dtype = int)
 	wb = Workbook()
 	ws = wb.new_sheet("Test 1", data=testData)
+	ws[6][1].value = numpy.inf
+	ws[6][2].value = numpy.nan
+	ws[7][1].value = float('inf')
+	ws[7][2].value = float('nan')
 	eq_(ws[1][1].value, 1)
 	eq_(DataTypes.get_type(ws[1][1].value), DataTypes.NUMBER)
 	wb.save(get_output_path("numpy-test.xlsx"))
@@ -40,3 +58,12 @@ def test_to_excel_date():
 	# check excel's improper handling of leap year
 	eq_(DataTypes.to_excel_date(datetime(1900, 2, 28, 0, 0, 0)), 59.0)
 	eq_(DataTypes.to_excel_date(datetime(1900, 3, 1, 0, 0, 0)), 61.0)
+
+def test_unicode_str():
+	wb = Workbook()
+	ws = wb.new_sheet("Unicode test")
+	ws[1][1].value = u'ಠ_ಠ'
+	ws[1][2].value = u'(╯°□°）╯︵ ┻━┻'
+	ws[1][3].value = u'ᶘ ᵒᴥᵒᶅ'
+	ws[1][4].value = u'الله أكبر'
+	wb.save(get_output_path("unicode-test.xlsx"))
