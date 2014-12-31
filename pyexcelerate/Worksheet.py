@@ -154,7 +154,7 @@ class Worksheet(object):
 				else:
 					self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
 			elif type == DataTypes.INLINE_STRING:
-				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell)
+				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(cell.decode('utf-8'))
 			elif type == DataTypes.DATE:
 				self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
 			elif type == DataTypes.FORMULA:

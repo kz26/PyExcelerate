@@ -1,3 +1,6 @@
+0.6.7
+* Fix UnicodeDecodeError with unicode cell content (#35) and add unicode test case
+
 0.6.6
 * enhancement: empty stylesheet behavior for openpyxl compatibility and improved performance (issue #34)
 * Bugfix: zero values deleted when styles are set (issue #30)

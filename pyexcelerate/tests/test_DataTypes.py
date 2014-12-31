@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from ..DataTypes import DataTypes
 from nose.tools import eq_
 from datetime import datetime, date, time
@@ -48,3 +50,12 @@ def test_to_excel_date():
 	# check excel's improper handling of leap year
 	eq_(DataTypes.to_excel_date(datetime(1900, 2, 28, 0, 0, 0)), 59.0)
 	eq_(DataTypes.to_excel_date(datetime(1900, 3, 1, 0, 0, 0)), 61.0)
+
+def test_unicode_str():
+	wb = Workbook()
+	ws = wb.new_sheet("Unicode test")
+	ws[1][1].value = 'ಠ_ಠ'
+	ws[1][2].value = '(╯°□°）╯︵ ┻━┻'
+	ws[1][3].value = 'ᶘ ᵒᴥᵒᶅ'
+	ws[1][4].value = 'الله أكبر'
+	wb.save(get_output_path("unicode-test.xlsx"))
