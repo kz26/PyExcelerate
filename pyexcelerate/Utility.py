@@ -1,3 +1,5 @@
+import six
+
 def nonboolean_or(left, right, default=False):
 	if default == False:
 		return left | right
@@ -36,5 +38,15 @@ def lazy_set(self, attribute, default, value):
 		setattr(self, attribute, default)
 	else:
 		setattr(self, attribute, value)
+
+if six.PY2:
+	def to_unicode(s):
+		if type(s) == unicode:
+			return s
+		else:
+			return s.decode('utf-8')
+else:
+	def to_unicode(s):
+		return s
 
 YOLO = False # are we aligning?
