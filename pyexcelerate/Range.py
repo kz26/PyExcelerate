@@ -208,9 +208,10 @@ class Range(object):
 		# convert an integer to base-26 name
 		y = coord[1] - 1
 		if y not in Range._cts_cache:
-			s = ""	
+			s = []
 			while y >= 0:
-				s = chr((y % 26) + Range.A) + s
+				s.append(chr((y % 26) + Range.A))
 				y = int(y / 26) - 1
-			Range._cts_cache[y] = s
+			s.reverse()
+			Range._cts_cache[y] = ''.join(s)
 		return Range._cts_cache[y] + str(coord[0])

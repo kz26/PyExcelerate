@@ -54,18 +54,15 @@ class Workbook(object):
 			for index, style in enumerate(self._styles):
 				# compress style
 				if not style.is_default:
-					if style not in styles:
-						styles[style] = len(styles) + 1
-						setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
-						# compress individual attributes
-						for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
-							obj = getattr(style, attr_id)
-							if obj and not obj.is_default: # we only care about it if it's not default
-								if obj not in items[attr]:
-									items[attr][obj] = len(items[attr]) + 1 # insert it
-								obj.id = items[attr][obj] # apply
-					else:
-						setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
+					styles[style] = styles.get(style, len(styles) + 1)
+					setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
+			for style in styles.keys():
+				# compress individual attributes
+				for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
+					obj = getattr(style, attr_id)
+					if obj and not obj.is_default: # we only care about it if it's not default
+						items[attr][obj] = items[attr].get(obj, len(items[attr]) + 1)
+						obj.id = items[attr][obj] # apply
 			for k, v in items.items():
 				# ensure it's sorted properly
 				items[k] = [tup[0] for tup in sorted(v.items(), key=lambda x: x[1])]

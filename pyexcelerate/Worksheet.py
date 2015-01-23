@@ -15,7 +15,6 @@ class Worksheet(object):
 			raise Exception('Excel does not permit worksheet names longer than 31 characters. Set force_name=True to disable this restriction.')
 		self._name = name
 		self._cells = {}
-		self._cell_cache = {}
 		self._styles = {}
 		self._row_styles = {}
 		self._col_styles = {}
@@ -143,30 +142,29 @@ class Worksheet(object):
 	def __get_cell_data(self, cell, x, y, style):
 		if cell is None:
 			return "" # no cell data
-		if cell not in self._cell_cache or cell.__class__ == bool:
-			# boolean values are treated oddly in dictionaries, manually override
-			type = DataTypes.get_type(cell)
-			
-			if type == DataTypes.NUMBER:
-				if math.isnan(cell):
-					self._cell_cache[cell] = '" t="e"><v>#NUM!</v></c>'
-				elif math.isinf(cell):
-					self._cell_cache[cell] = '" t="e"><v>#DIV/0!</v></c>'
-				else:
-					self._cell_cache[cell] = '"><v>%.15g</v></c>' % (cell)
-			elif type == DataTypes.INLINE_STRING:
-				self._cell_cache[cell] = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(to_unicode(cell))
-			elif type == DataTypes.DATE:
-				self._cell_cache[cell] = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
-			elif type == DataTypes.FORMULA:
-				self._cell_cache[cell] = '"><f>%s</f></c>' % (cell)
-			elif type == DataTypes.BOOLEAN:
-				self._cell_cache[cell] = '" t="b"><v>%d</v></c>' % (cell)
+		# boolean values are treated oddly in dictionaries, manually override
+		type = DataTypes.get_type(cell)
+		
+		if type == DataTypes.NUMBER:
+			if math.isnan(cell):
+				z = '" t="e"><v>#NUM!</v></c>'
+			elif math.isinf(cell):
+				z = '" t="e"><v>#DIV/0!</v></c>'
+			else:
+				z = '"><v>%.15g</v></c>' % (cell)
+		elif type == DataTypes.INLINE_STRING:
+			z = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(to_unicode(cell))
+		elif type == DataTypes.DATE:
+			z = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
+		elif type == DataTypes.FORMULA:
+			z = '"><f>%s</f></c>' % (cell)
+		elif type == DataTypes.BOOLEAN:
+			z = '" t="b"><v>%d</v></c>' % (cell)
 		
 		if style:
-			return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, self._cell_cache[cell])
+			return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string((x, y)), style.id, z)
 		else:
-			return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), self._cell_cache[cell])
+			return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)), z)
 	
 	def get_col_xml_string(self, col):
 		if col in self._col_styles and not self._col_styles[col].is_default:
