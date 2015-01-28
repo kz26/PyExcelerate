@@ -1,2 +1,2 @@
 jinja2
-six
+six>=1.4.0
