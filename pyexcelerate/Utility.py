@@ -1,4 +1,5 @@
 import six
+import sys
 
 def nonboolean_or(left, right, default=False):
 	if default == False:
@@ -39,7 +40,7 @@ def lazy_set(self, attribute, default, value):
 	else:
 		setattr(self, attribute, value)
 
-if six.PY2:
+if sys.version_info[0] == 2:
 	def to_unicode(s):
 		if type(s) == unicode:
 			return s
