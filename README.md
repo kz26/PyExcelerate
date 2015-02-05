@@ -7,6 +7,7 @@ dev: [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=dev)](h
 [![Coverage Status](https://coveralls.io/repos/kz26/PyExcelerate/badge.png)](https://coveralls.io/r/kz26/PyExcelerate)
 
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/kz26)
+* Copyright 2015 Kevin Wang, Kevin Zhang. Portions copyright Google, Inc.
 * License: Simplified BSD License
 * [Source repository](https://github.com/kz26/PyExcelerate)
 * [PyPI page](https://pypi.python.org/pypi/PyExcelerate)
