@@ -14,7 +14,7 @@ setup(
 	long_description=open('README.rst').read(),
 	install_requires=[
 		'Jinja2',
-		'six'
+		'six>=1.4.0'
 	],
 	packages=[	
 		'pyexcelerate'
