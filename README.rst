@@ -385,7 +385,7 @@ Support
 
 Please use the GitHub Issue Tracker and pull request system to report
 bugs/issues and submit improvements/changes, respectively. **Pull
-requests *must* be based against the dev branch - we will reject the PR
+requests *must* be based against the dev branch - if not, we will reject the PR
 and ask you to rebase against the correct branch.** All nontrivial
 changes to code should be accompanied by a test when appropriate. We use
 the Nose testing framework.
