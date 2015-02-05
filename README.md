@@ -2,9 +2,9 @@
 
 Accelerated Excel XLSX writing library for Python
 
-master: [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
-dev: [![Build Status](https://travis-ci.org/kz26/PyExcelerate.png?branch=dev)](https://travis-ci.org/kz26/PyExcelerate)    
-[![Coverage Status](https://coveralls.io/repos/kz26/PyExcelerate/badge.png)](https://coveralls.io/r/kz26/PyExcelerate)
+master: [![build-status-master](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
+dev: [![build-status-dev](https://travis-ci.org/kz26/PyExcelerate.png?branch=dev)](https://travis-ci.org/kz26/PyExcelerate)
+test coverage: [![coverage-status](https://coveralls.io/repos/kz26/PyExcelerate/badge.png)](https://coveralls.io/r/kz26/PyExcelerate)
 
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/kz26)
 * Copyright 2015 Kevin Wang, Kevin Zhang. Portions copyright Google, Inc.
@@ -351,4 +351,4 @@ PyInstaller is the only packager officially supported by PyExcelerate. Copy hook
 
 
 ## Support
-Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  **Pull requests should be based against the dev branch. All changes to code should be accompanied by a test when appropriate.** We use the Nose testing framework.
+Please use the GitHub Issue Tracker and pull request system to report bugs/issues and submit improvements/changes, respectively.  **Pull requests *must* be based against the dev branch - we will reject the PR and ask you to rebase against the correct branch.** All nontrivial changes to code should be accompanied by a test when appropriate. We use the Nose testing framework.

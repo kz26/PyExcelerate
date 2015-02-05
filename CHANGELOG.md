@@ -1,3 +1,6 @@
+0.6.8
+* Add requirement for six >=1.4.0 
+
 0.6.7
 * Fix UnicodeDecodeError with unicode cell content (#35) and add unicode test case
 
