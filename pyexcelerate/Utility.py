@@ -1,4 +1,5 @@
 import six
+import sys
 
 def nonboolean_or(left, right, default=False):
 	if default == False:

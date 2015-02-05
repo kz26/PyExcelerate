@@ -134,10 +134,10 @@ class Worksheet(object):
 	def set_col_style(self, col, value):
 		self._col_styles[col] = value
 		self.workbook.add_style(value)
-	
+		
 	@property
 	def workbook(self):
-			return self._parent
+		return self._parent
 
 	def __get_cell_data(self, cell, x, y, style):
 		if cell is None:
