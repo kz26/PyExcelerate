@@ -2,8 +2,8 @@
 
 Accelerated Excel XLSX writing library for Python
 
-master: [![build-status-master](https://travis-ci.org/kz26/PyExcelerate.png?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
-dev: [![build-status-dev](https://travis-ci.org/kz26/PyExcelerate.png?branch=dev)](https://travis-ci.org/kz26/PyExcelerate)
+master: [![build-status-master](https://travis-ci.org/kz26/PyExcelerate.svg?branch=master)](https://travis-ci.org/kz26/PyExcelerate)
+dev: [![build-status-dev](https://travis-ci.org/kz26/PyExcelerate.svg?branch=dev)](https://travis-ci.org/kz26/PyExcelerate)
 test coverage: [![coverage-status](https://coveralls.io/repos/kz26/PyExcelerate/badge.svg)](https://coveralls.io/r/kz26/PyExcelerate)
 
 * Authors: [Kevin Wang](https://github.com/kevmo314) and [Kevin Zhang](https://github.com/kz26)
