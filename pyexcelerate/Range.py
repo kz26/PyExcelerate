@@ -17,10 +17,10 @@ class Range(object):
 		# Following http://office.microsoft.com/en-ca/excel-help/excel-specifications-and-limits-HA103980614.aspx
 		if (not (1 <= self._start[0] <= 1048576) and self._start[0] != float('inf')) \
 			or (not (1 <= self._end[0] <= 1048576) and self._end[0] != float('inf')):
-			raise Exception("Row index out of bounds")
+			raise IndexError("Row index out of bounds")
 		if (not (1 <= self._start[1] <= 16384) and self._start[1] != float('inf')) \
 			or (not (1 <= self._end[1] <= 16384) and self._end[1] != float('inf')):
-			raise Exception("Column index out of bounds")
+			raise IndexError("Column index out of bounds")
 		self.worksheet = worksheet
 		self.is_cell = (self._start == self._end)
 		

@@ -7,7 +7,7 @@ from ..Alignment import Alignment
 import time
 from datetime import datetime
 import nose
-from nose.tools import eq_
+from nose.tools import eq_, ok_, raises
 from .utils import get_output_path
 
 def test_style():
@@ -32,6 +32,7 @@ def test_style():
 	ws[1][1].style.alignment.vertical = 'top'
 	ws[1][1].style.alignment.horizontal = 'right'
 	ws[1][1].style.alignment.rotation = 90
+	eq_(ws[1][1].style.alignment.rotation, 90)
 	ws[3][3].style.borders.top.color = Color(255, 0, 0)
 	ws[3][3].style.borders.left.color = Color(0, 255, 0)
 	ws[3][4].style.borders.right.style = '-.'
@@ -39,6 +40,27 @@ def test_style():
 	ws[4][2].value = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis fermentum metus id congue. Sed ultrices velit id sapien sodales bibendum. Mauris volutpat porta arcu non bibendum. Pellentesque adipiscing lacus quam, ac congue ipsum fringilla sed. Praesent dapibus dignissim elit vel dictum. Pellentesque commodo iaculis ipsum a rhoncus. Sed mattis neque eget justo dignissim scelerisque. Nam odio neque, mattis et libero id, posuere aliquam mi.'
 	ws[4][1].style.alignment.wrap_text = True
 	wb.save(get_output_path("style-test.xlsx"))
+
+@raises(TypeError)
+def test_invalid_wrap_text():
+	a = Alignment()
+	a.wrap_text = True
+	ok_(a.wrap_text)
+	a.wrap_text = 'some random nonsense'
+
+@raises(ValueError)
+def test_invalid_horizontal():
+	a = Alignment()
+	a.horizontal = 'left'
+	eq_(a.horizontal, 'left')
+	a.horizontal = 'nowhere'
+
+@raises(ValueError)
+def test_invalid_vertical():
+	a = Alignment()
+	a.vertical = 'bottom'
+	eq_(a.vertical, 'bottom')
+	a.vertical = 'somewhere'
 
 def test_style_compression():
 	wb = Workbook()

@@ -16,7 +16,7 @@ class Alignment(object):
 	@wrap_text.setter
 	def wrap_text(self, value):
 		if value not in (True, False):
-			raise Exception('Invalid wrap text alignment value.')
+			raise TypeError('Invalid wrap text alignment value. Expects either True or False.')
 		self._wrap_text = value
 	
 	@property
@@ -26,7 +26,7 @@ class Alignment(object):
 	@horizontal.setter
 	def horizontal(self, value):
 		if value not in ('left', 'center', 'right'):
-			raise Exception('Invalid horizontal alignment value.')
+			raise ValueError('Invalid horizontal alignment value. Expects either \'left\', \'center\', or \'right\'.')
 		self._horizontal = value
 	
 	@property
@@ -36,7 +36,7 @@ class Alignment(object):
 	@vertical.setter
 	def vertical(self, value):
 		if value not in ('top', 'center', 'bottom'):
-			raise Exception('Invalid vertical alignment value.')
+			raise ValueError('Invalid vertical alignment value. Expects either \'top\', \'center\', or \'bottom\'.')
 		self._vertical = value
 	
 	@property
