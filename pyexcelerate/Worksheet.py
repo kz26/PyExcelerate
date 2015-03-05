@@ -123,8 +123,12 @@ class Worksheet(object):
 		return self._row_styles[row]
 		
 	def set_row_style(self, row, value):
-		self._row_styles[row] = value
-		self.workbook.add_style(value)
+		if hasattr(row, "__iter__"):
+			for r in row:
+				self.set_row_style(r, value)
+		else:
+			self._row_styles[row] = value
+			self.workbook.add_style(value)
 		
 	def get_col_style(self, col):
 		if col not in self._col_styles:
@@ -132,8 +136,12 @@ class Worksheet(object):
 		return self._col_styles[col]
 		
 	def set_col_style(self, col, value):
-		self._col_styles[col] = value
-		self.workbook.add_style(value)
+		if hasattr(col, "__iter__"):
+			for c in col:
+				self.set_col_style(c, value)
+		else:
+			self._col_styles[col] = value
+			self.workbook.add_style(value)
 		
 	@property
 	def workbook(self):
