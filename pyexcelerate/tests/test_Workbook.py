@@ -8,22 +8,21 @@ from nose.tools import eq_, raises
 from .utils import get_output_path
 
 def test_get_xml_data():
-    wb = Workbook()
-    ws = wb.new_sheet("Test")
-    ws[1][1].value = 1
-    eq_(ws[1][1].value, 1)
-    ws[1][3].value = 3
-    eq_(ws[1][3].value, 3)
-    
+	wb = Workbook()
+	ws = wb.new_sheet("Test")
+	ws[1][1].value = 1
+	eq_(ws[1][1].value, 1)
+	ws[1][3].value = 3
+	eq_(ws[1][3].value, 3)
+	
 def test_save():
-    ROWS = 65
-    COLUMNS = 100
-    wb = Workbook()
-    testData = [[1] * COLUMNS] * ROWS
-    stime = time.clock()
-    ws = wb.new_sheet("Test 1", data=testData)
-    wb.save(get_output_path("test.xlsx"))
-    #print("%s, %s, %s" % (ROWS, COLUMNS, time.clock() - stime))
+	ROWS = 65
+	COLUMNS = 100
+	wb = Workbook()
+	testData = [[1] * COLUMNS] * ROWS
+	stime = time.clock()
+	ws = wb.new_sheet("Test 1", data=testData)
+	wb.save(get_output_path("test.xlsx"))
 
 def test_formulas():
 	wb = Workbook()
@@ -83,25 +82,32 @@ def test_none():
 	
 @raises(Exception)
 def test_name_length():
-    wb = Workbook()
-    ws = wb.new_sheet('12345678901234567890123456789012')
+	wb = Workbook()
+	ws = wb.new_sheet('12345678901234567890123456789012')
 
 def test_name_length_force():
-    wb = Workbook()
-    ws = wb.new_sheet('12345678901234567890123456789012', force_name=True)
-    
+	wb = Workbook()
+	ws = wb.new_sheet('12345678901234567890123456789012', force_name=True)
+	
 @raises(Exception)
 def test_name_duplicate():
-    wb = Workbook()
-    ws = wb.new_sheet('1234')
-    ws = wb.new_sheet('1234')
+	wb = Workbook()
+	ws = wb.new_sheet('1234')
+	ws = wb.new_sheet('1234')
 
 def test_name_no_duplicate():
-    wb = Workbook()
-    ws = wb.new_sheet('1234')
-    ws = wb.new_sheet('12356')
+	wb = Workbook()
+	ws = wb.new_sheet('1234')
+	ws = wb.new_sheet('12356')
 	
-
+def test_multi_save():
+	excel_file = Workbook()
+	excel_report = excel_file.new_sheet("Format Test")
+	excel_report[1][1].value = "Format"
+	excel_report[1][2].value = "Result"
+	excel_file.save(get_output_path("test.xlsx"))
+	excel_report[3][2].style.fill.background = Color(0, 176, 80)
+	excel_file.save(get_output_path("test.xlsx"))
 def test_number_precision():
 	try:
 		import xlrd

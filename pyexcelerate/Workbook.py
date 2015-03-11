@@ -7,7 +7,6 @@ class Workbook(object):
 	# map for attribute sets => style attribute id's
 	STYLE_ATTRIBUTE_MAP = {'fonts':'_font', 'fills':'_fill', 'num_fmts':'_format', 'borders':'_borders'}
 	STYLE_ID_ATTRIBUTE = 'id'
-	alignment = None
 	def __init__(self, encoding='utf-8'):
 		self._worksheets = []
 		self._styles = []
@@ -40,39 +39,35 @@ class Workbook(object):
 		return self._styles
 
 	def get_xml_data(self):
-		if Workbook.alignment != self:
-			self._align_styles() # because it will be used by the worksheets later
+		self._align_styles() # because it will be used by the worksheets later
 		for index, ws in enumerate(self._worksheets, start=1):
 			yield (index, ws)
 
 	def _align_styles(self):
-		if Workbook.alignment != self:
-			Utility.YOLO = True
-			Workbook.alignment = self
-			items = dict([(x, {}) for x in Workbook.STYLE_ATTRIBUTE_MAP.keys()])
-			styles = {}
-			for index, style in enumerate(self._styles):
-				# compress style
-				if not style.is_default:
-					styles[style] = styles.get(style, len(styles) + 1)
-					setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
-			for style in styles.keys():
-				# compress individual attributes
-				for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
-					obj = getattr(style, attr_id)
-					if obj and not obj.is_default: # we only care about it if it's not default
-						items[attr][obj] = items[attr].get(obj, len(items[attr]) + 1)
-						obj.id = items[attr][obj] # apply
-			for k, v in items.items():
-				# ensure it's sorted properly
-				items[k] = [tup[0] for tup in sorted(v.items(), key=lambda x: x[1])]
-			self._items = items
-			self._styles = [tup[0] for tup in sorted(styles.items(), key=lambda x: x[1])]
-			Utility.YOLO = False
+		Utility.YOLO = True
+		items = dict([(x, {}) for x in Workbook.STYLE_ATTRIBUTE_MAP.keys()])
+		styles = {}
+		for index, style in enumerate(self._styles):
+			# compress style
+			if not style.is_default:
+				styles[style] = styles.get(style, len(styles) + 1)
+				setattr(style, Workbook.STYLE_ID_ATTRIBUTE, styles[style])
+		for style in styles.keys():
+			# compress individual attributes
+			for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
+				obj = getattr(style, attr_id)
+				if obj and not obj.is_default: # we only care about it if it's not default
+					items[attr][obj] = items[attr].get(obj, len(items[attr]) + 1)
+					obj.id = items[attr][obj] # apply
+		for k, v in items.items():
+			# ensure it's sorted properly
+			items[k] = [tup[0] for tup in sorted(v.items(), key=lambda x: x[1])]
+		self._items = items
+		self._styles = [tup[0] for tup in sorted(styles.items(), key=lambda x: x[1])]
+		Utility.YOLO = False
 			
 	def __getattr__(self, name):
-		if Workbook.alignment != self:
-			self._align_styles()
+		self._align_styles()
 		return self._items[name]
 
 	def __len__(self):
