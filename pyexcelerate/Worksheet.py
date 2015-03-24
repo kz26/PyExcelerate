@@ -1,3 +1,4 @@
+from . import Panes
 from . import Range
 from . import Style
 from . import Format
@@ -7,6 +8,7 @@ import six
 import math
 from datetime import datetime
 from xml.sax.saxutils import escape
+
 
 class Worksheet(object):
 	def __init__(self, name, workbook, data=None, force_name=False):
@@ -21,6 +23,7 @@ class Worksheet(object):
 		self._parent = workbook
 		self._merges = [] # list of Range objects
 		self._attributes = {}
+		self._panes = Panes.Panes()
 		if data is not None:
 			for x, row in enumerate(data, 1):
 				for y, cell in enumerate(row, 1):
@@ -39,6 +42,16 @@ class Worksheet(object):
 			if key not in self._cells:
 				self._cells[key] = {}
 			return Range.Range((key, 1), (key, float('inf')), self) # return a row range
+
+	@property
+	def panes(self):
+		return self._panes
+
+	@panes.setter
+	def panes(self, panes):
+		if not isinstance(panes, Panes.Panes):
+			raise TypeError("Worksheet.panes must be of type Panes")
+		self._panes = panes
 
 	@property
 	def stylesheet(self):
