@@ -5,7 +5,7 @@ from .Font import Font
 from .Format import Format
 from .Alignment import Alignment
 from .Color import Color
-from .Worksheet import Panes
+from .Panes import Panes
 
 try:
 	import pkg_resources
