@@ -78,7 +78,7 @@ class Style(object):
 			return "<xf xfId=\"0\"  %s applyAlignment=\"1\">%s</xf>" % (" ".join(tag), self._alignment.get_xml_string())
 		
 	def __hash__(self):
-		return hash((self._font, self._fill))
+		return hash((self._font, self._fill, self._format, self._alignment, self._borders, self._size))
 	
 	def __eq__(self, other):
 		if other is None:
