@@ -60,4 +60,4 @@ class Border(object):
 			return self._color == other._color and self._style == other._style
 			
 	def __hash__(self):
-		return hash(self._style)
+		return hash(self._color, self._style)

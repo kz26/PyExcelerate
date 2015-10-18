@@ -68,7 +68,7 @@ class Font(object):
 			return self._to_tuple() == other._to_tuple()
 
 	def __hash__(self):
-		return hash((self.bold, self.italic, self.underline, self.strikethrough))
+		return hash((self.bold, self.italic, self.underline, self.strikethrough, self.family, self.size, self._color))
 
 	def _to_tuple(self):
 		return (self.bold, self.italic, self.underline, self.strikethrough, self.family, self.size, self._color)
