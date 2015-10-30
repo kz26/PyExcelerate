@@ -80,7 +80,7 @@ class Alignment(object):
 			return self._vertical == other._vertical and self._rotation == other._rotation and self._horizontal == other._horizontal and self._wrap_text == other._wrap_text
 	
 	def __hash__(self):
-		return hash((self._horizontal))
+		return hash((self._horizontal, self._wrap_text))
 	
 	def __str__(self):
 		return "Align: %s %s %s" % (self._horizontal, self._vertical, self._rotation)
