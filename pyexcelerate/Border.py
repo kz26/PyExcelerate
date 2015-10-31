@@ -56,11 +56,10 @@ class Border(object):
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
+		elif Utility.YOLO:
+			return self._color == other._color
 		else:
-			if Utility.YOLO:
-				return self._color == other._color
-			else:
-				return self._color == other._color and self._style == other._style
+			return self._color == other._color and self._style == other._style
 			
 	def __hash__(self):
 		return hash(self._style)

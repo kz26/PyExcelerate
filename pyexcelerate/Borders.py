@@ -89,4 +89,4 @@ class Borders(object):
 		return self._right == other._right and self._bottom == other._bottom and self._top == other._top and self._left == other._left
 	
 	def __hash__(self):
-		return hash((self._top, self._left, self._bottom, self._right))
+		return hash((self._top, self._left))
