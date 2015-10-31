@@ -86,10 +86,7 @@ class Borders(object):
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
-		elif Utility.YOLO:
-			return self._right == other._right and self._bottom == other._bottom
-		else:
-			return self._right == other._right and self._bottom == other._bottom and self._top == other._top and self._left == other._left
+		return self._right == other._right and self._bottom == other._bottom and self._top == other._top and self._left == other._left
 	
 	def __hash__(self):
-		return hash((self._top, self._left))
+		return hash((self._top, self._left, self._bottom, self._right))

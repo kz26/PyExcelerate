@@ -78,15 +78,12 @@ class Style(object):
 			return "<xf xfId=\"0\"  %s applyAlignment=\"1\">%s</xf>" % (" ".join(tag), self._alignment.get_xml_string())
 		
 	def __hash__(self):
-		return hash((self._font, self._fill))
+		return hash(self._to_tuple())
 	
 	def __eq__(self, other):
 		if other is None:
 			return self.is_default
-		elif Utility.YOLO:
-			return self._format == other._format and self._alignment == other._alignment and self._borders == other._borders
-		else:
-			return self._to_tuple() == other._to_tuple()
+		return self._to_tuple() == other._to_tuple()
 	
 	def __or__(self, other):
 		return self._binary_operation(other, Utility.nonboolean_or)
