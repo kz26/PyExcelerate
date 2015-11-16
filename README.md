@@ -52,7 +52,7 @@ openpyxl, 1000, 100, 6.32
 
 ## Installation
 
-PyExcelerate is supported on Python 2.6, 2.7, 3.3, and 3.4.
+PyExcelerate is supported on Python 2.6, 2.7, 3.3, 3.4, and 3.5.
 
     pip install pyexcelerate
 

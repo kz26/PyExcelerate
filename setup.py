@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
 	name="PyExcelerate",
-	version='0.6.7',
+	version='0.6.8',
 	author="Kevin Wang, Kevin Zhang",
 	author_email="kevin+pyexcelerate@kevinzhang.me",
 	maintainer="Kevin Zhang",
@@ -37,6 +37,7 @@ setup(
 		'Programming Language :: Python :: 2.7',
 		'Programming Language :: Python :: 3.3',
 		'Programming Language :: Python :: 3.4',
+		'Programming Language :: Python :: 3.5'
 	]
 
 )

@@ -1,5 +1,7 @@
 0.6.8
-* Add requirement for six >=1.4.0 
+* Add requirement for six >= 1.4.0
+* Fix issue #44 (thanks @acGitUser and @hanstzalora)
+* Styles bugfixes - merge PR #46 (thanks @bazzisoft)
 
 0.6.7
 * Fix UnicodeDecodeError with unicode cell content (#35) and add unicode test case
@@ -29,7 +31,7 @@
 
 0.6.0 - May 10, 2014
 * Support for setting row/column widths
-* Fix issue #22 - Decimal data type (thanks rhyek)
+* Fix issue #22 - Decimal data type (thanks @rhyek)
 
 0.5.0 - February 7, 2014 - "YOLO"
 * Implement new "YOLO" mode for increased PyExceleration

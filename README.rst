@@ -60,7 +60,7 @@ Benchmarks
 Installation
 ------------
 
-PyExcelerate is supported on Python 2.6, 2.7, 3.3, and 3.4.
+PyExcelerate is supported on Python 2.6, 2.7, 3.3, 3,4, and 3.5.
 
 ::
 
