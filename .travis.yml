@@ -8,10 +8,10 @@ python:
 
 # command to install dependencies
 install:
-  - pip install -r requirements.txt --use-mirrors
-  - pip install numpy --use-mirrors # optional reqs
-  - pip install xlrd xlsxwriter openpyxl --use-mirrors # competitors
-  - pip install coverage coveralls --use-mirrors # test coverage
+  - pip install -r requirements.txt 
+  - pip install numpy  # optional reqs
+  - pip install xlrd xlsxwriter openpyxl  # competitors
+  - pip install coverage coveralls  # test coverage
 
 # command to run tests
 script:
