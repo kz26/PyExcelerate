@@ -159,3 +159,15 @@ def test_number_precision():
 #	ws = wb.new_sheet("Test")
 #	print(ws[1:3])
 #	ws[1:3][1].style.fill.background = Color(255, 0, 0)
+
+def test_show_grid_lines():
+	wb = Workbook()
+	ws = wb.new_sheet('without_grid_lines')
+	ws[1][1].value = 'some data'
+	ws.show_grid_lines = False
+	ws = wb.new_sheet('with_grid_lines')
+	ws[1][1].value = 'some other data'
+	ws.show_grid_lines = True
+	ws = wb.new_sheet('default_with_grid_lines')
+	ws[1][1].value = 'even more data'
+	wb.save(get_output_path("grid_lines.xlsx"))
