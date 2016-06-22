@@ -24,7 +24,7 @@ class Worksheet(object):
 		self._merges = [] # list of Range objects
 		self._attributes = {}
 		self._panes = Panes.Panes()
-		self._show_gridlines = True
+		self._show_grid_lines = True
 		if data is not None:
 			for x, row in enumerate(data, 1):
 				for y, cell in enumerate(row, 1):
@@ -82,12 +82,12 @@ class Worksheet(object):
 		return max(1, self._columns)
 
 	@property
-	def show_gridlines(self):
-		return self._show_gridlines
+	def show_grid_lines(self):
+		return self._show_grid_lines
 
-	@show_gridlines.setter
-	def show_gridlines(self, show_gridlines):
-		self._show_gridlines = show_gridlines
+	@show_grid_lines.setter
+	def show_grid_lines(self, show_grid_lines):
+		self._show_grid_lines = show_grid_lines
 
 	def cell(self, name):
 		# convenience method
