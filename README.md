@@ -12,15 +12,6 @@ test coverage: [![coverage-status](https://coveralls.io/repos/kz26/PyExcelerate/
 * [Source repository](https://github.com/kz26/PyExcelerate)
 * [PyPI page](https://pypi.python.org/pypi/PyExcelerate)
 
-## Donate to the Developers
-
-Did you find PyExcelerate useful? Then consider a donation of bitcoins to the developers and help fund these poor hungry students.
-When donating, please split 50/50.     
-
-`1M9MAvqn6eD41FC4bfLaWaKJ9qhaDUCDVb` Kevin Wang
-
-`16jBgGqW6x945545a8nso4bhhDrqmZCQZq` Kevin Zhang
-
 ## Description
 PyExcelerate is a Python for writing Excel-compatible XLSX spreadsheet files, with an emphasis
 on speed.
