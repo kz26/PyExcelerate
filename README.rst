@@ -14,17 +14,6 @@ master: |build-status-master| dev: |build-status-dev| test coverage:
 -  `Source repository <https://github.com/kz26/PyExcelerate>`__
 -  `PyPI page <https://pypi.python.org/pypi/PyExcelerate>`__
 
-Donate to the Developers
-------------------------
-
-Did you find PyExcelerate useful? Then consider a donation of bitcoins
-to the developers and help fund these poor hungry students. When
-donating, please split 50/50.
-
-``1M9MAvqn6eD41FC4bfLaWaKJ9qhaDUCDVb`` Kevin Wang
-
-``16jBgGqW6x945545a8nso4bhhDrqmZCQZq`` Kevin Zhang
-
 Description
 -----------
 
