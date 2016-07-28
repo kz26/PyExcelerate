@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from ..Workbook import Workbook
 from ..Color import Color
 from ..Font import Font
@@ -143,3 +145,11 @@ def test_no_style_xml():
 	wb.save(filename)
 	wbr = openpyxl.reader.excel.load_workbook(filename=filename,use_iterators=True)
 	mySheet = wbr.get_sheet_by_name(sheetname)
+
+
+def test_unicode_with_styles():
+	wb = Workbook()
+	ws = wb.new_sheet(u"ʇǝǝɥsǝpoɔıun")
+	ws[1][1].value = u'Körperschaft des öffentlichen'
+	ws.set_col_style(2, Style(size=0))
+	wb.save(get_output_path("unicode-styles.xlsx"))

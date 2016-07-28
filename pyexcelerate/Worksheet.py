@@ -203,7 +203,12 @@ class Worksheet(object):
 				size = 0
 				for x, row in self._cells.items():
 					if col in row:
-						size = max((len(str(row[col])) * 7 + 5) / 7, size)
+						v = row[col]
+						if isinstance(v, six.string_types):
+							v = to_unicode(v)
+						else:
+							v = six.text_type(v)
+						size = max((len(v) * 7 + 5) / 7, size)
 			else:
 				size = style.size if style.size else 15
 				

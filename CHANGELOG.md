@@ -1,9 +1,12 @@
-0.6.8
-* Add requirement for six >= 1.4.0
+0.7.0 (July 28, 2016)
+* Close file handle when saving workbook (PR #49)
+* Add show\_grid\_lines from PR #47 (thanks @aarimond)
 * Fix issue #44 (thanks @acGitUser and @hanstzalora)
 * Styles bugfixes - merge PR #46 (thanks @bazzisoft)
+* Various minor bugfixes and code cleanup
 
 0.6.7
+* Add requirement for six >= 1.4.0
 * Fix UnicodeDecodeError with unicode cell content (#35) and add unicode test case
 
 0.6.6
