@@ -28,21 +28,21 @@ Benchmarks
 
 ::
 
-
-    TEST_NAME, NUM_ROWS, NUM_COLS, TIME_IN_SECONDS
-
-    pyexcelerate value fastest, 1000, 100, 0.47
-    pyexcelerate value faster, 1000, 100, 0.51
-    pyexcelerate value fast, 1000, 100, 1.53
-    xlsxwriter value, 1000, 100, 0.84
-    openpyxl, 1000, 100, 2.74
-    pyexcelerate style cheating, 1000, 100, 1.23
-    pyexcelerate style fastest, 1000, 100, 2.4
-    pyexcelerate style faster, 1000, 100, 2.75
-    pyexcelerate style fast, 1000, 100, 6.15
-    xlsxwriter style cheating, 1000, 100, 1.21
-    xlsxwriter style, 1000, 100, 4.85
-    openpyxl, 1000, 100, 6.32
+   
+   |          TEST_NAME          | NUM_ROWS | NUM_COLS | TIME_IN_SECONDS |
+   |-----------------------------|----------|----------|-----------------|
+   | pyexcelerate value fastest  |     1000 |      100 |            0.47 |
+   | pyexcelerate value faster   |     1000 |      100 |            0.51 |
+   | pyexcelerate value fast     |     1000 |      100 |            1.53 |
+   | xlsxwriter value            |     1000 |      100 |            0.84 |
+   | openpyxl                    |     1000 |      100 |            2.74 |
+   | pyexcelerate style cheating |     1000 |      100 |            1.23 |
+   | pyexcelerate style fastest  |     1000 |      100 |            2.40 |
+   | pyexcelerate style faster   |     1000 |      100 |            2.75 |
+   | pyexcelerate style fast     |     1000 |      100 |            6.15 |
+   | xlsxwriter style cheating   |     1000 |      100 |            1.21 |
+   | xlsxwriter style            |     1000 |      100 |            4.85 |
+   | openpyxl                    |     1000 |      100 |            6.32 |
 
     * cheating refers to pregeneration of styles
 
