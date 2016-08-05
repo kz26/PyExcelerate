@@ -1,3 +1,6 @@
+0.7.1 (August 5, 2016)
+* Revert to hardcoded version string in setup.py
+
 0.7.0 (July 28, 2016)
 * Close file handle when saving workbook (PR #49)
 * Add show\_grid\_lines from PR #47 (thanks @aarimond)
