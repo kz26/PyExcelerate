@@ -145,7 +145,7 @@ Styling cells causes **non-negligible** overhead. It **will** increase your exec
 #### Fastest
 
 ```python
-from pyexcelerate import Workbook, Color, Style, Font, Fill
+from pyexcelerate import Workbook, Color, Style, Font, Fill, Format
 from datetime import datetime
 
 wb = Workbook()
