@@ -164,7 +164,7 @@ Fastest
 
 ::
 
-    from pyexcelerate import Workbook, Color, Style, Font, Fill
+    from pyexcelerate import Workbook, Color, Style, Font, Fill, Format
     from datetime import datetime
 
     wb = Workbook()
