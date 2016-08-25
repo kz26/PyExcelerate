@@ -159,7 +159,12 @@ ws.set_cell_style(1, 1, Style(fill=Fill(background=Color(255,0,0,0))))
 ws.set_cell_value(1, 2, datetime.now())
 ws.set_cell_style(1, 1, Style(format=Format('mm/dd/yy')))
 wb.save("output.xlsx")
+```
 
+Note that in this example, subsequent calls to `set_cell_style()` override the previous styles and they are not merged in. To have a combined style, create a single `Style` object with multiple properties, for example
+
+```
+ws.set_cell_style(1, 1, Style(font=Font(bold=True), format=Format('mm/dd/yy')))
 ```
 
 #### Faster
