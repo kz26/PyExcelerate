@@ -319,7 +319,7 @@ from datetime import datetime
 
 wb = Workbook()
 ws = wb.new_sheet("sheet name")
-ws.set_col_style(2, Style(size=0)))
+ws.set_col_style(2, Style(size=0))
 wb.save("output.xlsx")
 
 ```
