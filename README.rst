@@ -343,7 +343,7 @@ For example, to hide column B:
 
     wb = Workbook()
     ws = wb.new_sheet("sheet name")
-    ws.set_col_style(2, Style(size=0)))
+    ws.set_col_style(2, Style(size=0))
     wb.save("output.xlsx")
 
 Linked styles
