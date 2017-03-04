@@ -24,6 +24,16 @@ class Workbook(object):
 		worksheet = Worksheet.Worksheet(sheet_name, self, data, force_name)
 		self.add_sheet(worksheet)
 		return worksheet
+		
+	def activate_sheet(self, sheet_name,data=None, force_name=False):
+        	worksheet = Worksheet.Worksheet(sheet_name, self, data, force_name)
+        	return self.get_sheet(worksheet)
+
+    	def get_sheet(self, worksheet):
+        	for sheet in self._worksheets:
+            		if sheet.name == worksheet.name:
+                	return sheet
+        	raise KeyError("Worksheet {0} does not exist.".format(sheet.name))
 
 	def add_style(self, style):
 		# keep them all, even if they're deleted. compress later.
