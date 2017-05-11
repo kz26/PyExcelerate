@@ -230,7 +230,7 @@ class Worksheet(object):
 			if style.size == -1:
 				size = 0
 				dense_rows = enumerate(self._dense_cells[row]) if row < len(self._dense_cells) else []
-				for y, cell in itertools.chain(dense_rows, six.iteritems(self._sparse_cells[row])):
+				for y, cell in itertools.chain(dense_rows, six.iteritems(self._sparse_cells[row]) if row in self._sparse_cells else []):
 					try:
 						font_size = self._styles[row][y].font.size
 					except:
@@ -251,11 +251,12 @@ class Worksheet(object):
 	def get_xml_data(self):
 		# Precondition: styles are aligned. if not, then :v
 		# check if we have any row styles that don't have data
-		sparse_rows = filter(lambda x: x[0] >= len(self._dense_cells), six.iteritems(self._sparse_cells))
+		sparse_rows = sorted(filter(lambda x: x[0] >= len(self._dense_cells), six.iteritems(self._sparse_cells)))
 		for x, row in itertools.chain(enumerate(self._dense_cells[1:], 1), sparse_rows):
 			row_data = []
 			dense_columns = enumerate(row[1:], 1) if x < len(self._dense_cells) else []
-			for y, cell in itertools.chain(dense_columns, six.iteritems(self._sparse_cells[x])):
+			sparse_columns = sorted(six.iteritems(self._sparse_cells[x]) if x in self._sparse_cells else [])
+			for y, cell in itertools.chain(dense_columns, sparse_columns):
 				if x in self._styles and y in self._styles[x]:
 					style = self._styles[x][y]
 				elif x in self._row_styles:

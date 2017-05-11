@@ -11,6 +11,7 @@ install:
   - pip install -r requirements.txt 
   - pip install numpy  # optional reqs
   - pip install xlrd xlsxwriter openpyxl  # competitors
+  - pip install memory_profiler futures  # benchmark dependencies
   - pip install coverage coveralls  # test coverage
 
 # command to run tests
