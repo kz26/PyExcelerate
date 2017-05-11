@@ -143,7 +143,7 @@ def test_no_style_xml():
 	wb = Workbook()
 	wb.new_sheet(sheetname, data=data)
 	wb.save(filename)
-	wbr = openpyxl.reader.excel.load_workbook(filename=filename,use_iterators=True)
+	wbr = openpyxl.reader.excel.load_workbook(filename=filename, read_only=True)
 	mySheet = wbr.get_sheet_by_name(sheetname)
 
 def test_dense_sparse_styles():

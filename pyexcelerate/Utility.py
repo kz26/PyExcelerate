@@ -44,7 +44,7 @@ if six.PY2:
 		if type(s) == unicode:
 			return s
 		else:
-			return s.decode('utf-8')
+			return unicode(s, 'utf-8')
 else:
 	def to_unicode(s):
 		return s
