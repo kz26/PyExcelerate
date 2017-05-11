@@ -146,7 +146,26 @@ def test_no_style_xml():
 	wbr = openpyxl.reader.excel.load_workbook(filename=filename,use_iterators=True)
 	mySheet = wbr.get_sheet_by_name(sheetname)
 
-
+def test_dense_sparse_styles():
+	testData = [
+		['1x1', '1x2', '1x3'],
+		['2x1', '2x2', '2x3'],
+		['3x1', '3x2', '3x3']
+	]
+	wb = Workbook()
+	ws = wb.new_sheet("Test 1", data=testData)
+	ws[2][2].style.font.bold = True
+	ws[2][5] = '2x5'
+	ws[2][7] = '2x7'
+	ws[2][5].style.font.bold = True
+	ws[5][2] = '5x2'
+	ws[7][2] = '7x2'
+	ws[5][2].style.font.bold = True
+	ws[5][5] = '5x5'
+	ws[5][5].style.font.bold = True
+	ws[6][6] = '6x6'
+	wb.save(get_output_path("dense-sparse-style-test.xlsx"))
+	
 def test_unicode_with_styles():
 	wb = Workbook()
 	ws = wb.new_sheet(u"ʇǝǝɥsǝpoɔıun")

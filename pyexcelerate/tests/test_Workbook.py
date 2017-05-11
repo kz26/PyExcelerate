@@ -62,7 +62,6 @@ def test_range():
 	eq_(ws[3][3].value, 5)
 	eq_(ws[3][4].value, 6)
 	
-
 def test_numpy_range():
 	try:
 		import numpy
@@ -79,7 +78,40 @@ def test_none():
 	ws = wb.new_sheet("Test 1", data=testData)
 	ws[1][1].style.font.bold = True
 	wb.save(get_output_path("none-test.xlsx"))
-	
+
+def test_num_rows_num_cols():
+	wb = Workbook()
+	ws = wb.new_sheet("Test 1")
+	eq_(ws.num_rows, 0)
+	eq_(ws.num_columns, 0)
+	ws.range("A1", "C1").value = [[1,2,3]]
+	eq_(ws.num_rows, 1)
+	eq_(ws.num_columns, 3)
+	ws[10][10] = 1
+	eq_(ws.num_rows, 10)
+	eq_(ws.num_columns, 10)
+
+def test_dense_sparse():
+	testData = [
+		['1x1', '1x2', '1x3'],
+		['2x1', '2x2', '2x3'],
+		['3x1', '3x2', '3x3']
+	]
+	wb = Workbook()
+	ws = wb.new_sheet("Test 1", data=testData)
+	eq_(ws.num_rows, 3)
+	eq_(ws.num_columns, 3)
+	ws[2][5] = '2x5'
+	eq_(ws.num_rows, 3)
+	eq_(ws.num_columns, 5)
+	ws[5][2] = '5x2'
+	eq_(ws.num_rows, 5)
+	eq_(ws.num_columns, 5)
+	ws[5][5] = '5x5'
+	eq_(ws.num_rows, 5)
+	eq_(ws.num_columns, 5)
+	wb.save(get_output_path("dense-sparse-test.xlsx"))
+
 @raises(Exception)
 def test_name_length():
 	wb = Workbook()
@@ -108,6 +140,7 @@ def test_multi_save():
 	excel_file.save(get_output_path("test.xlsx"))
 	excel_report[3][2].style.fill.background = Color(0, 176, 80)
 	excel_file.save(get_output_path("test.xlsx"))
+
 def test_number_precision():
 	try:
 		import xlrd

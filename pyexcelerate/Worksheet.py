@@ -4,6 +4,8 @@ from . import Style
 from . import Format
 from .DataTypes import DataTypes
 from .Utility import to_unicode
+import collections
+import itertools
 import six
 import math
 from datetime import datetime
@@ -16,8 +18,9 @@ class Worksheet(object):
 		if len(name) > 31 and not force_name: # http://stackoverflow.com/questions/3681868/is-there-a-limit-on-an-excel-worksheets-name-length
 			raise Exception('Excel does not permit worksheet names longer than 31 characters. Set force_name=True to disable this restriction.')
 		self._name = name
-		self._cells = {}
-		self._styles = {}
+		self._dense_cells = [[]]
+		self._sparse_cells = collections.defaultdict(dict)
+		self._styles = collections.defaultdict(dict)
 		self._row_styles = {}
 		self._col_styles = {}
 		self._parent = workbook
@@ -26,12 +29,17 @@ class Worksheet(object):
 		self._panes = Panes.Panes()
 		self._show_grid_lines = True
 		if data is not None:
+			# Iterate over the data to ensure we receive a copy of immutables.
+			if isinstance(data, list):
+				self._dense_cells = [[] for i in range(len(data) + 1)]
 			for x, row in enumerate(data, 1):
-				for y, cell in enumerate(row, 1):
-					if x not in self._cells:
-						self._cells[x] = {}
-					self._cells[x][y] = cell
-					self._columns = max(self._columns, y)
+				if isinstance(row, list) and x < len(self._dense_cells):
+					self._dense_cells[x] = [None] + row[:]
+					self._columns = max(self._columns, len(row))
+				else:
+					for y, cell in enumerate(row, 1):
+						self._sparse_cells[x][y] = cell
+						self._columns = max(self._columns, y)
 
 	def __getitem__(self, key):
 		if isinstance(key, slice):
@@ -40,8 +48,6 @@ class Worksheet(object):
 			else:
 				return Range.Range((key.start or 1, 1), (key.stop or float('inf'), float('inf')), self)
 		else:
-			if key not in self._cells:
-				self._cells[key] = {}
 			return Range.Range((key, 1), (key, float('inf')), self) # return a row range
 
 	@property
@@ -72,14 +78,11 @@ class Worksheet(object):
 	
 	@property
 	def num_rows(self):
-		if len(self._cells) > 0:
-			return max(self._cells.keys())
-		else:
-			return 1
+		return max(len(self._dense_cells) - 1, max(six.iterkeys(self._sparse_cells)) if len(self._sparse_cells) > 0 else 0)
 	
 	@property
 	def num_columns(self):
-		return max(1, self._columns)
+		return self._columns
 
 	@property
 	def show_grid_lines(self):
@@ -104,36 +107,35 @@ class Worksheet(object):
 		self._merges.append(range)
 	
 	def get_cell_value(self, x, y):
-		if x not in self._cells:
-			self._cells[x] = {}
-		if y not in self._cells[x]:
+		if x < len(self._dense_cells) and y < len(self._dense_cells[x]):
+			return self._dense_cells[x][y]
+		# Fallback to sparse cells
+		if y not in self._sparse_cells[x]:
 			return None
-		type = DataTypes.get_type(self._cells[x][y])
+		type = DataTypes.get_type(self._sparse_cells[x][y])
 		if type == DataTypes.FORMULA:
 			# remove the equals sign
-			return self._cells[x][y][:1]
-		elif type == DataTypes.INLINE_STRING and self._cells[x][y][2:] == '\'=':
-			return self._cells[x][y][:1]
+			return self._sparse_cells[x][y][:1]
+		elif type == DataTypes.INLINE_STRING and self._sparse_cells[x][y][2:] == '\'=':
+			return self._sparse_cells[x][y][:1]
 		else:
-			return self._cells[x][y]
+			return self._sparse_cells[x][y]
 	
 	def set_cell_value(self, x, y, value):
-		if x not in self._cells:
-			self._cells[x] = {}
 		if DataTypes.get_type(value) == DataTypes.DATE:
 			self.get_cell_style(x, y).format = Format.Format('yyyy-mm-dd')
-		self._cells[x][y] = value
+		if x < len(self._dense_cells) and y < len(self._dense_cells[x]):
+			self._dense_cells[x][y] = value
+		else:
+			self._sparse_cells[x][y] = value
+		self._columns = max(self._columns, y)
 	
 	def get_cell_style(self, x, y):
-		if x not in self._styles:
-			self._styles[x] = {}
 		if y not in self._styles[x]:
 			self.set_cell_style(x, y, Style.Style())
 		return self._styles[x][y]
 	
 	def set_cell_style(self, x, y, value):
-		if x not in self._styles:
-			self._styles[x] = {}
 		self._styles[x][y] = value
 		self._parent.add_style(value)
 		if self.get_cell_value(x, y) is None:
@@ -201,7 +203,7 @@ class Worksheet(object):
 			style = self._col_styles[col]
 			if style.size == -1:
 				size = 0
-				for x, row in self._cells.items():
+				for row in itertools.chain(self._dense_cells[1:], six.itervalues(self._sparse_cells)):
 					if col in row:
 						v = row[col]
 						if isinstance(v, six.string_types):
@@ -227,7 +229,8 @@ class Worksheet(object):
 			style = self._row_styles[row]
 			if style.size == -1:
 				size = 0
-				for y, cell in self._cells[row].items():
+				dense_rows = enumerate(self._dense_cells[row]) if row < len(self._dense_cells) else []
+				for y, cell in itertools.chain(dense_rows, six.iteritems(self._sparse_cells[row])):
 					try:
 						font_size = self._styles[row][y].font.size
 					except:
@@ -248,12 +251,11 @@ class Worksheet(object):
 	def get_xml_data(self):
 		# Precondition: styles are aligned. if not, then :v
 		# check if we have any row styles that don't have data
-		for x, style in six.iteritems(self._row_styles):
-			if x not in self._cells:
-				self._cells[x] = {}
-		for x, row in six.iteritems(self._cells):
+		sparse_rows = filter(lambda x: x[0] >= len(self._dense_cells), six.iteritems(self._sparse_cells))
+		for x, row in itertools.chain(enumerate(self._dense_cells[1:], 1), sparse_rows):
 			row_data = []
-			for y, cell in six.iteritems(self._cells[x]):
+			dense_columns = enumerate(row[1:], 1) if x < len(self._dense_cells) else []
+			for y, cell in itertools.chain(dense_columns, six.iteritems(self._sparse_cells[x])):
 				if x in self._styles and y in self._styles[x]:
 					style = self._styles[x][y]
 				elif x in self._row_styles:
