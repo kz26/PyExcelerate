@@ -1,6 +1,7 @@
 from datetime import datetime, date, time
 import decimal
 import six
+import warnings
 try:
 	import numpy as np
 	HAS_NUMPY = True
@@ -53,7 +54,9 @@ class DataTypes(object):
 	@staticmethod
 	def to_excel_date(d):
 		if isinstance(d, datetime):
-			delta = d - DataTypes.EXCEL_BASE_DATE
+			if d.tzinfo is not None:
+				warnings.warn('Excel does not support timestamps with time zone information. Time zones will be ignored.')
+			delta = d.replace(tzinfo=None) - DataTypes.EXCEL_BASE_DATE
 			excel_date = delta.days + (float(delta.seconds) + float(delta.microseconds) / 1E6) / (60 * 60 * 24) + 1
 			return excel_date + (excel_date > 59)
 		elif isinstance(d, date):

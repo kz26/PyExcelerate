@@ -7,6 +7,8 @@ from datetime import datetime, date, time
 from ..Workbook import Workbook
 from .utils import get_output_path
 from decimal import Decimal
+import pytz
+import warnings
 
 def test__get_type():
 	eq_(DataTypes.get_type(15), DataTypes.NUMBER)
@@ -52,6 +54,9 @@ def test_to_excel_date():
 	eq_(DataTypes.to_excel_date(datetime(1900, 1, 1, 12, 0, 0)), 1.5)
 	eq_(DataTypes.to_excel_date(datetime(1900, 1, 1, 12, 0, 0)), 1.5)
 	eq_(DataTypes.to_excel_date(datetime(2013, 5, 10, 6, 0, 0)), 41404.25)
+	with warnings.catch_warnings(record=True) as w:
+		eq_(DataTypes.to_excel_date(datetime(2013, 5, 10, 6, 0, 0, tzinfo=pytz.utc)), 41404.25)
+		eq_(len(w), 1)
 	eq_(DataTypes.to_excel_date(date(1900, 1, 1)), 1.0)
 	eq_(DataTypes.to_excel_date(date(2013, 5, 10)), 41404.0)
 	eq_(DataTypes.to_excel_date(time(6, 0, 0)), 0.25)
