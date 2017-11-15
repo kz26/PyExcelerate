@@ -1,3 +1,9 @@
+0.7.2 (November 15, 2017)
+* Strip tzinfo from datetime objects (issue #59)
+* Minor bug fixes and performance improvements
+* Remove support for Python 3.2
+* Add support for Python 3.6
+
 0.7.1 (August 5, 2016)
 * Revert to hardcoded version string in setup.py
 
