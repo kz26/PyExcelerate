@@ -4,7 +4,7 @@ from . import Color
 
 
 class Alignment(object):
-    __slots__ = ('_horizontal', '_vertical', '_rotation', '_wrap_text')
+    __slots__ = ('_horizontal', '_vertical', '_rotation', '_wrap_text', 'id')
 
     def __init__(self,
                  horizontal='left',

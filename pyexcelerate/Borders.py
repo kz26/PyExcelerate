@@ -4,7 +4,7 @@ from . import Border
 
 
 class Borders(object):
-    __slots__ = ('_left', '_right', '_top', '_bottom')
+    __slots__ = ('_left', '_right', '_top', '_bottom', 'id')
 
     def __init__(self, left=None, right=None, top=None, bottom=None):
         self._left = left

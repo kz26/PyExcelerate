@@ -5,7 +5,7 @@ from . import Color
 
 class Font(object):
     __slots__ = ('bold', 'italic', 'underline', 'strikethrough', 'family',
-                 'size', '_color')
+                 'size', '_color', 'id')
 
     def __init__(self,
                  bold=False,

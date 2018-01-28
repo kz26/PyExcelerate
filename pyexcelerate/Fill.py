@@ -3,7 +3,7 @@ from . import Color
 
 
 class Fill(object):
-    __slots__ = ('_background', )
+    __slots__ = ('_background', 'id')
 
     def __init__(self, background=None):
         self._background = background

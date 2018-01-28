@@ -5,7 +5,7 @@ import six
 
 class Style(object):
     __slots__ = ('_font', '_fill', '_format', '_alignment', '_borders',
-                 '_size')
+                 '_size', 'id')
 
     def __init__(self,
                  font=None,

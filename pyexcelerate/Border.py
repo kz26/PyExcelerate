@@ -22,7 +22,7 @@ class Border(object):
      'thin': ('_') \
     }
 
-    __slots__ = ('_color', '_style')
+    __slots__ = ('_color', '_style', 'id')
 
     def __init__(self, color=None, style='thin'):
         self._color = color
