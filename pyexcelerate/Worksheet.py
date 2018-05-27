@@ -124,16 +124,7 @@ class Worksheet(object):
         if x < len(self._dense_cells) and y < len(self._dense_cells[x]):
             return self._dense_cells[x][y]
         # Fallback to sparse cells
-        if y not in self._sparse_cells[x]:
-            return None
-        type = DataTypes.get_type(self._sparse_cells[x][y])
-        if type == DataTypes.FORMULA:
-            # remove the equals sign
-            return self._sparse_cells[x][y][:1]
-        elif type == DataTypes.INLINE_STRING and self._sparse_cells[x][y][2:] == '\'=':
-            return self._sparse_cells[x][y][:1]
-        else:
-            return self._sparse_cells[x][y]
+        return self._sparse_cells[x].get(y)
 
     def set_cell_value(self, x, y, value):
         if DataTypes.get_type(value) == DataTypes.DATE:
@@ -204,7 +195,7 @@ class Worksheet(object):
         elif type == DataTypes.DATE:
             z = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
         elif type == DataTypes.FORMULA:
-            z = '"><f>%s</f></c>' % (cell)
+            z = '"><f>%s</f></c>' % (cell[1:]) # Remove equals sign.
         elif type == DataTypes.BOOLEAN:
             z = '" t="b"><v>%d</v></c>' % (cell)
 

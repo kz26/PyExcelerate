@@ -25,6 +25,7 @@ def test__get_type():
 	eq_(DataTypes.get_type("test"), DataTypes.INLINE_STRING)
 	eq_(DataTypes.get_type(datetime.now()), DataTypes.DATE)
 	eq_(DataTypes.get_type(True), DataTypes.BOOLEAN)
+	eq_(DataTypes.get_type(None), DataTypes.ERROR)
 	
 def test_numpy():
 	try:
