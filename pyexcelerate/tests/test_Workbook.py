@@ -33,6 +33,8 @@ def test_formulas():
 	ws[1][4].value = datetime.now()
 	ws[1][5].value = datetime(1900,1,1,1,0,0)
 	ws[1][6].value = True
+	ws.set_cell_value(1, 7, '=HYPERLINK("http://www.google.com", "Link to google")')
+	ws.set_cell_value(1, 8, '\'=Escaped equals sign')
 	wb.save(get_output_path("formula-test.xlsx"))
 	
 def test_merge():
@@ -87,7 +89,7 @@ def test_num_rows_num_cols():
 	ws.range("A1", "C1").value = [[1,2,3]]
 	eq_(ws.num_rows, 1)
 	eq_(ws.num_columns, 3)
-	ws[10][10] = 1
+	ws[10][10].value = 1
 	eq_(ws.num_rows, 10)
 	eq_(ws.num_columns, 10)
 
@@ -101,16 +103,28 @@ def test_dense_sparse():
 	ws = wb.new_sheet("Test 1", data=testData)
 	eq_(ws.num_rows, 3)
 	eq_(ws.num_columns, 3)
-	ws[2][5] = '2x5'
+	ws[2][5].value = '2x5'
 	eq_(ws.num_rows, 3)
 	eq_(ws.num_columns, 5)
-	ws[5][2] = '5x2'
+	ws[5][2].value = '5x2'
 	eq_(ws.num_rows, 5)
 	eq_(ws.num_columns, 5)
-	ws[5][5] = '5x5'
+	ws[5][5].value = '5x5'
 	eq_(ws.num_rows, 5)
 	eq_(ws.num_columns, 5)
 	wb.save(get_output_path("dense-sparse-test.xlsx"))
+
+def test_dense_sparse_get_cell_value():
+	testData = [
+		['1x1', '1x2', '1x3'],
+		['2x1', '2x2', '2x3'],
+		['3x1', '3x2', '3x3']
+	]
+	wb = Workbook()
+	ws = wb.new_sheet("Test 1", data=testData)
+	ws[2][5].value = '2x5'
+	eq_(ws[1][1].value, '1x1')
+	eq_(ws[2][5].value, '2x5')
 
 @raises(Exception)
 def test_name_length():
