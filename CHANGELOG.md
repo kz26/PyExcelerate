@@ -1,3 +1,8 @@
+0.7.3
+* Performance optimizations
+* Fix invalid function/formula references in third-party spreadsheet software
+* Remove Python 2.6 support from test suite; Python 2.6 will no longer be supported in future 0.8.0 release
+
 0.7.2 (November 15, 2017)
 * Strip tzinfo from datetime objects (issue #59)
 * Minor bug fixes and performance improvements
