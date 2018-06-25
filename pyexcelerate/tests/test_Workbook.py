@@ -24,6 +24,15 @@ def test_save():
 	ws = wb.new_sheet("Test 1", data=testData)
 	wb.save(get_output_path("test.xlsx"))
 
+def test_save_to_filehandle():
+	ROWS = 65
+	COLUMNS = 100
+	wb = Workbook()
+	testData = [[1] * COLUMNS] * ROWS
+	ws = wb.new_sheet("Test 1", data=testData)
+	with open(get_output_path("test.xlsx"), "wb") as output_fp:
+		wb.save(output_fp)
+
 def test_formulas():
 	wb = Workbook()
 	ws = wb.new_sheet("test")
