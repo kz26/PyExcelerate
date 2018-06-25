@@ -182,6 +182,8 @@ class Worksheet(object):
         # boolean values are treated oddly in dictionaries, manually override
         type = DataTypes.get_type(cell)
 
+        z = None #sometimes not correct datatype breaks function. Error at line 207: "UnboundLocalError: local variable 'z' referenced before assignment, see return in this function"   
+        
         if type == DataTypes.NUMBER:
             if math.isnan(cell):
                 z = '" t="e"><v>#NUM!</v></c>'
@@ -198,7 +200,10 @@ class Worksheet(object):
             z = '"><f>%s</f></c>' % (cell[1:]) # Remove equals sign.
         elif type == DataTypes.BOOLEAN:
             z = '" t="b"><v>%d</v></c>' % (cell)
-
+        
+        if z is None:
+            raise NameError "Cell datatype {} is not correct".format(type) # set cell data
+        
         if style:
             return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string(
                 (x, y)), style.id, z)
