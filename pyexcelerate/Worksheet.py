@@ -15,7 +15,7 @@ from xml.sax.saxutils import escape
 class Worksheet(object):
     __slots__ = ('_columns', '_name', '_dense_cells', '_sparse_cells',
                  '_styles', '_row_styles', '_col_styles', '_parent', '_merges',
-                 '_attributes', '_panes', '_show_grid_lines')
+                 '_attributes', '_panes', '_show_grid_lines', 'auto_filter')
 
     def __init__(self, name, workbook, data=None, force_name=False):
         self._columns = 0  # cache this for speed
@@ -35,6 +35,7 @@ class Worksheet(object):
         self._attributes = {}
         self._panes = Panes.Panes()
         self._show_grid_lines = True
+        self.auto_filter = False
         if data is not None:
             # Iterate over the data to ensure we receive a copy of immutables.
             if isinstance(data, list):
@@ -287,3 +288,9 @@ class Worksheet(object):
                     style = None
                 row_data.append(self.__get_cell_data(cell, x, y, style))
             yield x, row_data
+
+    def get_auto_filter_xml_string(self):
+        if self.auto_filter:
+            return '<autoFilter ref="{}"/>'.format(
+                Range.Range((1, 1), (self.num_rows, self.num_columns), self)
+            )
