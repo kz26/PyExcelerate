@@ -73,10 +73,6 @@ class Worksheet(object):
         self._panes = panes
 
     @property
-    def stylesheet(self):
-        return self._stylesheet
-
-    @property
     def col_styles(self):
         return self._col_styles.items()
 
