@@ -199,7 +199,7 @@ class Worksheet(object):
         elif type == DataTypes.BOOLEAN:
             z = '" t="b"><v>%d</v></c>' % (cell)
 
-        if style:
+        if style and hasattr(style, 'id'):
             return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string(
                 (x, y)), style.id, z)
         else:
@@ -207,39 +207,44 @@ class Worksheet(object):
                                     z)
 
     def get_col_xml_string(self, col):
-        if col in self._col_styles and not self._col_styles[col].is_default:
-            style = self._col_styles[col]
-            if style.size == -1:
-                size = 0
-                for row in itertools.chain(self._dense_cells[1:],
-                                           six.itervalues(self._sparse_cells)):
-                    if col in row:
-                        v = row[col]
-                        if isinstance(v, six.string_types):
-                            v = to_unicode(v)
-                        else:
-                            v = six.text_type(v)
-                        size = max((len(v) * 7 + 5) / 7, size)
+        if col not in self._col_styles or self._col_styles[col].is_default:
+          return "<col min=\"%d\" max=\"%d\">" % (col, col)
+        style = self._col_styles[col]
+        if style.size == -1:
+          size = 0
+          
+          def get_size(v):
+            if isinstance(v, six.string_types):
+                v = to_unicode(v)
             else:
-                size = style.size if style.size else 15
-
-            return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (
-                col,
-                col,
-                1 if style.size == 0 else 0,  # hidden
-                1 if style.size == -1 else 0,  # best fit
-                1 if style.size is not None else 0,  # customWidth
-                size,
-                style.id)
+                v = six.text_type(v)
+            return (len(v) * 7 + 5) / 7
+            
+          for row in self._dense_cells[1:]:
+            if col < len(row):
+              size = max(get_size(row[col]), size)
+          for row in six.itervalues(self._sparse_cells):
+            if col in row:
+              size = max(get_size(row[col]), size)
+        elif DataTypes.get_type(style.size) == DataTypes.NUMBER:
+          size = style.size
         else:
-            return "<col min=\"%d\" max=\"%d\">" % (col, col)
+          return "<col min=\"%d\" max=\"%d\" hidden=\"0\" width=\"9.2\" style=\"%d\">" % (col, col, style.id)
+        return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (
+            col,
+            col,
+            1 if style.size == 0 else 0,  # hidden
+            1 if style.size == -1 else 0,  # best fit
+            1 if style.size is not None else 0,  # customWidth
+            size,
+            style.id)
 
     def get_row_xml_string(self, row):
         if row in self._row_styles and not self._row_styles[row].is_default:
             style = self._row_styles[row]
             if style.size == -1:
                 size = 0
-                dense_rows = enumerate(self._dense_cells[row]) if row < len(
+                dense_rows = enumerate(self._dense_cells[row][1:]) if row < len(
                     self._dense_cells) else []
                 for y, cell in itertools.chain(dense_rows,
                                                six.iteritems(
@@ -250,7 +255,8 @@ class Worksheet(object):
                         font_size = self._styles[row][y].font.size
                     except:
                         font_size = 11
-                    size = max(font_size * (cell.count('\n') + 1) + 4, size)
+                    lines = cell.count('\n') if DataTypes.get_type(style.size) == DataTypes.STRING else 1
+                    size = max(font_size * (lines + 1) * 4 / 3, size)
             else:
                 size = style.size if style.size else 15
             return "<row r=\"%d\" s=\"%d\" customFormat=\"1\" hidden=\"%d\" customHeight=\"%d\" ht=\"%f\">" % (
