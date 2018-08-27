@@ -1,6 +1,7 @@
 from . import Worksheet
 from .Writer import Writer
 from . import Utility
+import six
 import time
 
 
@@ -92,6 +93,9 @@ class Workbook(object):
         self._align_styles()
         self._writer.save(file_handle)
 
-    def save(self, filename):
-        with open(filename, 'wb') as fp:
-            self._save(fp)
+    def save(self, filename_or_filehandle):
+        if isinstance(filename_or_filehandle, six.string_types):
+            with open(filename_or_filehandle, 'wb') as fp:
+                self._save(fp)
+        else:
+            self._save(filename_or_filehandle)
