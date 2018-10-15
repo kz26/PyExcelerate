@@ -52,7 +52,7 @@ class DataTypes(object):
         elif isinstance(value, (datetime, date, time)):
             return DataTypes.DATE
         else:
-            return DataTypes.ERROR
+            return DataTypes.INLINE_STRING
 
     @staticmethod
     def to_excel_date(d):

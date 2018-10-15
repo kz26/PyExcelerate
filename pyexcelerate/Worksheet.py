@@ -188,7 +188,7 @@ class Worksheet(object):
                 z = '"><v>%.15g</v></c>' % (cell)
         elif type == DataTypes.INLINE_STRING:
             z = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(
-                to_unicode(cell))
+                to_unicode(str(cell)))
         elif type == DataTypes.DATE:
             z = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
         elif type == DataTypes.FORMULA:
