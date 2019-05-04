@@ -1,4 +1,4 @@
-0.7.4
+0.8.0
 * Add ability to enable auto filters
 * Add ability to write to file handle
 
