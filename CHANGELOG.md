@@ -1,3 +1,7 @@
+0.7.4
+* Add ability to enable auto filters
+* Add ability to write to file handle
+
 0.7.3
 * Performance optimizations
 * Fix invalid function/formula references in third-party spreadsheet software
