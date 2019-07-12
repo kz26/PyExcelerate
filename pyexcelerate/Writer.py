@@ -41,8 +41,8 @@ class Writer(object):
         now = datetime.utcnow()
         return now.strftime("%Y-%m-%dT%H:%M:00Z")
 
-    def save(self, f):
-        zf = ZipFile(f, 'w', ZIP_DEFLATED)
+    def save(self, file, **kwargs):
+        zf = ZipFile(file, 'w', ZIP_DEFLATED, **kwargs)
         zf.writestr("docProps/app.xml",
                     self._render_template_wb(self._docProps_app_template))
         zf.writestr("docProps/core.xml",
