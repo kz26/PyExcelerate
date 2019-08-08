@@ -142,6 +142,10 @@ class Worksheet(object):
         self._parent.add_style(value)
         if self.get_cell_value(x, y) is None:
             self.set_cell_value(x, y, '')
+      
+    def set_range_style(self, start, end, value):
+        for cell in Range.Range(start, end, self:
+            self.set_cell_style(*cell.coordinate, value)
 
     def get_row_style(self, row):
         if row not in self._row_styles:
