@@ -20,7 +20,10 @@ def test_save():
 	COLUMNS = 100
 	wb = Workbook()
 	testData = [[1] * COLUMNS] * ROWS
-	stime = time.clock()
+	try:
+		stime = time.process_time()
+	except AttributeError:
+		stime = time.clock()
 	ws = wb.new_sheet("Test 1", data=testData)
 	wb.save(get_output_path("test.xlsx"))
 
