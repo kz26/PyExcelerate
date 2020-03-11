@@ -1,15 +1,16 @@
-# -*- coding: utf-8 -*-
-
-from ..Workbook import Workbook
-from ..Color import Color
-from ..Font import Font
-from ..Fill import Fill
-from ..Style import Style
-from ..Alignment import Alignment
 import time
 from datetime import datetime
+
 import nose
+import openpyxl
 from nose.tools import eq_, ok_, raises
+
+from ..Alignment import Alignment
+from ..Color import Color
+from ..Fill import Fill
+from ..Font import Font
+from ..Style import Style
+from ..Workbook import Workbook
 from .utils import get_output_path
 
 
@@ -39,12 +40,9 @@ def test_style():
     ws[3][3].style.borders.top.color = Color(255, 0, 0)
     ws[3][3].style.borders.left.color = Color(0, 255, 0)
     ws[3][4].style.borders.right.style = "-."
-    ws[4][
-        1
-    ].value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis fermentum metus id congue. Sed ultrices velit id sapien sodales bibendum. Mauris volutpat porta arcu non bibendum. Pellentesque adipiscing lacus quam, ac congue ipsum fringilla sed. Praesent dapibus dignissim elit vel dictum. Pellentesque commodo iaculis ipsum a rhoncus. Sed mattis neque eget justo dignissim scelerisque. Nam odio neque, mattis et libero id, posuere aliquam mi."
-    ws[4][
-        2
-    ].value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis fermentum metus id congue. Sed ultrices velit id sapien sodales bibendum. Mauris volutpat porta arcu non bibendum. Pellentesque adipiscing lacus quam, ac congue ipsum fringilla sed. Praesent dapibus dignissim elit vel dictum. Pellentesque commodo iaculis ipsum a rhoncus. Sed mattis neque eget justo dignissim scelerisque. Nam odio neque, mattis et libero id, posuere aliquam mi."
+    value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis fermentum metus id congue. Sed ultrices velit id sapien sodales bibendum. Mauris volutpat porta arcu non bibendum. Pellentesque adipiscing lacus quam, ac congue ipsum fringilla sed. Praesent dapibus dignissim elit vel dictum. Pellentesque commodo iaculis ipsum a rhoncus. Sed mattis neque eget justo dignissim scelerisque. Nam odio neque, mattis et libero id, posuere aliquam mi."
+    ws[4][1].value = value
+    ws[4][2].value = value
     ws[4][1].style.alignment.wrap_text = True
     wb.save(get_output_path("style-test.xlsx"))
 
@@ -154,10 +152,6 @@ def test_str_():
 
 
 def test_no_style_xml():
-    try:
-        import openpyxl
-    except ImportError:
-        raise nose.SkipTest("openpyxl not installed")
     data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]  # data is a 2D array
     filename = get_output_path("no_style.xlsx")
     sheetname = "test"

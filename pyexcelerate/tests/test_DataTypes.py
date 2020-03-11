@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-
 import warnings
 from datetime import date, datetime, time
 from decimal import Decimal
 
 import nose
+import numpy
 import pytz
 from nose.tools import eq_
 
@@ -19,13 +18,8 @@ def test__get_type():
     eq_(DataTypes.get_type(Decimal("15.0")), DataTypes.NUMBER)
     eq_(DataTypes.get_type(float("inf")), DataTypes.NUMBER)
     eq_(DataTypes.get_type(float("nan")), DataTypes.NUMBER)
-    try:
-        import numpy
-
-        eq_(DataTypes.get_type(numpy.inf), DataTypes.NUMBER)
-        eq_(DataTypes.get_type(numpy.nan), DataTypes.NUMBER)
-    except ImportError:
-        pass
+    eq_(DataTypes.get_type(numpy.inf), DataTypes.NUMBER)
+    eq_(DataTypes.get_type(numpy.nan), DataTypes.NUMBER)
     eq_(DataTypes.get_type("test"), DataTypes.INLINE_STRING)
     eq_(DataTypes.get_type(datetime.now()), DataTypes.DATE)
     eq_(DataTypes.get_type(True), DataTypes.BOOLEAN)
@@ -33,10 +27,6 @@ def test__get_type():
 
 
 def test_numpy():
-    try:
-        import numpy
-    except ImportError:
-        raise nose.SkipTest("numpy not installed")
     testData = numpy.ones((5, 5), dtype=int)
     wb = Workbook()
     ws = wb.new_sheet("Test 1", data=testData)
