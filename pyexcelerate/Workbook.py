@@ -8,18 +8,18 @@ import time
 class Workbook(object):
     # map for attribute sets => style attribute id's
     STYLE_ATTRIBUTE_MAP = {
-        'fonts': '_font',
-        'fills': '_fill',
-        'num_fmts': '_format',
-        'borders': '_borders'
+        "fonts": "_font",
+        "fills": "_fill",
+        "num_fmts": "_format",
+        "borders": "_borders",
     }
-    STYLE_ID_ATTRIBUTE = 'id'
-    __slots__ = ('_worksheets', '_styles', '_items', '_encoding', '_writer')
+    STYLE_ID_ATTRIBUTE = "id"
+    __slots__ = ("_worksheets", "_styles", "_items", "_encoding", "_writer")
 
-    def __init__(self, encoding='utf-8'):
+    def __init__(self, encoding="utf-8"):
         self._worksheets = []
         self._styles = []
-        self._items = {}  #dictionary containing lists of fonts, fills, etc.
+        self._items = {}  # dictionary containing lists of fonts, fills, etc.
         self._encoding = encoding
         self._writer = Writer(self)
 
@@ -28,7 +28,8 @@ class Workbook(object):
             if sheet.name == worksheet.name:
                 raise Exception(
                     "There is already a worksheet with the name '%s'. Duplicate worksheet names are not permitted."
-                    % worksheet.name)
+                    % worksheet.name
+                )
         self._worksheets.append(worksheet)
 
     def new_sheet(self, sheet_name, data=None, force_name=False):
@@ -67,19 +68,16 @@ class Workbook(object):
             # compress individual attributes
             for attr, attr_id in Workbook.STYLE_ATTRIBUTE_MAP.items():
                 obj = getattr(style, attr_id)
-                if obj and not obj.is_default:  # we only care about it if it's not default
-                    items[attr][obj] = items[attr].get(obj,
-                                                       len(items[attr]) + 1)
+                if (
+                    obj and not obj.is_default
+                ):  # we only care about it if it's not default
+                    items[attr][obj] = items[attr].get(obj, len(items[attr]) + 1)
                     obj.id = items[attr][obj]  # apply
         for k, v in items.items():
             # ensure it's sorted properly
-            items[k] = [
-                tup[0] for tup in sorted(v.items(), key=lambda x: x[1])
-            ]
+            items[k] = [tup[0] for tup in sorted(v.items(), key=lambda x: x[1])]
         self._items = items
-        self._styles = [
-            tup[0] for tup in sorted(styles.items(), key=lambda x: x[1])
-        ]
+        self._styles = [tup[0] for tup in sorted(styles.items(), key=lambda x: x[1])]
         Utility.YOLO = False
 
     def __getattr__(self, name):
@@ -95,7 +93,7 @@ class Workbook(object):
 
     def save(self, filename_or_filehandle):
         if isinstance(filename_or_filehandle, six.string_types):
-            with open(filename_or_filehandle, 'wb') as fp:
+            with open(filename_or_filehandle, "wb") as fp:
                 self._save(fp)
         else:
             self._save(filename_or_filehandle)

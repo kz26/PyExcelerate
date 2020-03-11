@@ -8,7 +8,9 @@ def nonboolean_or(left, right, default=False):
         return right
     if right == default or left == right:
         return left
-    return left | right  # this scenario doesn't actually make sense, but it might be implemented
+    return (
+        left | right
+    )  # this scenario doesn't actually make sense, but it might be implemented
 
 
 def nonboolean_and(left, right, default=False):
@@ -51,7 +53,9 @@ if six.PY2:
         if type(s) == unicode:
             return s
         else:
-            return unicode(s, 'utf-8')
+            return unicode(s, "utf-8")
+
+
 else:
 
     def to_unicode(s):

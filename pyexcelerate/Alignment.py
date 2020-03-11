@@ -4,13 +4,11 @@ from . import Color
 
 
 class Alignment(object):
-    __slots__ = ('_horizontal', '_vertical', '_rotation', '_wrap_text', 'id')
+    __slots__ = ("_horizontal", "_vertical", "_rotation", "_wrap_text", "id")
 
-    def __init__(self,
-                 horizontal='left',
-                 vertical='bottom',
-                 rotation=0,
-                 wrap_text=False):
+    def __init__(
+        self, horizontal="left", vertical="bottom", rotation=0, wrap_text=False
+    ):
         self._horizontal = horizontal
         self._vertical = vertical
         self._rotation = rotation
@@ -24,7 +22,7 @@ class Alignment(object):
     def wrap_text(self, value):
         if value not in (True, False):
             raise TypeError(
-                'Invalid wrap text alignment value. Expects either True or False.'
+                "Invalid wrap text alignment value. Expects either True or False."
             )
         self._wrap_text = value
 
@@ -34,9 +32,9 @@ class Alignment(object):
 
     @horizontal.setter
     def horizontal(self, value):
-        if value not in ('left', 'center', 'right'):
+        if value not in ("left", "center", "right"):
             raise ValueError(
-                'Invalid horizontal alignment value. Expects either \'left\', \'center\', or \'right\'.'
+                "Invalid horizontal alignment value. Expects either 'left', 'center', or 'right'."
             )
         self._horizontal = value
 
@@ -46,9 +44,9 @@ class Alignment(object):
 
     @vertical.setter
     def vertical(self, value):
-        if value not in ('top', 'center', 'bottom'):
+        if value not in ("top", "center", "bottom"):
             raise ValueError(
-                'Invalid vertical alignment value. Expects either \'top\', \'center\', or \'bottom\'.'
+                "Invalid vertical alignment value. Expects either 'top', 'center', or 'bottom'."
             )
         self._vertical = value
 
@@ -58,16 +56,27 @@ class Alignment(object):
 
     @rotation.setter
     def rotation(self, value):
-        self._rotation = (value % 360)
+        self._rotation = value % 360
 
     @property
     def is_default(self):
-        return self._horizontal == 'left' and self._vertical == 'bottom' and self._rotation == 0 and not self._wrap_text
+        return (
+            self._horizontal == "left"
+            and self._vertical == "bottom"
+            and self._rotation == 0
+            and not self._wrap_text
+        )
 
     def get_xml_string(self):
-        return "<alignment horizontal=\"%s\" vertical=\"%s\" textRotation=\"%.15g\" wrapText=\"%d\"/>" % (
-            self._horizontal, self._vertical, self._rotation, 1
-            if self._wrap_text else 0)
+        return (
+            '<alignment horizontal="%s" vertical="%s" textRotation="%.15g" wrapText="%d"/>'
+            % (
+                self._horizontal,
+                self._vertical,
+                self._rotation,
+                1 if self._wrap_text else 0,
+            )
+        )
 
     def __or__(self, other):
         return self._binary_operation(other, Utility.nonboolean_or)
@@ -79,24 +88,30 @@ class Alignment(object):
         return self._binary_operation(other, Utility.nonboolean_xor)
 
     def _binary_operation(self, other, operation):
-        return Alignment( \
-         horizontal = operation(self._horizontal, other._horizontal, 'left'), \
-         vertical = operation(self._vertical, other._vertical, 'bottom'), \
-         rotation = operation(self._rotation, other._rotation, 0), \
-         wrap_text = operation(self._wrap_text, other._wrap_text, False)
+        return Alignment(
+            horizontal=operation(self._horizontal, other._horizontal, "left"),
+            vertical=operation(self._vertical, other._vertical, "bottom"),
+            rotation=operation(self._rotation, other._rotation, 0),
+            wrap_text=operation(self._wrap_text, other._wrap_text, False),
         )
 
     def __eq__(self, other):
         if other is None:
             return self.is_default
         elif Utility.YOLO:
-            return self._vertical == other._vertical and self._rotation == other._rotation
+            return (
+                self._vertical == other._vertical and self._rotation == other._rotation
+            )
         else:
-            return self._vertical == other._vertical and self._rotation == other._rotation and self._horizontal == other._horizontal and self._wrap_text == other._wrap_text
+            return (
+                self._vertical == other._vertical
+                and self._rotation == other._rotation
+                and self._horizontal == other._horizontal
+                and self._wrap_text == other._wrap_text
+            )
 
     def __hash__(self):
         return hash((self._horizontal, self._wrap_text))
 
     def __str__(self):
-        return "Align: %s %s %s" % (self._horizontal, self._vertical,
-                                    self._rotation)
+        return "Align: %s %s %s" % (self._horizontal, self._vertical, self._rotation)

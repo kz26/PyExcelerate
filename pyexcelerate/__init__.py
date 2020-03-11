@@ -8,4 +8,3 @@ from .Color import Color
 from .Panes import Panes
 
 from .version import __version__
-

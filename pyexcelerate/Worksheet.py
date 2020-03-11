@@ -13,16 +13,28 @@ from xml.sax.saxutils import escape
 
 
 class Worksheet(object):
-    __slots__ = ('_columns', '_name', '_dense_cells', '_sparse_cells',
-                 '_styles', '_row_styles', '_col_styles', '_parent', '_merges',
-                 '_attributes', '_panes', '_show_grid_lines', 'auto_filter')
+    __slots__ = (
+        "_columns",
+        "_name",
+        "_dense_cells",
+        "_sparse_cells",
+        "_styles",
+        "_row_styles",
+        "_col_styles",
+        "_parent",
+        "_merges",
+        "_attributes",
+        "_panes",
+        "_show_grid_lines",
+        "auto_filter",
+    )
 
     def __init__(self, name, workbook, data=None, force_name=False):
         self._columns = 0  # cache this for speed
         if len(name) > 31 and not force_name:
             # http://stackoverflow.com/questions/3681868/is-there-a-limit-on-an-excel-worksheets-name-length
             raise Exception(
-                'Excel does not permit worksheet names longer than 31 characters. Set force_name=True to disable this restriction.'
+                "Excel does not permit worksheet names longer than 31 characters. Set force_name=True to disable this restriction."
             )
         self._name = name
         self._dense_cells = [[]]
@@ -52,15 +64,15 @@ class Worksheet(object):
     def __getitem__(self, key):
         if isinstance(key, slice):
             if key.step is not None and key.step > 1:
-                raise Exception(
-                    "PyExcelerate doesn't support slicing with steps")
+                raise Exception("PyExcelerate doesn't support slicing with steps")
             else:
-                return Range.Range((key.start or 1, 1),
-                                   (key.stop or float('inf'), float('inf')),
-                                   self)
+                return Range.Range(
+                    (key.start or 1, 1), (key.stop or float("inf"), float("inf")), self
+                )
         else:
-            return Range.Range((key, 1), (key, float('inf')),
-                               self)  # return a row range
+            return Range.Range(
+                (key, 1), (key, float("inf")), self
+            )  # return a row range
 
     @property
     def panes(self):
@@ -88,8 +100,8 @@ class Worksheet(object):
     def num_rows(self):
         return max(
             len(self._dense_cells) - 1,
-            max(six.iterkeys(self._sparse_cells))
-            if len(self._sparse_cells) > 0 else 0)
+            max(six.iterkeys(self._sparse_cells)) if len(self._sparse_cells) > 0 else 0,
+        )
 
     @property
     def num_columns(self):
@@ -125,7 +137,7 @@ class Worksheet(object):
 
     def set_cell_value(self, x, y, value):
         if DataTypes.get_type(value) == DataTypes.DATE:
-            self.get_cell_style(x, y).format = Format.Format('yyyy-mm-dd')
+            self.get_cell_style(x, y).format = Format.Format("yyyy-mm-dd")
         if x < len(self._dense_cells) and y < len(self._dense_cells[x]):
             self._dense_cells[x][y] = value
         else:
@@ -141,7 +153,7 @@ class Worksheet(object):
         self._styles[x][y] = value
         self._parent.add_style(value)
         if self.get_cell_value(x, y) is None:
-            self.set_cell_value(x, y, '')
+            self.set_cell_value(x, y, "")
 
     def get_row_style(self, row):
         if row not in self._row_styles:
@@ -187,98 +199,120 @@ class Worksheet(object):
             else:
                 z = '"><v>%.15g</v></c>' % (cell)
         elif type == DataTypes.INLINE_STRING:
-            z = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(
-                to_unicode(cell))
+            z = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(to_unicode(cell))
         elif type == DataTypes.DATE:
             z = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
         elif type == DataTypes.FORMULA:
-            z = '"><f>%s</f></c>' % (cell[1:]) # Remove equals sign.
+            z = '"><f>%s</f></c>' % (cell[1:])  # Remove equals sign.
         elif type == DataTypes.BOOLEAN:
             z = '" t="b"><v>%d</v></c>' % (cell)
 
-        if style and hasattr(style, 'id'):
-            return "<c r=\"%s\" s=\"%d%s" % (Range.Range.coordinate_to_string(
-                (x, y)), style.id, z)
+        if style and hasattr(style, "id"):
+            return '<c r="%s" s="%d%s' % (
+                Range.Range.coordinate_to_string((x, y)),
+                style.id,
+                z,
+            )
         else:
-            return "<c r=\"%s%s" % (Range.Range.coordinate_to_string((x, y)),
-                                    z)
+            return '<c r="%s%s' % (Range.Range.coordinate_to_string((x, y)), z)
 
     def get_col_xml_string(self, col):
         if col not in self._col_styles or self._col_styles[col].is_default:
-          return "<col min=\"%d\" max=\"%d\">" % (col, col)
+            return '<col min="%d" max="%d">' % (col, col)
         style = self._col_styles[col]
         if style.size == -1:
-          size = 0
-          
-          def get_size(v):
-            if isinstance(v, six.string_types):
-                v = to_unicode(v)
-            else:
-                v = six.text_type(v)
-            return (len(v) * 7 + 5) / 7
-            
-          for row in self._dense_cells[1:]:
-            if col < len(row):
-              size = max(get_size(row[col]), size)
-          for row in six.itervalues(self._sparse_cells):
-            if col in row:
-              size = max(get_size(row[col]), size)
+            size = 0
+
+            def get_size(v):
+                if isinstance(v, six.string_types):
+                    v = to_unicode(v)
+                else:
+                    v = six.text_type(v)
+                return (len(v) * 7 + 5) / 7
+
+            for row in self._dense_cells[1:]:
+                if col < len(row):
+                    size = max(get_size(row[col]), size)
+            for row in six.itervalues(self._sparse_cells):
+                if col in row:
+                    size = max(get_size(row[col]), size)
         elif DataTypes.get_type(style.size) == DataTypes.NUMBER:
-          size = style.size
+            size = style.size
         else:
-          return "<col min=\"%d\" max=\"%d\" hidden=\"0\" width=\"9.2\" style=\"%d\">" % (col, col, style.id)
-        return "<col min=\"%d\" max=\"%d\" hidden=\"%d\" bestFit=\"%d\" customWidth=\"%d\" width=\"%f\" style=\"%d\">" % (
-            col,
-            col,
-            1 if style.size == 0 else 0,  # hidden
-            1 if style.size == -1 else 0,  # best fit
-            1 if style.size is not None else 0,  # customWidth
-            size,
-            style.id)
+            return '<col min="%d" max="%d" hidden="0" width="9.2" style="%d">' % (
+                col,
+                col,
+                style.id,
+            )
+        return (
+            '<col min="%d" max="%d" hidden="%d" bestFit="%d" customWidth="%d" width="%f" style="%d">'
+            % (
+                col,
+                col,
+                1 if style.size == 0 else 0,  # hidden
+                1 if style.size == -1 else 0,  # best fit
+                1 if style.size is not None else 0,  # customWidth
+                size,
+                style.id,
+            )
+        )
 
     def get_row_xml_string(self, row):
         if row in self._row_styles and not self._row_styles[row].is_default:
             style = self._row_styles[row]
             if style.size == -1:
                 size = 0
-                dense_rows = enumerate(self._dense_cells[row][1:]) if row < len(
-                    self._dense_cells) else []
-                for y, cell in itertools.chain(dense_rows,
-                                               six.iteritems(
-                                                   self._sparse_cells[row])
-                                               if row in self._sparse_cells
-                                               else []):
+                dense_rows = (
+                    enumerate(self._dense_cells[row][1:])
+                    if row < len(self._dense_cells)
+                    else []
+                )
+                for y, cell in itertools.chain(
+                    dense_rows,
+                    six.iteritems(self._sparse_cells[row])
+                    if row in self._sparse_cells
+                    else [],
+                ):
                     try:
                         font_size = self._styles[row][y].font.size
                     except:
                         font_size = 11
-                    lines = cell.count('\n') if DataTypes.get_type(style.size) == DataTypes.STRING else 1
+                    lines = (
+                        cell.count("\n")
+                        if DataTypes.get_type(style.size) == DataTypes.STRING
+                        else 1
+                    )
                     size = max(font_size * (lines + 1) * 4 / 3, size)
             else:
                 size = style.size if style.size else 15
-            return "<row r=\"%d\" s=\"%d\" customFormat=\"1\" hidden=\"%d\" customHeight=\"%d\" ht=\"%f\">" % (
-                row,
-                style.id,
-                1 if style.size == 0 else 0,  # hidden
-                1 if style.size is not None else 0,  # customHeight
-                size)
+            return (
+                '<row r="%d" s="%d" customFormat="1" hidden="%d" customHeight="%d" ht="%f">'
+                % (
+                    row,
+                    style.id,
+                    1 if style.size == 0 else 0,  # hidden
+                    1 if style.size is not None else 0,  # customHeight
+                    size,
+                )
+            )
         else:
-            return "<row r=\"%d\">" % row
+            return '<row r="%d">' % row
 
     def get_xml_data(self):
         # Precondition: styles are aligned. if not, then :v
         # check if we have any row styles that don't have data
         sparse_rows = sorted(
-            filter(lambda x: x[0] >= len(self._dense_cells),
-                   six.iteritems(self._sparse_cells)))
-        for x, row in itertools.chain(
-                enumerate(self._dense_cells[1:], 1), sparse_rows):
+            filter(
+                lambda x: x[0] >= len(self._dense_cells),
+                six.iteritems(self._sparse_cells),
+            )
+        )
+        for x, row in itertools.chain(enumerate(self._dense_cells[1:], 1), sparse_rows):
             row_data = []
-            dense_columns = enumerate(row[1:],
-                                      1) if x < len(self._dense_cells) else []
+            dense_columns = enumerate(row[1:], 1) if x < len(self._dense_cells) else []
             sparse_columns = sorted(
-                six.iteritems(self._sparse_cells[x])
-                if x in self._sparse_cells else [])
+                six.iteritems(self._sparse_cells[x]) if x in self._sparse_cells else []
+            )
             for y, cell in itertools.chain(dense_columns, sparse_columns):
                 if x in self._styles and y in self._styles[x]:
                     style = self._styles[x][y]

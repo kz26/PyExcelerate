@@ -3,7 +3,7 @@ from .Utility import to_unicode
 
 
 class Panes(object):
-    __slots__ = ('x', 'y', 'freeze')
+    __slots__ = ("x", "y", "freeze")
 
     def __init__(self, x=None, y=None, freeze=True):
         self.x = x or 0
@@ -21,14 +21,13 @@ class Panes(object):
 
     def get_xml(self):
         attrs = {
-            'topLeftCell':
-            Range.Range.coordinate_to_string((self.y + 1, self.x + 1))
+            "topLeftCell": Range.Range.coordinate_to_string((self.y + 1, self.x + 1))
         }
         if self.freeze:
-            attrs['state'] = 'frozen'
+            attrs["state"] = "frozen"
         if self.x:
-            attrs['xSplit'] = self.x
+            attrs["xSplit"] = self.x
         if self.y:
-            attrs['ySplit'] = self.y
+            attrs["ySplit"] = self.y
         attr_str = " ".join('%s="%s"' % item for item in sorted(attrs.items()))
         return to_unicode("<pane %s/>" % attr_str)
