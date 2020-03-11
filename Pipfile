@@ -10,6 +10,7 @@ xlsxwriter = "*"
 memory-profiler = "*"
 pytz = "*"
 black = "*"
+numpy = "*"
 
 [packages]
 six = ">=1.4.0"
@@ -17,3 +18,6 @@ Jinja2 = "*"
 
 [scripts]
 test = "nosetests"
+
+[pipenv]
+allow_prereleases = true
