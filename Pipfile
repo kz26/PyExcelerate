@@ -4,10 +4,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+nose = "*"
+openpyxl = "*"
+xlsxwriter = "*"
+memory-profiler = "*"
+pytz = "*"
+black = "*"
 
 [packages]
 six = ">=1.4.0"
 Jinja2 = "*"
 
-[requires]
-python_version = "3.7"
+[scripts]
+test = "nosetests"
