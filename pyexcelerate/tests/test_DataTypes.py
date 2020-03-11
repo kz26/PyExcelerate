@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from ..DataTypes import DataTypes
+import warnings
+from datetime import date, datetime, time
+from decimal import Decimal
+
 import nose
+import pytz
 from nose.tools import eq_
-from datetime import datetime, date, time
+
+from ..DataTypes import DataTypes
 from ..Workbook import Workbook
 from .utils import get_output_path
-from decimal import Decimal
-import pytz
-import warnings
 
 
 def test__get_type():
@@ -82,3 +84,11 @@ def test_unicode_str():
     ws[1][3].value = u"ᶘ ᵒᴥᵒᶅ"
     ws[1][4].value = u"الله أكبر"
     wb.save(get_output_path("unicode-test.xlsx"))
+
+
+def test_invalid_chars():
+    workbook = Workbook()
+    worksheet = workbook.new_sheet(
+        "Test1", data=[["String1", "String2", "String3", "Sample String5 \x1a Sample"]]
+    )
+    workbook.save(get_output_path("invalid-char-test.xlsx"))
