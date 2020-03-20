@@ -1,3 +1,5 @@
+# -*- coding: <encoding name> -*-
+
 import time
 from datetime import datetime
 
