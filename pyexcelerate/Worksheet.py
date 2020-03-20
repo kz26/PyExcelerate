@@ -237,7 +237,7 @@ class Worksheet(object):
                 z = '"><v>%.15g</v></c>' % (cell)
         elif type == DataTypes.INLINE_STRING or type == DataTypes.ERROR:
             # Also serialize errors to string, we'll try our best...
-            z = '" t="inlineStr"><is><t>%s</t></is></c>' % escape(
+            z = '" t="inlineStr"><is><t xml:space="preserve">%s</t></is></c>' % escape(
                 _illegal_xml_chars_RE.sub(u"\uFFFD", to_unicode(str(cell)))
             )
         elif type == DataTypes.DATE:
