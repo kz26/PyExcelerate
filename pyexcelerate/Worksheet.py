@@ -240,7 +240,7 @@ class Worksheet(object):
         elif type == DataTypes.INLINE_STRING or type == DataTypes.ERROR:
             # Also serialize errors to string, we'll try our best...
             z = '" t="inlineStr"><is><t xml:space="preserve">%s</t></is></c>' % escape(
-                _illegal_xml_chars_RE.sub(u"\uFFFD", to_unicode(str(cell)))
+                _illegal_xml_chars_RE.sub(u"\uFFFD", to_unicode(cell if isinstance(v, six.string_types) else str(cell)))
             )
         elif type == DataTypes.DATE:
             z = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
