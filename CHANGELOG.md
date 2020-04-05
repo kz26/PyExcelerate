@@ -1,3 +1,7 @@
+0.9.0
+* Fix unintentional trimming of whitespace on strings
+* Filter invalid XML characters to prevent corrupted Excel files from being saved
+
 0.8.0
 * Add ability to enable auto filters
 * Add ability to write to file handle
