@@ -13,6 +13,7 @@ test coverage: [![coverage-status](https://coveralls.io/repos/kz26/PyExcelerate/
 * [PyPI page](https://pypi.python.org/pypi/PyExcelerate)
 
 ## Description
+
 PyExcelerate is a Python for writing Excel-compatible XLSX spreadsheet files, with an emphasis
 on speed.
 
@@ -65,9 +66,19 @@ wb.save("output.xlsx")
 
 ### Writing bulk data to a range
 
-PyExcelerate also permits you to write data to ranges directly, which is faster than writing cell-by-cell.
+PyExcelerate also permits you to write data to ranges directly, which is faster than writing cell-by-cell. If writing a Pandas DataFrame, see the [note on compatibility](#Pandas-DataFrames).
 
 #### Fastest
+
+```python
+from pyexcelerate import Workbook
+
+wb = Workbook()
+ws = wb.new_sheet("test", data=[[1, 2], [3, 4]])
+wb.save("output.xlsx")
+```
+
+#### Fast
 
 ```python
 from pyexcelerate import Workbook
@@ -76,7 +87,6 @@ wb = Workbook()
 ws = wb.new_sheet("test")
 ws.range("B2", "C3").value = [[1, 2], [3, 4]]
 wb.save("output.xlsx")
-
 ```
 
 ### Writing cell data
@@ -94,7 +104,6 @@ ws.set_cell_value(1, 2, 20)
 ws.set_cell_value(1, 3, "=SUM(A1,B1)") # a formula
 ws.set_cell_value(1, 4, datetime.now()) # a date
 wb.save("output.xlsx")
-
 ```
 
 #### Fast
@@ -110,7 +119,6 @@ ws[1][2].value = 20
 ws[1][3].value = "=SUM(A1,B1)" # a formula
 ws[1][4].value = datetime.now() # a date
 wb.save("output.xlsx")
-
 ```
 
 ### Selecting cells by name
@@ -122,7 +130,6 @@ wb = Workbook()
 ws = wb.new_sheet("sheet name")
 ws.cell("A1").value = 12
 wb.save("output.xlsx")
-
 ```
 
 ### Merging cells
@@ -135,7 +142,6 @@ ws = wb.new_sheet("sheet name")
 ws[1][1].value = 15
 ws.range("A1", "B1").merge()
 wb.save("output.xlsx")
-
 ```
 
 ### Styling cells
@@ -184,7 +190,6 @@ ws.get_cell_style(1, 1).fill.background = Color(0, 255, 0, 0)
 ws.set_cell_value(1, 2, datetime.now())
 ws.get_cell_style(1, 1).format.format = 'mm/dd/yy'
 wb.save("output.xlsx")
-
 ```
 #### Fast
 
@@ -203,7 +208,6 @@ ws[1][1].style.fill.background = Color(0, 255, 0, 0)
 ws[1][2].value = datetime.now()
 ws[1][2].style.format.format = 'mm/dd/yy'
 wb.save("output.xlsx")
-
 ```
 
 **Note** that `.style.format.format`'s repetition is due to planned support for conditional formatting and other related features. The formatting syntax may be improved in the future.
@@ -237,7 +241,6 @@ wb = Workbook()
 ws = wb.new_sheet("sheet name")
 ws.set_row_style(1, Style(fill=Fill(background=Color(255,0,0,0))))
 wb.save("output.xlsx")
-
 ```
 
 #### Faster
@@ -263,7 +266,6 @@ wb = Workbook()
 ws = wb.new_sheet("sheet name")
 ws[1].style.fill.background = Color(255, 0, 0)
 wb.save("output.xlsx")
-
 ```
 
 ### Styling columns
@@ -278,7 +280,6 @@ wb = Workbook()
 ws = wb.new_sheet("sheet name")
 ws.set_col_style(1, Style(fill=Fill(background=Color(255,0,0,0))))
 wb.save("output.xlsx")
-
 ```
 
 ### Available style attributes
@@ -321,7 +322,6 @@ wb = Workbook()
 ws = wb.new_sheet("sheet name")
 ws.set_col_style(2, Style(size=0))
 wb.save("output.xlsx")
-
 ```
 
 ### Linked styles
@@ -337,7 +337,6 @@ ws[1][1].value = 1
 font = Font(bold=True, italic=True, underline=True, strikethrough=True)
 ws[1][1].style.font = font
 wb.save("output.xlsx")
-
 ```
 
 ## Pandas DataFrames
