@@ -340,6 +340,16 @@ wb.save("output.xlsx")
 
 ```
 
+## Pandas DataFrames
+
+PyExcelerate does not support directly passing a Pandas DataFrame as the data argument to a new worksheet. If the sheet does not require having the headers rendered, the most efficient solution is:
+
+```python
+ws = wb.new_sheet("sheet name", data=df.values.tolist())
+```
+
+Note that the conversion `.tolist()` is faster as PyExcelerate has some optimizations surrounding data that's provided in lists. If the sheet needs to have headers rendered, consider [asking the Pandas maintainers](https://github.com/pandas-dev/pandas/issues/4517) to integrate PyExcelerate, [use a transformation function](https://gist.github.com/mapa17/bc04be36e447cab0746a0ec8903cc49f), or convert your DataFrame to a list with the headers included.
+
 ## Packaging with PyInstaller
 
 PyInstaller is the only packager officially supported by PyExcelerate. Copy hook-pyexcelerate.Writer.py to your PyInstaller hooks directory.
