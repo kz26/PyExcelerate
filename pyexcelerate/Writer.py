@@ -25,6 +25,7 @@ class Writer(object):
     _workbook_template = env.get_template("xl/workbook.xml")
     _workbook_rels_template = env.get_template("xl/_rels/workbook.xml.rels")
     _worksheet_template = env.get_template("xl/worksheets/sheet.xml")
+    _vbaProject_bin_file = os.path.join(_TEMPLATE_PATH, "xl/vbaProject.bin")
     __slots__ = ("workbook",)
 
     def __init__(self, workbook):
@@ -64,6 +65,8 @@ class Writer(object):
             zf.writestr(
                 "xl/styles.xml", self._render_template_wb(self._empty_styles_template)
             )
+        if self.workbook.has_macros:
+            zf.write(self._vbaProject_bin_file, "xl/vbaProject.bin")
         zf.writestr(
             "xl/workbook.xml", self._render_template_wb(self._workbook_template)
         )
