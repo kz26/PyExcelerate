@@ -14,7 +14,7 @@ class Workbook(object):
         "borders": "_borders",
     }
     STYLE_ID_ATTRIBUTE = "id"
-    __slots__ = ("_worksheets", "_styles", "_items", "_encoding", "_writer")
+    __slots__ = ("_worksheets", "_styles", "_items", "_has_macros", "_encoding", "_writer")
 
     def __init__(self, encoding="utf-8"):
         self._worksheets = []

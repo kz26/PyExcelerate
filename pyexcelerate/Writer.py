@@ -66,7 +66,7 @@ class Writer(object):
                 "xl/styles.xml", self._render_template_wb(self._empty_styles_template)
             )
         if self.workbook.has_macros:
-            zf.write("xl/vbaProject.bin", _vbaProject_bin_file)
+            zf.write(self._vbaProject_bin_file, "xl/vbaProject.bin")
         zf.writestr(
             "xl/workbook.xml", self._render_template_wb(self._workbook_template)
         )
