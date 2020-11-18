@@ -20,6 +20,7 @@ class Workbook(object):
         self._worksheets = []
         self._styles = []
         self._items = {}  # dictionary containing lists of fonts, fills, etc.
+        self._has_macros = False
         self._encoding = encoding
         self._writer = Writer(self)
 
@@ -49,6 +50,10 @@ class Workbook(object):
     def styles(self):
         self._align_styles()
         return self._styles
+    
+    @property
+    def has_macros(self):
+        return self._has_macros
 
     def get_xml_data(self):
         self._align_styles()  # because it will be used by the worksheets later
@@ -91,7 +96,8 @@ class Workbook(object):
         self._align_styles()
         self._writer.save(file_handle)
 
-    def save(self, filename_or_filehandle):
+    def save(self, filename_or_filehandle, has_macros=False):
+        self._has_macros = has_macros
         if isinstance(filename_or_filehandle, six.string_types):
             with open(filename_or_filehandle, "wb") as fp:
                 self._save(fp)
