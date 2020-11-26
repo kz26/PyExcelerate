@@ -1,3 +1,6 @@
+0.10.0
+* Add support for XLSM files from PR #101 (thanks @caffeinatedMike)
+
 0.9.0
 * Fix unintentional trimming of whitespace on strings
 * Filter invalid XML characters to prevent corrupted Excel files from being saved
