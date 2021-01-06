@@ -43,7 +43,7 @@ Ubuntu 12.04 LTS, Core i5-3450, 8GB DDR3, Python 2.7.3
 
 ## Installation
 
-PyExcelerate is supported on Python 2.6, 2.7, 3.3, 3.4, and 3.5.
+PyExcelerate is supported on Python 2.7, 3.4, 3.5, 3.6, 3.7, and 3.8.
 
     pip install pyexcelerate
 
