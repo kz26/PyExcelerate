@@ -14,6 +14,7 @@ def test__string_to_coordinate():
     eq_(stc("B39"), (39, 2))
     eq_(stc("AA1"), (1, 27))
     eq_(stc("AB1"), (1, 28))
+    eq_(stc("XFD"), 16384)
 
 
 def test__coordinate_to_string():
@@ -28,6 +29,7 @@ def test__coordinate_to_string():
     eq_(cts((39, 2)), "B39")
     eq_(cts((1, 27)), "AA1")
     eq_(cts((1, 28)), "AB1")
+    eq_(cts((1, float("inf"))), "IV1")
 
 
 def test_merge():
