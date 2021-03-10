@@ -11,12 +11,24 @@ from six.moves import reduce
 # to be immutable. Please don't modify attributes after instantiation. :)
 #
 
-# generate list of columns name (COORD2COLUMN[1] => "A") and dict of column name to coord (COLUMN2COORD["A"]=1)
-COORD2COLUMN = list(
-    dict.fromkeys(map("".join, itertools.product([""] + list(string.ascii_uppercase), repeat=3)))
+# generate the list of columns name from "A" to "ZZZ" => mapping such that COORD2COLUMN[1] => "A"
+COORD2COLUMN = (
+    # remove duplicates in collection by taking list(dict.fromkeys( collection ))
+    list(
+        dict.fromkeys(
+            # joind the items together so that ["","","A"] => "A", ["","R","Z"] => "RZ", ...
+            map(
+                "".join,
+                # build iterator with all combination of 3 items in the list ["", "A", "B", ..., "Z"]
+                itertools.product([""] + list(string.ascii_uppercase), repeat=3),
+            )
+        )
+    )
 )
+# reverse the previous mapping COORD2COLUMN to go from "A" to 1
 COLUMN2COORD = {col: i for i, col in enumerate(COORD2COLUMN)}
-RE_COLUMN = re.compile("\d")
+# regexp that splits an excel reference (e.g. "B23") into row/col
+RE_COLUMN_ROW = re.compile("([A-Z]+)(\d*)")
 
 
 class Range(object):
@@ -257,9 +269,9 @@ class Range(object):
     @staticmethod
     def string_to_coordinate(s):
         # Convert a base-26 name to a coordinate (or integer if column)
-        col, *rest = RE_COLUMN.split(s, 1)
-        if rest:
-            return (int(s[len(col) :]), COLUMN2COORD[col])
+        col, num = RE_COLUMN_ROW.match(s).groups()
+        if num:
+            return (int(num), COLUMN2COORD[col])
         else:
             return COLUMN2COORD[col]
 
