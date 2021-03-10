@@ -1,4 +1,7 @@
-from . import DataTypes
+import itertools
+import re
+import string
+
 import six
 from . import Font, Fill, Format, Style
 from six.moves import reduce
@@ -7,6 +10,13 @@ from six.moves import reduce
 # Kevin and Kevin's fair warning: this class has been insanely optimized for speed. It is intended
 # to be immutable. Please don't modify attributes after instantiation. :)
 #
+
+# generate list of columns name (COORD2COLUMN[1] => "A") and dict of column name to coord (COLUMN2COORD["A"]=1)
+COORD2COLUMN = list(
+    dict.fromkeys(map("".join, itertools.product([""] + list(string.ascii_uppercase), repeat=3)))
+)
+COLUMN2COORD = {col: i for i, col in enumerate(COORD2COLUMN)}
+RE_COLUMN = re.compile("\d")
 
 
 class Range(object):
@@ -246,30 +256,18 @@ class Range(object):
 
     @staticmethod
     def string_to_coordinate(s):
-        # Convert a base-26 name to integer
-        y = 0
-        l = len(s)
-        for index, c in enumerate(s):
-            if ord(c) < Range.A or ord(c) > Range.Z:
-                s = s[index:]
-                break
-            y *= 26
-            y += ord(c) - Range.A + 1
-        if len(s) == l:
-            return y
+        # Convert a base-26 name to a coordinate (or integer if column)
+        col, *rest = RE_COLUMN.split(s, 1)
+        if rest:
+            return (int(s[len(col) :]), COLUMN2COORD[col])
         else:
-            return (int(s), y)
+            return COLUMN2COORD[col]
 
     @staticmethod
     def coordinate_to_string(coord):
-        if coord[1] == float("inf"):
-            return "IV%s" % str(coord[0])
-
-        # convert an integer to base-26 name
-        y = coord[1] - 1
-        s = ""
-        while y >= 0:
-            d, m = divmod(y, 26)
-            s = chr(m + Range.A) + s
-            y = d - 1
-        return s + str(coord[0])
+        # Convert a coordinate to a base-26 name
+        row, col = coord
+        try:
+            return "%s%s" % (COORD2COLUMN[col], row)
+        except (IndexError, TypeError):
+            return "%s%s" % (COORD2COLUMN[256], row)
