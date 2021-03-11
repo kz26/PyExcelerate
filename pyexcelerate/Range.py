@@ -1,4 +1,8 @@
-from . import DataTypes
+import itertools
+import re
+import string
+from collections import OrderedDict
+
 import six
 from . import Font, Fill, Format, Style
 from six.moves import reduce
@@ -7,6 +11,25 @@ from six.moves import reduce
 # Kevin and Kevin's fair warning: this class has been insanely optimized for speed. It is intended
 # to be immutable. Please don't modify attributes after instantiation. :)
 #
+
+# generate the list of columns name from "A" to "ZZZ" => mapping such that COORD2COLUMN[1] => "A"
+COORD2COLUMN = (
+    # remove duplicates in collection by taking list(dict.fromkeys( collection ))
+    list(
+        OrderedDict.fromkeys(
+            # joind the items together so that ["","","A"] => "A", ["","R","Z"] => "RZ", ...
+            map(
+                "".join,
+                # build iterator with all combination of 3 items in the list ["", "A", "B", ..., "Z"]
+                itertools.product([""] + list(string.ascii_uppercase), repeat=3),
+            )
+        )
+    )
+)
+# reverse the previous mapping COORD2COLUMN to go from "A" to 1
+COLUMN2COORD = {col: i for i, col in enumerate(COORD2COLUMN)}
+# regexp that splits an excel reference (e.g. "B23") into row/col
+RE_COLUMN_ROW = re.compile("([A-Z]+)(\d*)")
 
 
 class Range(object):
@@ -246,30 +269,18 @@ class Range(object):
 
     @staticmethod
     def string_to_coordinate(s):
-        # Convert a base-26 name to integer
-        y = 0
-        l = len(s)
-        for index, c in enumerate(s):
-            if ord(c) < Range.A or ord(c) > Range.Z:
-                s = s[index:]
-                break
-            y *= 26
-            y += ord(c) - Range.A + 1
-        if len(s) == l:
-            return y
+        # Convert a base-26 name to a coordinate (or integer if column)
+        col, num = RE_COLUMN_ROW.match(s).groups()
+        if num:
+            return (int(num), COLUMN2COORD[col])
         else:
-            return (int(s), y)
+            return COLUMN2COORD[col]
 
     @staticmethod
     def coordinate_to_string(coord):
-        if coord[1] == float("inf"):
-            return "IV%s" % str(coord[0])
-
-        # convert an integer to base-26 name
-        y = coord[1] - 1
-        s = ""
-        while y >= 0:
-            d, m = divmod(y, 26)
-            s = chr(m + Range.A) + s
-            y = d - 1
-        return s + str(coord[0])
+        # Convert a coordinate to a base-26 name
+        row, col = coord
+        try:
+            return "%s%s" % (COORD2COLUMN[col], row)
+        except (IndexError, TypeError):
+            return "%s%s" % (COORD2COLUMN[256], row)
