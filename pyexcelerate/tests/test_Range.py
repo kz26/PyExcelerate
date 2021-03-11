@@ -10,7 +10,7 @@ def test_column_maps_generation():
     assert COORD2COLUMN[:6] == ["", "A", "B", "C", "D", "E"]
     assert COORD2COLUMN[-6:] == ["ZZU", "ZZV", "ZZW", "ZZX", "ZZY", "ZZZ"]
     # ensure the list is sorted (by comparing the left pad string ('A' -> '  A', 'BZ' -> ' BZ', ...)
-    cols_padded = [f"{col: >3}" for col in COORD2COLUMN]
+    cols_padded = [col.rjust(3) for col in COORD2COLUMN]
     assert sorted(cols_padded) == cols_padded, cols_padded
     # ensure uniqueness of elements
     assert len(set(COORD2COLUMN)) == len(COORD2COLUMN)
