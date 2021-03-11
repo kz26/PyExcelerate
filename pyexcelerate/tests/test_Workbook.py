@@ -2,6 +2,7 @@ import os
 import time
 from datetime import datetime
 
+import openpyxl
 import nose
 import numpy
 from nose.tools import eq_, raises
@@ -211,12 +212,12 @@ def test_number_precision():
 
     write_workbook.save(filename)
 
-    read_workbook = xlrd.open_workbook(filename)
-    read_worksheet = read_workbook.sheet_by_name(sheetname)
+    read_workbook = openpyxl.load_workbook(filename)
+    read_worksheet = read_workbook[sheetname]
 
     for row_num in range(len(nums)):
         expected = nums[row_num]
-        got = read_worksheet.cell(row_num, 0).value
+        got = read_worksheet.cell(row=row_num, col=0)
         eq_(got, expected)
 
     if os.path.exists(filename):
