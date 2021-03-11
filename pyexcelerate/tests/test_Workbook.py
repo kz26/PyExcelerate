@@ -217,7 +217,7 @@ def test_number_precision():
 
     for row_num in range(len(nums)):
         expected = nums[row_num]
-        got = read_worksheet.cell(row=row_num, col=0)
+        got = read_worksheet.cell(row=row_num, column=0)
         eq_(got, expected)
 
     if os.path.exists(filename):
