@@ -33,8 +33,6 @@ RE_COLUMN_ROW = re.compile("([A-Z]+)(\d*)")
 
 
 class Range(object):
-    A = ord("A")
-    Z = ord("Z")
     __slots__ = (
         "_start",
         "_end",
