@@ -4,7 +4,7 @@ import string
 from collections import OrderedDict
 
 import six
-from . import Font, Fill, Format, Style
+from . import Font, Fill, Format, Style, DataTypes
 from six.moves import reduce
 
 #
