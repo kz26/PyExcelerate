@@ -1,6 +1,7 @@
 import itertools
 import re
 import string
+from collections import OrderedDict
 
 import six
 from . import Font, Fill, Format, Style
@@ -15,7 +16,7 @@ from six.moves import reduce
 COORD2COLUMN = (
     # remove duplicates in collection by taking list(dict.fromkeys( collection ))
     list(
-        dict.fromkeys(
+        OrderedDict.fromkeys(
             # joind the items together so that ["","","A"] => "A", ["","R","Z"] => "RZ", ...
             map(
                 "".join,

@@ -1,6 +1,19 @@
+from nose.tools import eq_, raises
+
+from ..Range import Range, COORD2COLUMN
 from ..Workbook import Workbook
-from ..Range import Range
-from nose.tools import eq_, ok_, raises
+
+
+def test_column_maps_generation():
+    # assert on some elements of the list of columns
+    assert COORD2COLUMN[1] == "A"
+    assert COORD2COLUMN[:6] == ["", "A", "B", "C", "D", "E"]
+    assert COORD2COLUMN[-6:] == ["ZZU", "ZZV", "ZZW", "ZZX", "ZZY", "ZZZ"]
+    # ensure the list is sorted (by comparing the left pad string ('A' -> '  A', 'BZ' -> ' BZ', ...)
+    cols_padded = [f"{col: >3}" for col in COORD2COLUMN]
+    assert sorted(cols_padded) == cols_padded, cols_padded
+    # ensure uniqueness of elements
+    assert len(set(COORD2COLUMN)) == len(COORD2COLUMN)
 
 
 def test__string_to_coordinate():
