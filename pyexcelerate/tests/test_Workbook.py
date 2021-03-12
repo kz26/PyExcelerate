@@ -179,9 +179,9 @@ def test_multi_save():
 
 def test_number_precision():
     try:
-        import xlrd
+        import openpyxl
     except ImportError:
-        raise nose.SkipTest("xlrd not installed")
+        raise nose.SkipTest("openpyxl not installed")
 
     filename = get_output_path("precision.xlsx")
     sheetname = "Sheet1"
