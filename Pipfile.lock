@@ -108,10 +108,10 @@
         },
         "memory-profiler": {
             "hashes": [
-                "sha256:23b196f91ea9ac9996e30bfab1e82fecc30a4a1d24870e81d1e81625f786a2c3"
+                "sha256:01385ac0fec944fcf7969814ec4406c6d8a9c66c079d09276723c5a7680f44e5"
             ],
             "index": "pypi",
-            "version": "==0.57.0"
+            "version": "==0.58.0"
         },
         "nose": {
             "hashes": [
