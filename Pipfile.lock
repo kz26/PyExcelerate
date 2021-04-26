@@ -16,11 +16,11 @@
     "default": {
         "jinja2": {
             "hashes": [
-                "sha256:e45e6190f710fb7628af1315cb78354ea08955ab29db1d5fc53acc15cfbd52ee",
-                "sha256:fedf3b7cf64194e3e67b44eb6d4dbfc09e6785449c2e842a0d8172d3c22a3152"
+                "sha256:8e68a2e702a59a57c86305752df25532472a0dad2b4b2756a1d289c618a9e1f5",
+                "sha256:fd581ab32650fec6d24e8f035dd9757f3549ea6e559534d5d2385d4ade7e0fe1"
             ],
             "index": "pypi",
-            "version": "==3.0.0rc1"
+            "version": "==3.0.0rc2"
         },
         "markupsafe": {
             "hashes": [
