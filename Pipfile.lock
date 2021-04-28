@@ -80,11 +80,11 @@
         },
         "black": {
             "hashes": [
-                "sha256:2db7040bbbbaa46247bfcc05c6efdebd7ebe50c1c3ca745ca6e0f6776438c96c",
-                "sha256:915d916c48646dbe8040d5265cff7111421a60a3dfe7f7e07273176a57c24a34"
+                "sha256:20d326de75d13be6290925a95c94a9f368aca2f71cb7b753a938a5ae20f34a37",
+                "sha256:c9601dc863779db2fb1bf18b345bbfa2bb868463123cde6a7eff44b59e4ef739"
             ],
             "index": "pypi",
-            "version": "==21.4b0"
+            "version": "==21.4b1"
         },
         "click": {
             "hashes": [
@@ -95,9 +95,10 @@
         },
         "et-xmlfile": {
             "hashes": [
-                "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"
+                "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c",
+                "sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"
             ],
-            "version": "==1.0.1"
+            "version": "==1.1.0"
         },
         "memory-profiler": {
             "hashes": [
