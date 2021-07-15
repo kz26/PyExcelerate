@@ -17,7 +17,7 @@ COORD2COLUMN = (
     # remove duplicates in collection by taking list(dict.fromkeys( collection ))
     list(
         OrderedDict.fromkeys(
-            # joind the items together so that ["","","A"] => "A", ["","R","Z"] => "RZ", ...
+            # joined the items together so that ["","","A"] => "A", ["","R","Z"] => "RZ", ...
             map(
                 "".join,
                 # build iterator with all combination of 3 items in the list ["", "A", "B", ..., "Z"]
