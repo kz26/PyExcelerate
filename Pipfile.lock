@@ -177,11 +177,11 @@
         },
         "openpyxl": {
             "hashes": [
-                "sha256:46af4eaf201a89b610fcca177eed957635f88770a5462fb6aae4a2a52b0ff516",
-                "sha256:6456a3b472e1ef0facb1129f3c6ef00713cebf62e736cd7a75bcc3247432f251"
+                "sha256:40f568b9829bf9e446acfffce30250ac1fa39035124d55fc024025c41481c90f",
+                "sha256:8f3b11bd896a95468a4ab162fc4fcd260d46157155d1f8bfaabb99d88cfcf79f"
             ],
             "index": "pypi",
-            "version": "==3.0.7"
+            "version": "==3.0.9"
         },
         "pathspec": {
             "hashes": [
