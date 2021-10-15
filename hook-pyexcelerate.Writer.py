@@ -1,17 +1,14 @@
-# -----------------------------------------------------------------------------
-# Copyright (c) 2013, PyInstaller Development Team.
+# ------------------------------------------------------------------
+# Copyright (c) 2020 PyInstaller Development Team.
 #
-# Distributed under the terms of the GNU General Public License with exception
-# for distributing bootloader.
+# This file is distributed under the terms of the GNU General Public
+# License (version 2.0 or later).
 #
-# The full license is in the file COPYING.txt, distributed with this software.
-# -----------------------------------------------------------------------------
+# The full license is available in LICENSE.GPL.txt, distributed with
+# this software.
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+# ------------------------------------------------------------------
 
-import os
-from PyInstaller.hooks.hookutils import exec_statement
-
-template_path = exec_statement(
-    "from pyexcelerate.Writer import _TEMPLATE_PATH as tp; print tp"
-)
-
-datas = [(os.path.join(template_path, "*"), os.path.join("pyexcelerate", "templates"))]
+from PyInstaller.utils.hooks import collect_data_files
+datas = collect_data_files('pyexcelerate')
