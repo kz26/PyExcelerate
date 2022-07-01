@@ -77,10 +77,11 @@ class Writer(object):
         for index, sheet in self.workbook.get_xml_data():
             sheetStream = self._worksheet_template.generate({"worksheet": sheet})
             try:
-                with zf.open("xl/worksheets/sheet%s.xml" % (index), mode="w") as f:
+                with zf.open("xl/worksheets/sheet%s.xml" % (index), mode="w", force_zip64=True) as f:
                     for s in sheetStream:
                         f.write(s.encode("utf-8"))
-            except RuntimeError:
+            except RuntimeError as e:
+                print("received error when writing zip file", e)
                 tfd, tfn = tempfile.mkstemp()
                 tf = os.fdopen(tfd, "wb")
                 for s in sheetStream:
