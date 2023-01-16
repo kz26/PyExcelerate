@@ -224,11 +224,11 @@
         },
         "xlsxwriter": {
             "hashes": [
-                "sha256:a5c97a25b319e92b7eeab6e37593192c4dde718084eff23f045eb1df704dde83",
-                "sha256:fe2b1e2dec38ef8952e9a41a0290861a052e6771a9f43f5e3d56dc63b7112348"
+                "sha256:1239958b12da12be6abf05b32f64ff162eb75fff0fdf00d901ca0f46dc0557cf",
+                "sha256:d79dadac9dcbff3c24281764b052b46bcdb391f3184f337c4c4e6ed8d2738d7d"
             ],
             "index": "pypi",
-            "version": "==3.0.5"
+            "version": "==3.0.7"
         }
     }
 }
