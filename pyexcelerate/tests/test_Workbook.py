@@ -242,3 +242,11 @@ def test_show_grid_lines():
     ws = wb.new_sheet("default_with_grid_lines")
     ws[1][1].value = "even more data"
     wb.save(get_output_path("grid_lines.xlsx"))
+
+
+def test_hidden_sheet():
+    wb = Workbook()
+    wb.new_sheet("Visible sheet", hidden=False)
+    wb.new_sheet("Hidden sheet", hidden=True)
+    wb.new_sheet("Another hidden sheet", hidden=True)
+    wb.save(get_output_path("hidden_sheet.xlsx"))

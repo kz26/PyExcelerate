@@ -363,6 +363,20 @@ attribute as well. This permits you to modify the style at a later time.
     ws[1][1].style.font = font
     wb.save("output.xlsx")
 
+Hidden sheet
+~~~~~~~~~~~~
+
+PyExcelerate supports adding hidden sheets. Note that the first sheet cannot be hidden.
+
+::
+
+    from pyexcelerate import Workbook
+
+    wb = Workbook()
+    ws = wb.new_sheet("visible sheet")
+    ws = wb.new_sheet("hidden sheet", hidden=True)
+    wb.save("output.xlsx")
+
 Packaging with PyInstaller
 --------------------------
 

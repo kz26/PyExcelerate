@@ -65,10 +65,11 @@ class Worksheet(object):
         "_attributes",
         "_panes",
         "_show_grid_lines",
+        "hidden",
         "auto_filter",
     )
 
-    def __init__(self, name, workbook, data=None, force_name=False):
+    def __init__(self, name, workbook, data=None, force_name=False, hidden=False):
         self._columns = 0  # cache this for speed
         if len(name) > 31 and not force_name:
             # http://stackoverflow.com/questions/3681868/is-there-a-limit-on-an-excel-worksheets-name-length
@@ -86,6 +87,7 @@ class Worksheet(object):
         self._attributes = {}
         self._panes = Panes.Panes()
         self._show_grid_lines = True
+        self.hidden = hidden
         self.auto_filter = False
         if data is not None:
             # Iterate over the data to ensure we receive a copy of immutables.

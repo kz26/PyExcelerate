@@ -7,7 +7,7 @@
     </bookViews>
     <sheets>
         {% for index, sheet in workbook.get_xml_data() %}
-        <sheet name="{{ sheet.name }}" sheetId="{{ index }}" r:id="rId{{ index }}" />
+        <sheet name="{{ sheet.name }}" sheetId="{{ index }}" r:id="rId{{ index }}" {% if sheet.hidden %}state="hidden" {% endif %}/>
         {% endfor %}
     </sheets>
     <calcPr calcId="145621" />

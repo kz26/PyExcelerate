@@ -33,8 +33,8 @@ class Workbook(object):
                 )
         self._worksheets.append(worksheet)
 
-    def new_sheet(self, sheet_name, data=None, force_name=False):
-        worksheet = Worksheet.Worksheet(sheet_name, self, data, force_name)
+    def new_sheet(self, sheet_name, data=None, force_name=False, hidden=False):
+        worksheet = Worksheet.Worksheet(sheet_name, self, data, force_name, hidden)
         self.add_sheet(worksheet)
         return worksheet
 
