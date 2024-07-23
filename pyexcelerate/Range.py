@@ -29,7 +29,7 @@ COORD2COLUMN = (
 # reverse the previous mapping COORD2COLUMN to go from "A" to 1
 COLUMN2COORD = {col: i for i, col in enumerate(COORD2COLUMN)}
 # regexp that splits an excel reference (e.g. "B23") into row/col
-RE_COLUMN_ROW = re.compile("([A-Z]+)(\d*)")
+RE_COLUMN_ROW = re.compile(r"([A-Z]+)(\d*)")
 
 
 class Range(object):
