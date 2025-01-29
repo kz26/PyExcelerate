@@ -284,12 +284,12 @@
         },
         "xlsxwriter": {
             "hashes": [
-                "sha256:7e8f7c60b7a1660ef791d46ab5de78469cb978b991ca841af61f5832d2f9f4fe",
-                "sha256:97618759cb264fb6a93397f660cca156ffa9561743b1823dafb60dc4474e1902"
+                "sha256:272ce861e7fa5e82a4a6ebc24511f2cb952fde3461f6c6e1a1e81d3272db1471",
+                "sha256:befc7f92578a85fed261639fb6cde1fd51b79c5e854040847dde59d4317077dc"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==3.2.1"
+            "version": "==3.2.2"
         }
     }
 }
