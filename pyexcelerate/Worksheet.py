@@ -349,11 +349,10 @@ class Worksheet(object):
     def get_xml_data(self):
         # Precondition: styles are aligned. if not, then :v
         # check if we have any row styles that don't have data
-        sparse_rows = sorted(
-            filter(
-                lambda x: x[0] >= len(self._dense_cells),
-                six.iteritems(self._sparse_cells),
-            )
+        sparse_rows = (
+            (x, self._sparse_cells.get(x, {}))
+            for x in sorted(set(self._sparse_cells) | set(self._row_styles))
+            if x >= len(self._dense_cells)
         )
         for x, row in itertools.chain(enumerate(self._dense_cells[1:], 1), sparse_rows):
             row_data = []
