@@ -2,6 +2,8 @@
 
 import time
 from datetime import datetime
+from xml.etree import ElementTree
+from zipfile import ZipFile
 
 import nose
 import openpyxl
@@ -109,6 +111,55 @@ def test_style_row():
     ws[1].style.fill.background = Color(255, 0, 0)
     ws[1][3].style.fill.background = Color(0, 255, 0)
     wb.save(get_output_path("style-row-test.xlsx"))
+
+
+def test_style_rows_without_data():
+    wb = Workbook()
+    ws = wb.new_sheet("test")
+    ws.set_row_style(3, Style(font=Font(bold=True), size=25))
+    ws.get_row_style(8).size = 0
+    filename = get_output_path("style-empty-rows.xlsx")
+    wb.save(filename)
+
+    wbr = openpyxl.load_workbook(filename)
+    try:
+        rows = wbr["test"].row_dimensions
+        eq_(sorted(rows), [3, 8])
+        ok_(rows[3].font.bold)
+        eq_(rows[3].height, 25)
+        ok_(rows[8].hidden)
+    finally:
+        wbr.close()
+
+
+def test_style_empty_rows_with_dense_and_sparse_data():
+    wb = Workbook()
+    ws = wb.new_sheet("test", data=[[1], [2]])
+    ws[5][1].value = 5
+    ws.set_row_style([8, 5, 3, 1], Style(font=Font(bold=True), size=25))
+    filename = get_output_path("style-empty-dense-sparse-rows.xlsx")
+    wb.save(filename)
+
+    with ZipFile(filename) as archive:
+        root = ElementTree.fromstring(archive.read("xl/worksheets/sheet1.xml"))
+    ns = {"s": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
+    rows = root.findall("s:sheetData/s:row", ns)
+    eq_([int(row.get("r")) for row in rows], [1, 2, 3, 5, 8])
+    eq_([cell.get("r") for row in rows for cell in row], ["A1", "A2", "A5"])
+
+    wbr = openpyxl.load_workbook(filename)
+    try:
+        sheet = wbr["test"]
+        eq_(sorted(sheet.row_dimensions), [1, 3, 5, 8])
+        for row in [1, 3, 5, 8]:
+            ok_(sheet.row_dimensions[row].font.bold)
+            eq_(sheet.row_dimensions[row].height, 25)
+        eq_(
+            [sheet.cell(row, 1).value for row in range(1, 9)],
+            [1, 2, None, None, 5, None, None, None],
+        )
+    finally:
+        wbr.close()
 
 
 def test_style_row_col():
