@@ -340,11 +340,11 @@
         },
         "pytz": {
             "hashes": [
-                "sha256:464303645bafafd72418898368b2429458f709cf1eb6a15372fbcc396b64da63",
-                "sha256:9d514388fbc89ca0833203464272ac485b8828568ab73532f5020f17e892a0ff"
+                "sha256:e658af3757f9e26a9d25dd2aff38335acd92bc9104f890a894b2c1ba28311b03",
+                "sha256:fa23724b9c486543b9ff54a327ee7569ac83ade54bb9afd0fc18676620401c86"
             ],
             "index": "pypi",
-            "version": "==2026.4"
+            "version": "==2026.5"
         },
         "xlsxwriter": {
             "hashes": [
