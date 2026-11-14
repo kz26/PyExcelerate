@@ -1,3 +1,6 @@
+Unreleased
+* Escape XML characters in formulas so comparisons, concatenation, and URLs save as valid XLSX files without changing their text.
+
 0.10.0
 * Add support for XLSM files from PR #101 (thanks @caffeinatedMike)
 
