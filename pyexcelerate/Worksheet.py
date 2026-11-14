@@ -251,7 +251,7 @@ class Worksheet(object):
         elif type == DataTypes.DATE:
             z = '"><v>%s</v></c>' % (DataTypes.to_excel_date(cell))
         elif type == DataTypes.FORMULA:
-            z = '"><f>%s</f></c>' % (cell[1:])  # Remove equals sign.
+            z = '"><f>%s</f></c>' % escape(cell[1:])  # Remove equals sign.
         elif type == DataTypes.BOOLEAN:
             z = '" t="b"><v>%d</v></c>' % (cell)
 
