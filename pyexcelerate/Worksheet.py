@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import collections
+import copy
 import itertools
 import math
 import re
@@ -178,7 +179,13 @@ class Worksheet(object):
 
     def set_cell_value(self, x, y, value):
         if DataTypes.get_type(value) == DataTypes.DATE:
-            self.get_cell_style(x, y).format = Format.Format("yyyy-mm-dd")
+            style = self.get_cell_style(x, y)
+            if style._format is None:
+                # copy: the style object may be shared with other cells
+                style = copy.copy(style)
+                style.format = Format.Format("yyyy-mm-dd")
+                self._styles[x][y] = style
+                self._parent.add_style(style)
         if x < len(self._dense_cells) and y < len(self._dense_cells[x]):
             self._dense_cells[x][y] = value
         else:
