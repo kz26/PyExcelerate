@@ -103,6 +103,26 @@ def test_style_reference():
     wb.save(get_output_path("style-reference-test.xlsx"))
 
 
+def test_date_value_with_shared_style():
+    wb = Workbook()
+    ws = wb.new_sheet("test")
+    body = Style(font=Font(bold=True))
+    ws.set_cell_style(1, 1, body)
+    ws.set_cell_style(1, 2, body)
+    ws.set_cell_value(1, 1, 1001)
+    ws.set_cell_value(1, 2, datetime(2026, 11, 1))
+    ws.set_cell_style(2, 1, Style(format=Format("dd/mm/yyyy")))
+    ws.set_cell_value(2, 1, datetime(2026, 11, 1))
+    filename = get_output_path("date-shared-style-test.xlsx")
+    wb.save(filename)
+    sheet = openpyxl.load_workbook(filename)["test"]
+    eq_(sheet["A1"].number_format, "General")
+    eq_(sheet["A1"].font.b, True)
+    eq_(sheet["B1"].number_format, "yyyy-mm-dd")
+    eq_(sheet["B1"].font.b, True)
+    eq_(sheet["A2"].number_format, "dd/mm/yyyy")
+
+
 def test_style_row():
     wb = Workbook()
     ws = wb.new_sheet("test")
