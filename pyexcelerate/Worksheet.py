@@ -59,6 +59,7 @@ class Worksheet(object):
         "_dense_cells",
         "_sparse_cells",
         "_styles",
+        "_date_styles",
         "_row_styles",
         "_col_styles",
         "_parent",
@@ -81,6 +82,7 @@ class Worksheet(object):
         self._dense_cells = [[]]
         self._sparse_cells = collections.defaultdict(dict)
         self._styles = collections.defaultdict(dict)
+        self._date_styles = {}
         self._row_styles = {}
         self._col_styles = {}
         self._parent = workbook
@@ -179,13 +181,19 @@ class Worksheet(object):
 
     def set_cell_value(self, x, y, value):
         if DataTypes.get_type(value) == DataTypes.DATE:
-            style = self.get_cell_style(x, y)
-            if style._format is None:
-                # copy: the style object may be shared with other cells
-                style = copy.copy(style)
-                style.format = Format.Format("yyyy-mm-dd")
-                self._styles[x][y] = style
-                self._parent.add_style(style)
+            style = self._styles[x].get(y)
+            if style is None:
+                self.set_cell_style(x, y, Style.Style(format=Format.Format("yyyy-mm-dd")))
+            elif style._format is None:
+                # the style may be shared with other cells, so use a copy
+                # with the date format, one per style to keep dedup fast
+                cached = self._date_styles.get(id(style))
+                if cached is None:
+                    date_style = copy.copy(style)
+                    date_style.format = Format.Format("yyyy-mm-dd")
+                    # keep style alive so its id is not reused
+                    cached = self._date_styles[id(style)] = (style, date_style)
+                self.set_cell_style(x, y, cached[1])
         if x < len(self._dense_cells) and y < len(self._dense_cells[x]):
             self._dense_cells[x][y] = value
         else:
