@@ -16,7 +16,7 @@
 <TitlesOfParts>
     <vt:vector size="{{ workbook.__len__() }}" baseType="lpstr">
         {% for index, sheet in workbook.get_xml_data() %}
-        <vt:lpstr>{{ sheet.name }}</vt:lpstr>
+        <vt:lpstr>{{ sheet.name|e }}</vt:lpstr>
         {% endfor %}
     </vt:vector>
 </TitlesOfParts>
